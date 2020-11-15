@@ -1,22 +1,28 @@
 const express = require('express');
 const uuid = require('uuid');
 const router = express.Router();
+const Kitty = require('../models/Kitty');
 
 // POST METHOD
 // create kitty
-router.post('/', (req, res) => {
-    console.log('POST KITTY')
+router.post('/', async (req, res) => {
 
-    const kittyId = uuid.v4();
-    console.log(kittyId)
+    const { name, buyInAmount, participants } = req.body;
 
-    const kittyDto = {
-        Id: kittyId,
-        Name: 'Kitty Name',
-        Contributors: [1,2,3,4,5],
+    if (!(name && buyInAmount && participants)) {
+        res.status(400).json({ message: 'Please provide name, buyInAmount & participants' });
+        return;
     }
 
-    res.json(kittyDto);
+    const kittyDto = { name, buyInAmount, participants };
+    
+    // create an new instance of Kitty model
+    const newKitty = new Kitty(kittyDto);
+
+    // Save the kitty just created 
+    const doc = await newKitty.save();
+
+    res.json(doc);
 });
 
 // GET METHOD

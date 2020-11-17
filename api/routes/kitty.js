@@ -27,50 +27,87 @@ router.post('/', async (req, res) => {
 
 // GET METHOD
 // return kitty
-router.get('/:kittyId', (req, res) => {
+router.get('/:kittyId', async (req, res) => {
     console.log('GET KITTY')
 
     if (!req.params.kittyId) {
         res.status(400).json({ message: 'Please provide a kittyId parameter' });
     }
-    
+        
     const kittyId = req.params.kittyId;
+    let doc;
 
-    console.log(kittyId)
-
-    const kittyDto = {
-        Id: kittyId,
-        Name: 'Kitty Name',
-        Contributors: [1,2,3,4,5],
+    try 
+    {
+         doc = await Kitty.findById(kittyId);
+    } 
+    catch(err) 
+    {
+        res.status(500).json({ message: `Could not find record with id: ${kittyId}` });
+        return;
     }
 
     // return requested kitty
-    res.json(kittyDto);
-    
+    res.json(doc);    
 });
 
 // PUT METHOD
 // Edit kitty
-router.patch('/:kittyId', (req, res) => {
-    console.log('EDIT KITTY')
+router.patch('/:kittyId', async (req, res) => {
+
+    if (!req.params.kittyId) {
+        res.status(400).json({ message: 'Please provide a kittyId parameter' });
+    }
+    
+    const kittyId = req.params.kittyId;
+    let kitty;
+    
+    kitty = await Kitty.findById(kittyId);
+
+    if (!kitty) {
+        res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
+        return;
+    }
+    
+    const { name, buyInAmount, participants} = req.body;
+
+    if (name) {
+        kitty.name = name;
+    }
+    if (buyInAmount) {
+        kitty.buyInAmount = buyInAmount;
+    }
+    if (participants && Array.isArray(participants)) {
+        kitty.participants = participants;        
+    }
+
+    const doc = await kitty.save()
+    
+    // return requested kitty
+    res.json(doc);
+});
+
+// DELETE METHOD
+// Delete kitty
+router.delete('/:kittyId', async (req, res) => {
 
     if (!req.params.kittyId) {
         res.status(400).json({ message: 'Please provide a kittyId parameter' });
     }
 
     const kittyId = req.params.kittyId;
+    let kitty;
 
-    console.log(kittyId)
+    kitty = await Kitty.findById(kittyId);
 
-    const kittyDto = {
-        Id: kittyId,
-        Name: 'Kitty Name',
-        Contributors: [1,2,3,4,5],
+    if (!kitty) {
+        res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
+        return;
     }
 
-    // return requested kitty
-    res.json(kittyDto);
+    const doc = await kitty.delete();
 
+    res.json(doc)
 });
 
 // export the route

@@ -1,3 +1,39 @@
+
+$color-culture-white: #F8F7F9;
+$color-night-black: #100404;
+$color-prussian-blue: #1D3354;
+$color-vermillion-red: #D64045;
+$color-light-cyan: #E9FFF9;
+$color-powder-blue: #9ED8DB;
+$color-queen-blue: #467599;
+
+$space-one: 6px;
+$space-two: $space-one * 2;
+$space-three: $space-two * 2;
+$space-four: $space-three * 2;
+
+.btn {
+    color: $color-culture-white;
+    background-color: $color-vermillion-red;
+    padding: $space-one $space-three;
+    border-radius: $space-one;
+    transition: background-color 0.4s ease;
+    border: none;
+}
+
+.btn:hover,
+.btn:focus,
+.btn:active {
+    transition: background-color 0.4s ease;
+    background-color: darken($color-vermillion-red, 10%);
+}
+
+html {
+    font-size: 125%;
+    background-color: $color-culture-white;
+}
+
+
 // .App {
 //   text-align: center;
 // }

@@ -1,0 +1,19 @@
+@import '../../App.scss';
+
+header {
+    border-bottom: 1px solid $color-realnice-navy-light;
+    background-color: $color-wholesome-white;
+    color: $color-realnice-navy;
+    padding: $space-two;
+}
+
+ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo {
+    font-weight: 900;
+    font-family: 'Rubik', sans-serif;
+    text-transform: uppercase;
+}

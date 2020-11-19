@@ -1,0 +1,12 @@
+@import '../../App.scss';
+
+footer {
+    color: $color-wholesome-white;
+    background: $color-realnice-navy;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: $space-two;
+    text-align: center;
+}

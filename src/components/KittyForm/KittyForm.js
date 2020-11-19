@@ -34,11 +34,12 @@ class KittyForm extends React.Component {
     render() {
         return (
             <section>
-                <h1>Kitty Form</h1>    
+                <h2>Create a new pot</h2>
+    
                 <form onSubmit={this.handleSubmit}>
                     <div className="text-input">
-                        <label htmlFor="kitty-name">Kitty Name</label>
-                        <input id="kitty-name"type="text" value={this.state.kittyName} onChange={this.handleKittyNameChange}/>
+                        <label htmlFor="kitty-name">Name</label>
+                        <input id="kitty-name"type="text" value={this.state.kittyName} onChange={this.handleKittyNameChange} placeholder="New Pot name"/>
                     </div>
     
                     <div className="number-input">

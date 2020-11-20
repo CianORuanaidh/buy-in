@@ -1,4 +1,5 @@
 import './App.scss';
+import KittyPage from './components/KittyPage/KittyPage'
 import KittyForm from './components/KittyForm/KittyForm';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -11,6 +12,8 @@ function App() {
         <p>This is Buyin app</p>
         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat porro dolore quidem doloremque labore reprehenderit! Dolorum mollitia, laborum incidunt sequi ipsum nesciunt iusto dolorem aut sint natus nobis odio at.</p>
         <KittyForm></KittyForm>
+        <hr/>
+        <KittyPage></KittyPage>
       </main>
       <Footer></Footer>
     </div>

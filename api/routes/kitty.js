@@ -26,6 +26,30 @@ router.post('/', async (req, res) => {
 });
 
 // GET METHOD
+// return all kittys
+router.get('/', async (req, res) => {
+    console.log('GET KITTY')
+
+        
+    let doc;
+
+    try 
+    {
+         doc = await Kitty.find()
+    } 
+    catch(err) 
+    {
+        res.status(500).json({ message: `Could not find record with id: ${kittyId}` });
+        return;
+    }
+
+    // return requested kitty
+    res.json(doc);    
+});
+
+
+
+// GET METHOD
 // return kitty
 router.get('/:kittyId', async (req, res) => {
     console.log('GET KITTY')

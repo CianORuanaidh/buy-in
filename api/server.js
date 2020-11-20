@@ -1,9 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const kittyRoutes = require('./routes/kitty');
+const cors = require('cors');
 
 // instantiate express app
 const app = express();
+
+// use to allow CORS
+var corsOptions = {
+  origin: 'http://localhost:3000',
+  optionsSuccessStatus: 200 // For legacy browser support
+}
+app.use(cors(corsOptions));
 
 // instantiate mongoose
 const mongoose = require('mongoose');

@@ -3,19 +3,29 @@ import KittyPage from './components/KittyPage/KittyPage'
 import KittyForm from './components/KittyForm/KittyForm';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import Intro from './components/Intro/Intro';
+import NewKitty from './components/NewKitty/NewKitty';
 
 function App() {
   return (
-    <div className="buy-in-app container">
+    <div className="buy-in-app">
+      
       <Header></Header>
+      
       <main>
-        <p>This is Buyin app</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat porro dolore quidem doloremque labore reprehenderit! Dolorum mollitia, laborum incidunt sequi ipsum nesciunt iusto dolorem aut sint natus nobis odio at.</p>
-        <KittyForm></KittyForm>
-        <hr/>
-        <KittyPage></KittyPage>
+        
+        <Intro></Intro>
+        
+        <NewKitty></NewKitty>
+
+        {/* <KittyForm></KittyForm> */}
+
+        {/* <KittyPage></KittyPage> */}
+
       </main>
+      
       <Footer></Footer>
+    
     </div>
   );
 }

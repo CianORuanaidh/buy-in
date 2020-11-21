@@ -10,12 +10,24 @@ class KittyForm extends React.Component {
         this.state = {
             kittyName: '',
             buyInAmount: '',
-            numberOfParticipents: undefined
+            numberOfParticipents: undefined,
+            participants: [1]
         };
 
+
+        this.handleAddParticipant = this.handleAddParticipant.bind(this);
         this.handleKittyNameChange = this.handleKittyNameChange.bind(this);
         this.handleKittyBuyInAmountChange = this.handleKittyBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleAddParticipant() {
+        this.setState((state) => {
+            const newIndex = state.participants.length + 1;
+            const updatedParticipants = state.participants.slice();
+            updatedParticipants.push(newIndex);
+            return {participants: updatedParticipants}
+          });
     }
 
     handleKittyNameChange(event) {
@@ -28,36 +40,49 @@ class KittyForm extends React.Component {
     
     handleSubmit(event) {
         event.preventDefault();
-        console.log(this.state);
     }
 
     render() {
         return (
-            <section>
-                <h2>Create a new pot</h2>
-    
-                <form onSubmit={this.handleSubmit}>
-                    <div className="text-input">
-                        <label htmlFor="kitty-name">Name</label>
-                        <input id="kitty-name"type="text" value={this.state.kittyName} onChange={this.handleKittyNameChange} placeholder="New Pot name"/>
+            <div>
+                <form onSubmit={this.handleSubmit} className="kitty-form">
+
+                    <div className="block block-1">
+                        <div className="text-input">
+                            <label className="form-label" htmlFor="kitty-name">Name</label>
+                            <input className="form-input" id="kitty-name"type="text" value={this.state.kittyName} onChange={this.handleKittyNameChange} placeholder="New Pot name"/>
+                        </div>
+        
+                        <div className="number-input">
+                            <label className="form-label" htmlFor="buyInAmount">Buy in amount</label>
+                            <input className="form-input" id="buyInAmount" type="number" value={this.state.buyInAmount} onChange={this.handleKittyBuyInAmountChange}/>
+                        </div>
                     </div>
     
-                    <div className="number-input">
-                        <label htmlFor="buyInAmount">Buy in amount</label>
-                        <input id="buyInAmount" type="number" value={this.state.buyInAmount} onChange={this.handleKittyBuyInAmountChange}/>
+                    <div className="block block-2">
+                        {this.state.participants.map(i => {
+                            return (
+                                <div className="form-row" key={i}>
+                                    <div className="input text-input">
+                                        <label className="form-label" htmlFor="participent-name">Participant name</label>
+                                        <input className="form-input" id="participent-name" type="text" value={this.state.numberOfParticipents} onChange={this.handleChange}/>
+                                    </div>
+                                    <div className="input text-input">
+                                        <label className="form-label" htmlFor="participent-email">Participant email</label>
+                                        <input className="form-input" id="participent-email" type="text" value={this.state.numberOfParticipents} onChange={this.handleChange}/>
+                                    </div>                    
+                                </div>
+                            );
+                        })}
+                        <div className="form-row">
+                            <button className="btn add-participant" type="button" onClick={this.handleAddParticipant}>Add another participant</button>
+                        </div>
                     </div>
-    
-                    <p>Participants</p>
-    
-                    {/* <div className="text-input">
-                        <label htmlFor="participent-name">Name</label>
-                        <input id="participent-name" type="text" value={this.state.numberOfParticipents} onChange={this.handleChange}/>
-                    </div> */}
-    
-                    <button className="btn" type="submit">Save</button>
-    
+                    <div className="form-controls">
+                        <button className="btn" type="submit">Save</button>
+                    </div>                    
                 </form>
-            </section>
+            </div>
         );
     }
 }

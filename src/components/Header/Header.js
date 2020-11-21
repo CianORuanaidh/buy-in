@@ -3,12 +3,11 @@ import './Header.scss';
 function Header() {
     return (
         <header>
-            <nav>
+            <nav className="container">
                 <ul>
                     <li>
-                        <span className="logo">
-                            Buy-In
-                        </span>                
+                        <span className="logo">B.I.</span> 
+                        <span> (BuyIn)</span>
                     </li>
                     <li>menu</li>
                 </ul>

@@ -1,18 +1,48 @@
 @import '../../App.scss';
 
-.text-input,
-.number-input {
+.kitty-form {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 ($space-two * -1);
 
-    margin-bottom: $space-three;
-    
-    label {
-        display: block;
-        margin-bottom: $space-one;
+
+    .block {
+        flex-basis: 500px;
+        flex-grow: 1;
+        margin: $space-two;
+
     }
 
-    input {
-        padding: $space-one $space-two;
+    .form-controls {
         width: 100%;
+        margin: $space-two;
     }
 
+    .add-participant {
+        margin: $space-two;
+        margin-left: auto;
+        
+
+    }
+
+    .text-input,
+    .number-input {
+    
+        margin-bottom: $space-three;
+        
+    }
+    
+    .form-row {
+        display: flex;
+        margin: 0 ($space-two * -1);
+    
+        .input {
+            margin-left: $space-two;
+            margin-right: $space-two;
+    
+            flex-basis: 300px;
+            flex-grow: 1;
+        }
+    }
 }
+

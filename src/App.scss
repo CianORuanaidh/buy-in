@@ -1,104 +1,112 @@
+// FONTS
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;1,700&family=Rubik:ital,wght@0,300;0,400;1,500;1,900&display=swap');
+// font-family: 'Karla', sans-serif;
+// font-family: 'Rubik', sans-serif;
 
-$color-wholesome-white: #f5f6f7;
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;500;700;900&display=swap');
+//font-family: 'Roboto', sans-serif;
+
+// color variables
+$color-light-grey: #f5f6f7;
 $color-cantBe-white: rgb(249, 250, 251);
 $color-beauty-blue:#5468ff;
 $color-babyIm-blue:#1a56db;
 $color-realnice-navy: #161e2e;
+$color-my-black: rgb(25, 28, 31);
+$color-my-black-light: lighten($color-my-black, 40%);
 $color-realnice-navy-light: lighten($color-realnice-navy, 70%);
 
 $color-coybi-green: #00B3A4;
 $color-summer-salmon: #DB2C6F;
 
-
-// $color-culture-white: #F8F7F9;
-// $color-night-black: #100404;
-// $color-prussian-blue: #1D3354;
-// $color-vermillion-red: #D64045;
-// $color-light-cyan: #E9FFF9;
-// $color-powder-blue: #9ED8DB;
-// $color-queen-blue: #467599;
-
+// spacing variables
 $space-one: 6px;
 $space-two: $space-one * 2;
 $space-three: $space-two * 2;
 $space-four: $space-three * 2;
 
+// transitions
+$background-transition: background-color 0.4s ease;
+
+
+// font variables
+$primary-font: 'Roboto', sans-serif;
+
 html {
     font-size: 125%;
-    font-family: 'Karla', sans-serif;
-    // background-color: $color-wholesome-white;
+    font-family: $primary-font;
+    color: $color-my-black;
 }
 
-// FONTS
-@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;1,700&family=Rubik:ital,wght@0,300;0,400;1,500;1,900&display=swap');
+h1 {
+    font-weight: 900;
+    font-size: 4rem;
+}
 
-// font-family: 'Karla', sans-serif;
-// font-family: 'Rubik', sans-serif;
+h2 {
+    font-weight: 900;
+    font-size: 3rem;
+}
+
+p {
+    color: $color-my-black-light;
+    font-weight: 100;
+}
 
 // GLOBAL STYLES
 .container {
-    max-width: 1600px;
+    max-width: 1280px;
     margin: 0 auto;
-
     padding: 0 $space-four;
 }
 
 ul {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
 }
 
+// form elements
+.form-label {
+    display: block;
+    margin-bottom: $space-one;
+}
+
+.form-input {
+    background-color: lighten($color-beauty-blue, 30%);
+    border: 1px solid $color-beauty-blue;
+    border-radius: 5px;
+    font-weight: 300;
+    padding: $space-two $space-two;
+    width: 100%;
+    
+    transition: $background-transition;
+}
+
+.form-input:active,
+.form-input:focus {
+    background-color: $color-cantBe-white;
+    
+    transition: $background-transition;
+}
+
+
 .btn {
-    color: $color-wholesome-white;
-    background-color: $color-babyIm-blue;
-    padding: $space-one $space-three;
+    background-color: $color-my-black;
     border-radius: $space-one;
-    transition: background-color 0.4s ease;
     border: none;
+    color: $color-light-grey;
+    font-weight: 100;
+    padding: $space-two $space-three;
+
+    transition: $background-transition;
 }
 
 .btn:hover,
 .btn:focus,
 .btn:active {
-    transition: background-color 0.4s ease;
-    background-color: darken($color-babyIm-blue, 10%);
+    background-color: lighten($color-my-black, 20%); 
+
+    transition: $background-transition;
 }
-// .App {
-//   text-align: center;
-// }
-
-// .App-logo {
-//   height: 40vmin;
-//   pointer-events: none;
-// }
-
-// @media (prefers-reduced-motion: no-preference) {
-//   .App-logo {
-//     animation: App-logo-spin infinite 20s linear;
-//   }
-// }
-
-// .App-header {
-//   background-color: #282c34;
-//   min-height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   justify-content: center;
-//   font-size: calc(10px + 2vmin);
-//   color: white;
-// }
-
-// .App-link {
-//   color: #61dafb;
-// }
-
-// @keyframes App-logo-spin {
-//   from {
-//     transform: rotate(0deg);
-//   }
-//   to {
-//     transform: rotate(360deg);
-//   }
-// }

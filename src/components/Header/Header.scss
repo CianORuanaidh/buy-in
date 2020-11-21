@@ -1,10 +1,9 @@
 @import '../../App.scss';
 
 header {
-    border-bottom: 1px solid $color-realnice-navy-light;
-    background-color: $color-wholesome-white;
+    background-color: $color-light-grey;
     color: $color-realnice-navy;
-    padding: $space-two;
+    padding: $space-three 0;
 }
 
 ul {

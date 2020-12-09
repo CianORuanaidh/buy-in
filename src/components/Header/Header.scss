@@ -11,8 +11,9 @@ ul {
     justify-content: space-between;
 }
 
-.logo {
+li.logo {
     font-weight: 900;
     font-family: 'Rubik', sans-serif;
-    text-transform: uppercase;
+    margin-right: auto;
+    // text-transform: uppercase;
 }

@@ -1,32 +1,43 @@
 import './App.scss';
-import KittyPage from './components/KittyPage/KittyPage'
-import KittyForm from './components/KittyForm/KittyForm';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Intro from './components/Intro/Intro';
-import NewKitty from './components/NewKitty/NewKitty';
+import DashboardPage from './page_dashboard/DashboardPage';
+import LoginPage from './page_login/LoginPage';
+import HomePage from './page_home/HomePage';
+import SignUp from './page_signup/SignupPage';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className="buy-in-app">
-      
+    <Router>
+
       <Header></Header>
       
-      <main>
-        
-        <Intro></Intro>
-        
-        <NewKitty></NewKitty>
-
-        {/* <KittyForm></KittyForm> */}
-
-        {/* <KittyPage></KittyPage> */}
-
-      </main>
+      <div>
+        <Switch>
+          <Route path="/dashboard">
+            <DashboardPage></DashboardPage>
+          </Route>
+          <Route path="/login">
+            <LoginPage></LoginPage>
+          </Route>
+          <Route path="/signup">
+            <SignUp></SignUp>
+          </Route>
+          <Route path="/">
+            <HomePage></HomePage>
+          </Route>
+        </Switch>
+      </div>
       
       <Footer></Footer>
-    
-    </div>
+
+    </Router>
   );
 }
 

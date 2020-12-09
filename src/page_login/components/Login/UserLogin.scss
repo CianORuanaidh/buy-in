@@ -1,0 +1,16 @@
+@import '../../../App.scss';
+
+.user-login {
+
+    background-color: $color-light-grey;
+    border: 1px solid $color-my-black;
+    border-radius: $space-one;
+    
+    max-width: 800px;
+    padding: $space-four;
+
+    .text-input {
+        margin-bottom: $space-two;
+    }
+
+}

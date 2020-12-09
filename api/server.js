@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const kittyRoutes = require('./routes/kitty');
+const loginRoutes = require('./routes/login');
+const usersRoutes = require('./routes/user/userRoutes');
+
 const cors = require('cors');
 
 // instantiate express app
@@ -34,6 +37,8 @@ mongoose
 app.use(bodyParser.json());
 
 app.use('/api/kitty', kittyRoutes);
+app.use('/api/login', loginRoutes);
+app.use('/api/users', usersRoutes);
 
 const port = 4000;
 app.listen(port, () => {

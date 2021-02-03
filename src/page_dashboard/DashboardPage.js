@@ -1,6 +1,7 @@
 import './DashboardPage.scss';
 import { useState, useEffect } from 'react';
 import GetKittyData from '../components/KittyPage/GetKittyData';
+import axios from 'axios';
 
 /*
 * Dashboard Page
@@ -21,6 +22,13 @@ function DashboardPage() {
 
     useEffect(() => {
         console.log('INIT Dashboard');
+        axios.get(url)
+            .then(resp => {
+                console.log('AXIOS RESP')
+                console.log(resp.data)
+            })
+            .catch(err => console.log('ERROR: ', err));
+
         return () => {
             console.log('will run when the component unmounts');
         }

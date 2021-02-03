@@ -42,6 +42,11 @@ class KittyForm extends React.Component {
         event.preventDefault();
     }
 
+
+    functionTest(a,b) {
+        return a + b;
+    }
+
     render() {
         return (
             <div>

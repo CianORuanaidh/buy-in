@@ -21,7 +21,7 @@ function DashboardPage() {
     // console.log(allKittys)
 
     useEffect(() => {
-        console.log('INIT Dashboard');
+        // console.log('INIT Dashboard');
         axios.get(url)
             .then(resp => {
                 console.log('AXIOS RESP')
@@ -35,8 +35,8 @@ function DashboardPage() {
     }, []);
 
     useEffect(() => {
-        console.log('allKittys useEffect');
-        console.log(allKittys);
+        // console.log('allKittys useEffect');
+        // console.log(allKittys);
 
 
         return () => {

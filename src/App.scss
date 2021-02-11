@@ -129,6 +129,24 @@ ul {
     transition: $background-transition;
 }
 
+.btn.btn-link {
+    background-color: inherit;
+    color: $color-summer-salmon;
+    text-decoration: none;
+    padding: $space-two;
+    font-weight: 700;
+
+    transition: $color-transition;
+}
+
+.btn:hover,.btn:focus,
+.btn:active {
+    color: darken($color-summer-salmon, 20%); 
+
+    transition: $color-transition;
+}
+
+
 // PAGE STYLES
 .page-container {
     min-height: calc( 100vh - 72px );

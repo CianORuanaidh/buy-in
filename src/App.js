@@ -1,3 +1,5 @@
+import { useEffect, useState, useCallback } from 'react';
+
 import './App.scss';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -11,8 +13,34 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import axios from 'axios';
 
 function App() {
+  const [user, setUser] = useState(undefined);
+
+  const getUser = useCallback(async function() {
+    console.log('GET USER FUNCTION')
+
+    try {
+      console.log('SETTING COOKIES')
+      const url ='http://localhost:4000/api/users/getuser';
+      const response = await axios.get(url, { withCredentials: true });
+      console.log('response')
+      console.log(response)
+
+    } catch (err) {
+      console.log('ERROR: ', err)
+      setUser(undefined);
+    }
+
+
+
+  });
+
+  useEffect(() => {
+    getUser();
+  }, [getUser])
+
   return (
     <Router>
 

@@ -1,5 +1,5 @@
 import './DashboardPage.scss';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import GetKittyData from '../components/KittyPage/GetKittyData';
 import axios from 'axios';
 

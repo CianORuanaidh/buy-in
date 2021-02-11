@@ -1,5 +1,6 @@
 import './UserLogin.scss';
 import { useState, useEffect } from 'react';
+import { useToggleLogin } from '../../LoginPage'
 
 /*
 * Login component
@@ -9,6 +10,12 @@ function UserLogin() {
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     const [userName, setUserName] = useState("");
+    
+    // const [showLogin, setShowLogin] = useState(true);
+    // const onShowSingup = (e) => {
+    //     console.log(e)
+    //     setShowLogin(false)
+    // }
 
     const onSubmitLogin = (e) => {
         e.preventDefault();
@@ -19,9 +26,10 @@ function UserLogin() {
     
     const postUserCredentials = async (data) => {
         
-        const url ='http://localhost:4000/api/login';
+        const url ='http://localhost:4000/api/users/login';
         const response = await fetch(url, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },

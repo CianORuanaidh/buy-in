@@ -1,5 +1,6 @@
 import './Signup.scss';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 /*
 * Login component
@@ -11,28 +12,20 @@ function Signup() {
     const [lastName, setUserLastName] = useState("");
     const [firstName, setUserFirstName] = useState("");
 
-    const onSubmitLogin = (e) => {
+    const onSubmitSignup = (e) => {
         e.preventDefault();
         // todo validation
-        const data = { firstName, lastName , email: '', password: '' };
-        console.log(data)
-        signupUserCredentials(data);
+        const data = { firstName, lastName , email, password };
+        signupUserCredentials(data)
+            .catch(err => console.log('THIS IS THE ERROR: ', err) );
     }
     
     const signupUserCredentials = async (data) => {
-        
+        console.log(data)
         const url ='http://localhost:4000/api/users/signup';
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        const parsed = await response.json();
-
+        const response  = (await axios.post(url, data)).data;
         console.log('RESPONSE')
-        console.log(parsed)
+        console.log(response)
     }
 
     const handleFirstNameChange = (e) => {
@@ -57,7 +50,7 @@ function Signup() {
 
     return (
         <div className="user-signup">
-            <form onSubmit={onSubmitLogin}>
+            <form onSubmit={onSubmitSignup}>
                 <div className="text-input">
                     <label htmlFor="userName">first name:</label>
                     <input className="form-input" type="text" name="userFirstName" id="userFirstName" value={firstName} onChange={handleFirstNameChange} />

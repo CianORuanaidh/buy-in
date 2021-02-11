@@ -1,28 +1,14 @@
 const express = require('express');
+const { createUser, findUserByEmail, findUserById,
+        validateRequiredBodyParams, validateBodyParamsNotEmpty } = require('./userController')
+const { createToken } = require('../../tokens/tokenService');
+const { verifyToken } = require('../../middleware/verifyToken');
 
 const router = express.Router();
 
-router.route('/')
-    .get((req,res) => {
-        const where = 'USERS ROUTE GET'
-        console.log(where)
-        res.json({message : where});
-    })
-    .post((req,res) => {
-        const where = 'USERS ROUTE POST'
-        console.log(where)
-        res.json({message : where});
-    })
-
+// SIGNUP ROUTES
 router.route('/signup')
-    .get((req,res) => {
-        const where = 'USERS SIGNUP ROUTE GET'
-        console.log(where)
-        res.json({message : where});
-    })
-    .post((req,res) => {
-        const where = 'USERS SIGNUP ROUTE POST'
-        console.log(where)
+    .post(async (req,res) => {
 
         const { email, password, firstName, lastName } = req.body;
         const requiredParams = ['email', 'password', 'firstName', 'lastName'];
@@ -37,23 +23,78 @@ router.route('/signup')
             return;
         };
 
-        res.json({message : where});
-    })
+        try {
+            const foundUser = await findUserByEmail(email);
+            if (foundUser) {
+                res.status(400).json({message: `email ${email} already exists`});
+                return;
+            }
 
-const validateRequiredBodyParams = (requestBody, requiredParams) => {
-    const validation = requiredParams.filter(param => requestBody[param] === undefined);
-    return ({
-        isValid: !validation.length,
-        errorMessage: !validation.length ? '' : `The following parameters must be included on request body: ${validation.join(', ')}`
-    })
-}
+            const user = await createUser(req.body);
+            res.json({ data: user });
 
-const validateBodyParamsNotEmpty = (requestBody, requiredParams) => {
-    const validation = requiredParams.filter(param => requestBody[param] === '');
-    return ({
-        isValid: !validation.length,
-        errorMessage: !validation.length ? '' : `The following parameters must not be an empty string: ${validation.join(', ')}`
-    })
-}
+        } catch (ex) {
+            console.log(ex)
+            res.status(500).json({ message: "internal server error", error: ex });
+        }
+
+    });
+
+// LOGIN ROUTE
+router.route('/login')
+    .post(async (req, res) => {
+        const where = "USER LOGIN ROUTE POST";
+        console.log(req.body)
+        const { userEmail, userPassword } = req.body;        
+
+        const requiredParams = ['userEmail', 'userPassword'];
+        if (!validateRequiredBodyParams(req.body, requiredParams).isValid) {
+            res.status(400).json({message : validateRequiredBodyParams(req.body, requiredParams).errorMessage});
+            return;
+        };
+
+        if (!validateBodyParamsNotEmpty(req.body, requiredParams).isValid) {
+            res.status(400).json({message : validateBodyParamsNotEmpty(req.body, requiredParams).errorMessage});
+            return;
+        };
+
+        const user = await findUserByEmail(userEmail);
+        if (!user) {
+            res.status(400).json({ message: `EMAIL There was a problem signing you in. Please check user email and password` } )
+        }
+
+        try {
+            const isEmailVerified = await user.comparePasswords(userPassword);
+            if (!isEmailVerified) {
+                res.status(400).json({ message: `PASSWORD There was a problem signing you in. Please check user email and password` } )
+            }
+            console.log('isEmailVerified: ', isEmailVerified)
+    
+            const token = createToken({ id: user._id });
+            res.cookie('token', token);
+            res.json({message: "SIGNED IN WOOOOOO", user })
+        }
+        catch (ex) {
+            res.status(500).json({ message: 'internal server error', err: ex });
+        }
+    });
+
+router
+    .use(verifyToken)
+    .route('/getuser')
+    .get(async (req,res) => {
+        
+        try {
+
+            const user = await findUserById(req.user.id);
+            res.status(200).json({ data: user });
+
+        } catch (ex) {
+
+            console.log(ex)
+            res.status(500).json({ message: 'internal server error' });
+        
+        }
+    });
 
 module.exports = router;

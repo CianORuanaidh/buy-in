@@ -87,7 +87,7 @@ router
         try {
 
             const user = await findUserById(req.user.id);
-            res.status(200).json({ data: user });
+            res.status(200).json(user);
 
         } catch (ex) {
 

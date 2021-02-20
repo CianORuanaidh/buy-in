@@ -1,4 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import axios from 'axios';
 
 import './App.scss';
 import Header from './components/Header/Header';
@@ -8,32 +10,22 @@ import LoginPage from './page_login/LoginPage';
 import HomePage from './page_home/HomePage';
 import SignUp from './page_signup/SignupPage';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
-import axios from 'axios';
-
 function App() {
   const [user, setUser] = useState(undefined);
 
   const getUser = useCallback(async function() {
-    console.log('GET USER FUNCTION')
 
     try {
-      console.log('SETTING COOKIES')
+
       const url ='http://localhost:4000/api/users/getuser';
       const response = await axios.get(url, { withCredentials: true });
       console.log('response')
-      console.log(response)
+      console.log(response.data)
 
     } catch (err) {
       console.log('ERROR: ', err)
       setUser(undefined);
     }
-
-
 
   });
 

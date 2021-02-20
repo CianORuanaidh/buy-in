@@ -2,6 +2,7 @@ import './DashboardPage.scss';
 import { useState, useEffect, useCallback } from 'react';
 import GetKittyData from '../components/KittyPage/GetKittyData';
 import axios from 'axios';
+import NewKitty from '../components/NewKitty/NewKitty';
 
 /*
 * Dashboard Page
@@ -30,7 +31,7 @@ function DashboardPage() {
             .catch(err => console.log('ERROR: ', err));
 
         return () => {
-            console.log('will run when the component unmounts');
+            // console.log('will run when the component unmounts');
         }
     }, []);
 
@@ -40,14 +41,16 @@ function DashboardPage() {
 
 
         return () => {
-            console.log('will run when the component unmounts');
+            // console.log('will run when the component unmounts');
         }
     }, [allKittys]);
 
 
     return (
         <div>
-            <p>Dashboard Page</p>
+            {/* <p>Dashboard Page</p> */}
+            <NewKitty></NewKitty>
+
         </div>
     )
 }

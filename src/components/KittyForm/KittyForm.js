@@ -1,17 +1,20 @@
 import React from 'react';
 import './KittyForm.scss';
+import { createKitty } from '../../services/api.services';
 
 /*
 * form for creating a new Kitty
 */
+
+const minimumParticipantCount =  2;
+
 class KittyForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             kittyName: '',
             buyInAmount: '',
-            numberOfParticipents: undefined,
-            participants: [1]
+            participants: [this.newParticipant()]
         };
 
 
@@ -19,34 +22,89 @@ class KittyForm extends React.Component {
         this.handleKittyNameChange = this.handleKittyNameChange.bind(this);
         this.handleKittyBuyInAmountChange = this.handleKittyBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        console.log(this.state)
+    }
+
+    componentDidMount(){
+        console.log('componentDidMount()');
+
+        const starterParticipants = [];
+
+        for (let i = 0; i < minimumParticipantCount; i++) {
+            starterParticipants.push(this.newParticipant());
+        }
+
+        this.setState({ participants: starterParticipants });
+    }
+
+    newParticipant() {
+        return({ name: '', email: '' });
     }
 
     handleAddParticipant() {
-        this.setState((state) => {
-            const newIndex = state.participants.length + 1;
-            const updatedParticipants = state.participants.slice();
-            updatedParticipants.push(newIndex);
-            return {participants: updatedParticipants}
-          });
-    }
+        const participants = [
+            ...this.state.participants,
+            this.newParticipant()
+        ]
+        
+        this.setState({ participants: participants });
 
+    }
+    
     handleKittyNameChange(event) {
         this.setState({ kittyName: event.target.value});
     }
-
+    
     handleKittyBuyInAmountChange(event) {
         this.setState({ buyInAmount: event.target.value});
     }
     
+    
+    handleParticipantNameChange(event, i, participant) {
+        
+        const editedParticipant = { 
+            ...this.state.participants[i],
+            name: event.target.value
+        };
+        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });
+        
+        this.setState({ participants: updatedParticipants })
+    }
+    
+    handleParticipantEmailChange(event, i, participant) {
+        
+        // Todo add validation
+        
+        const editedParticipant = { 
+            ...this.state.participants[i],
+            email: event.target.value
+        };
+        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });
+        
+        this.setState({ participants: updatedParticipants })
+    }
+    
+    removeParticipant(event, i) {
+        console.log(event, i)
+        
+        const updatedParticipants = this.state.participants.filter((p, index) => index !== i);
+        
+        this.setState({ participants: updatedParticipants });
+    }
+    
     handleSubmit(event) {
         event.preventDefault();
+        
+        console.log('new kitty')
+        console.log(this.state)
+        console.log(createKitty({ ...this.state }));
     }
-
-
+    
     functionTest(a,b) {
         return a + b;
     }
-
+    
     render() {
         return (
             <div>
@@ -64,18 +122,32 @@ class KittyForm extends React.Component {
                         </div>
                     </div>
     
+                    <div className="block block-2" style={{ marginBottom: 0 }}>
+                        <div className="form-row">
+                            <div className="input">
+                                <label className="form-label" htmlFor="participent-name">Participant name</label>
+                            </div>
+                            <div className="input">
+                                <label className="form-label" htmlFor="participent-email">Participant email</label>
+                            </div>        
+                        </div>
+                    </div>
+
                     <div className="block block-2">
-                        {this.state.participants.map(i => {
+                        {this.state.participants.map((participant, i) => {
                             return (
                                 <div className="form-row" key={i}>
                                     <div className="input text-input">
-                                        <label className="form-label" htmlFor="participent-name">Participant name</label>
-                                        <input className="form-input" id="participent-name" type="text" value={this.state.numberOfParticipents} onChange={this.handleChange}/>
+                                        <label className="form-label visually-hidden" htmlFor="participent-name">Participant name</label>
+                                        <input className="form-input" id="participent-name" type="text" value={participant.name} onChange={(e) => { this.handleParticipantNameChange(e, i, participant) }}/>
                                     </div>
                                     <div className="input text-input">
-                                        <label className="form-label" htmlFor="participent-email">Participant email</label>
-                                        <input className="form-input" id="participent-email" type="text" value={this.state.numberOfParticipents} onChange={this.handleChange}/>
-                                    </div>                    
+                                        <label className="form-label visually-hidden" htmlFor="participent-email">Participant email</label>
+                                        <input className="form-input" id="participent-email" type="text" value={participant.email} onChange={(e) => { this.handleParticipantEmailChange(e, i, participant)}}/>
+                                    </div>
+                                    <div>
+                                        <button disabled={i < minimumParticipantCount} className="btn" type="button" title="Remove participant" onClick={(e) => { this.removeParticipant(e, i)}}>x</button>
+                                    </div>              
                                 </div>
                             );
                         })}

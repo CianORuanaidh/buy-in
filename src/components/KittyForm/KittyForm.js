@@ -6,13 +6,13 @@ import { createKitty } from '../../services/api.services';
 * form for creating a new Kitty
 */
 
-const minimumParticipantCount =  2;
+const minimumParticipantCount =  1;
 
 class KittyForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            kittyName: '',
+            name: '',
             buyInAmount: '',
             participants: [this.newParticipant()]
         };
@@ -22,13 +22,12 @@ class KittyForm extends React.Component {
         this.handleKittyNameChange = this.handleKittyNameChange.bind(this);
         this.handleKittyBuyInAmountChange = this.handleKittyBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.populateForm =  this.populateForm.bind(this);
 
         console.log(this.state)
     }
 
     componentDidMount(){
-        console.log('componentDidMount()');
-
         const starterParticipants = [];
 
         for (let i = 0; i < minimumParticipantCount; i++) {
@@ -42,6 +41,10 @@ class KittyForm extends React.Component {
         return({ name: '', email: '' });
     }
 
+    newMockParticipant(name, email) {
+        return({ name, email });
+    }
+
     handleAddParticipant() {
         const participants = [
             ...this.state.participants,
@@ -53,7 +56,7 @@ class KittyForm extends React.Component {
     }
     
     handleKittyNameChange(event) {
-        this.setState({ kittyName: event.target.value});
+        this.setState({ name: event.target.value});
     }
     
     handleKittyBuyInAmountChange(event) {
@@ -98,9 +101,25 @@ class KittyForm extends React.Component {
         
         console.log('new kitty')
         console.log(this.state)
-        console.log(createKitty({ ...this.state }));
+
+        createKitty({ ...this.state })
+            .then(resp => console.log("RESPONSE: ", resp))
+            .catch(error => console.log('ERROR: ', error));
+
+        
     }
     
+    populateForm() {
+        this.setState({
+            name: 'Burgeroooo',
+            buyInAmount: 15,
+            participants: [
+                this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
+                this.newMockParticipant('Willy', 'willy.wool@gmail.com')
+            ]
+        })
+    }
+
     functionTest(a,b) {
         return a + b;
     }
@@ -113,7 +132,7 @@ class KittyForm extends React.Component {
                     <div className="block block-1">
                         <div className="text-input">
                             <label className="form-label" htmlFor="kitty-name">Name</label>
-                            <input className="form-input" id="kitty-name"type="text" value={this.state.kittyName} onChange={this.handleKittyNameChange} placeholder="New Pot name"/>
+                            <input className="form-input" id="kitty-name"type="text" value={this.state.name} onChange={this.handleKittyNameChange} placeholder="New Pot name"/>
                         </div>
         
                         <div className="number-input">
@@ -157,6 +176,11 @@ class KittyForm extends React.Component {
                     </div>
                     <div className="form-controls">
                         <button className="btn" type="submit">Save</button>
+                        <button 
+                            className="btn" 
+                            type="button"
+                            style={{marginLeft: 20}} 
+                            onClick={this.populateForm}>Populate form</button>
                     </div>                    
                 </form>
             </div>

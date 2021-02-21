@@ -1,17 +1,16 @@
+// use this file to make api calls
 import axios from 'axios';
 
-// use this file to make api calls
+// set base url
+const BASE_URL = `http://localhost:4000/api`;
 
-const URL_BASE = `http://localhost:4000/`;
+// set axios defaults
+const axiosReq = axios.create({
+    withCredentials: true,
+    baseURL: BASE_URL 
+})
 
-
-export const createKitty = (args) => { 
-    
-    const {kittyName, buyInAmount, participants} = args;
-
-    console.log(kittyName)
-    console.log(buyInAmount)
-    console.log(participants)
-
-    return null;
+export const createKitty = (kitty) => { 
+    const url = `kitty`
+    return axiosReq.post(url, kitty);
 }

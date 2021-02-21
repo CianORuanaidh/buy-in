@@ -7,7 +7,7 @@ exports.verifyToken = async (req, res, next) => {
     try {
         
         if (!cookies || !cookies.token) {
-            res.status(403).json({ message : 'authorization required' });
+            res.status(403).json({ message : 'authorization required HERE' });
             return;
         }
 
@@ -23,5 +23,6 @@ exports.verifyToken = async (req, res, next) => {
         console.log({ message: 'error verifying token', error: ex });
         res.status(403).json({ message: 'error verifying token', error: ex });
     }
+
 
 };

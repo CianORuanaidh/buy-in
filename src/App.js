@@ -19,7 +19,7 @@ function App() {
 
       const url ='http://localhost:4000/api/users/getuser';
       const response = await axios.get(url, { withCredentials: true });
-      console.log('response')
+      console.log('ACTIVE USER')
       console.log(response.data)
 
     } catch (err) {

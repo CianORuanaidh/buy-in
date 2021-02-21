@@ -9,9 +9,14 @@ const kittySchema = new Schema({
         type: Boolean, 
         default: false 
     },
-    participants: {
-        type: [String],
-    },
+    participants: [
+        {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'Player'
+        }
+    ],
+    // participants: [String],
     buyInAmount: {
         type: Number,
     },

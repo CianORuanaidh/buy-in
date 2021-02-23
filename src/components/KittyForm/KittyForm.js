@@ -23,8 +23,6 @@ class KittyForm extends React.Component {
         this.handleKittyBuyInAmountChange = this.handleKittyBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.populateForm =  this.populateForm.bind(this);
-
-        console.log(this.state)
     }
 
     componentDidMount(){

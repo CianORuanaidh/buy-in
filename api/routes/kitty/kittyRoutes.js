@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { createKitty } = require('./kittyController');
+const { createKitty, findAllKitties } = require('./kittyController');
+
 const { verifyToken } = require('../../middleware/verifyToken');
 
 // POST METHOD
@@ -9,6 +10,8 @@ router
 .use(verifyToken)
 .route('/')
 .post(async (req, res) => {
+
+    let doc;
 
     const kittyDto = req.body;
     const user = req.user;
@@ -20,49 +23,45 @@ router
         return;
     }
     
-    const doc = await createKitty(user, kittyDto);
+
+    try {
+
+        doc = await createKitty(user, kittyDto);
+    
+    } 
+    catch(err) {
+
+        res.status(500).json({ message: `Could not create kitty, please try again` });
+        return;
+    }
 
     res.json(doc);
     return;
-
-    // participants = JSON.stringify(participants);
-
-    // const kittyDto = { name, buyInAmount, participants };
-    
-    // console.log('here')
-    // console.log(kittyDto)
-    // console.log(user.id)
-    // // create an new instance of Kitty model
-    // const newKitty = new Kitty(kittyDto);
-    
-    // console.log(newKitty)
-    
-    // // Save the kitty just created 
-    // const doc = await newKitty.save();
-
 });
 
 // // GET METHOD
 // // return all kittys
-// router.get('/', async (req, res) => {
-//     console.log('GET KITTY')
-
+router
+.route('/')
+.get(async (req, res) => {
+    console.log('GET ALL KITTYA')
+    let doc;
         
-//     let doc;
+    try {
 
-//     try 
-//     {
-//          doc = await Kitty.find()
-//     } 
-//     catch(err) 
-//     {
-//         res.status(500).json({ message: `Could not find record with id: ${kittyId}` });
-//         return;
-//     }
+        const user = req.user;
+        doc = await findAllKitties(user);
 
-//     // return requested kitty
-//     res.json(doc);    
-// });
+    } 
+    catch(err) 
+    {
+        res.status(500).json({ message: `Could not find records for this user` });
+        return;
+    }
+
+    // return requested kitty
+    res.json(doc);    
+});
 
 
 // // GET METHOD

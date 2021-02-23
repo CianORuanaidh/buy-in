@@ -1,6 +1,7 @@
 import './DashboardPage.scss';
 import { useState, useEffect, useCallback } from 'react';
-import GetKittyData from '../components/KittyPage/GetKittyData';
+// import GetKittyData from '../services/GetKittyData';
+import { GetKittyData } from '../services/api.services';
 import axios from 'axios';
 import NewKitty from '../components/NewKitty/NewKitty';
 
@@ -13,13 +14,14 @@ function DashboardPage() {
     
     // const [quoteData, setQuoteData] = useState(null);
 
-    const url ='http://localhost:4000/api/kitty/5fb33db2d15e500a2d96266d'
-    const urlAll = 'http://localhost:4000/api/kitty/';
+    // const url ='http://localhost:4000/api/kitty/5fb33db2d15e500a2d96266d'
+    // const urlAll = 'http://localhost:4000/api/kitty/';
+    const urlAll = 'kitty'
 
-    // const [allKittys] = GetKittyData(urlAll);
+    const [allKittys] = GetKittyData(urlAll);
     
-    // console.log('allKittys') 
-    // console.log(allKittys)
+    console.log('allKittys') 
+    console.log(allKittys)
 
     useEffect(() => {
         // console.log('INIT Dashboard');
@@ -48,6 +50,23 @@ function DashboardPage() {
 
     return (
         <div>
+
+            { allKittys && 
+                allKittys.map((kitty, i) => {
+                    return(
+                    <div key={`${kitty.name}_${i}`} style={{textAlign: 'center'}}>{kitty.name}</div>
+                    )
+                })
+            }
+            <section>
+                <p style={{textAlign: 'center'}}>active games</p>
+            </section>
+
+            <section>
+                <p style={{textAlign: 'center'}}>closed games</p>
+            </section>
+
+
             {/* <p>Dashboard Page</p> */}
             <NewKitty></NewKitty>
 

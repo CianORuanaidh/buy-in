@@ -47,3 +47,20 @@ exports.createKitty = async (user, kittyDto) => {
     }
 
 }
+
+exports.findAllKitties = async (user) => {
+
+    try {
+
+        const allKitties = await Kitty.find({ user: user.id })
+            .select('-_id -__v -user')
+            .populate('participants', '-_id -__v');
+
+        return allKitties;
+
+    } catch(ex) {
+
+        throw ex;
+    }
+
+}

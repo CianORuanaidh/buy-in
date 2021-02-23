@@ -130,6 +130,10 @@ ul {
     padding: $space-two $space-three;
 
     transition: $background-transition;
+
+    &.btn-sm {
+        padding: $space-one $space-two;
+    }
 }
 
 .btn:disabled {
@@ -140,7 +144,7 @@ ul {
 .btn:hover,
 .btn:focus,
 .btn:active {
-    background-color: lighten($color-my-black, 20%); 
+    background-color: lighten($color-my-black, 10%); 
 
     transition: $background-transition;
 }
@@ -155,9 +159,10 @@ ul {
     transition: $color-transition;
 }
 
-.btn:hover,.btn:focus,
+.btn:hover,
+.btn:focus,
 .btn:active {
-    color: darken($color-summer-salmon, 20%); 
+    color: lighten($color-summer-salmon, 30%); 
 
     transition: $color-transition;
 }

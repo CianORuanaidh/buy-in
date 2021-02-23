@@ -17,25 +17,19 @@ export const createKitty = (kitty) => {
 }
 
 
-
+//
 // Custom Hooks
+//
 
-export function GetKittyData(url) {
+// get all kitties for user
+export function GetAllKitties() {
     const [kittyData, setKittyData] = useState(null);
 
     useEffect(() => {
 
-
         const fetchData = async () => {
 
-            // const response = await fetch(url);
-            // const parsed = await response.json(); // .json() returns a promise
-            console.log(url)
-
-            const response = await axiosReq.get(url);
-            console.log('RESPONSE')
-            console.log(response)
-            
+            const response = await axiosReq.get('kitty');
 
             setKittyData(response.data);
         }
@@ -45,6 +39,26 @@ export function GetKittyData(url) {
         return () => {
             console.log('will run when the component unmounts');
         }
+    }, []);
+
+    return [kittyData];
+}
+
+// get specific kitty by id
+export function GetKittyById(kittyId) {
+    const [kittyData, setKittyData] = useState(null)
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            const response = await axios.get(`kitty/${kittyId}`);
+            
+            setKittyData(response.data)
+        }
+
+        fetchData();
+        
     }, []);
 
     return [kittyData];

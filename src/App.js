@@ -10,6 +10,8 @@ import LoginPage from './page_login/LoginPage';
 import HomePage from './page_home/HomePage';
 import SignUp from './page_signup/SignupPage';
 
+import KittyPage from './components/KittyPage/KittyPage';
+
 function App() {
   const [user, setUser] = useState(undefined);
 
@@ -48,6 +50,8 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignUp></SignUp>
+          </Route>
+          <Route path="/kitty/:kittyId" children={<KittyPage></KittyPage>}>
           </Route>
           <Route path="/">
             <HomePage></HomePage>

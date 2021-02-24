@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createKitty, findAllKitties } = require('./kittyController');
+const { createKitty, findAllKitties, findKittyById } = require('./kittyController');
 
 const { verifyToken } = require('../../middleware/verifyToken');
 
@@ -61,34 +61,43 @@ router
 
     // return requested kitty
     res.json(doc);    
+    return;    
 });
 
 
-// // GET METHOD
-// // return kitty
-// router.get('/:kittyId', async (req, res) => {
-//     console.log('GET KITTY')
+// GET METHOD
+// return kitty
+router
+.route('/:kittyId')
+.get(async (req, res) => {
 
-//     if (!req.params.kittyId) {
-//         res.status(400).json({ message: 'Please provide a kittyId parameter' });
-//     }
+    if (!req.params.kittyId) {
+        res.status(400).json({ message: 'Please provide an Id parameter' });
+    }
         
-//     const kittyId = req.params.kittyId;
-//     let doc;
+    const kittyId = req.params.kittyId;
 
-//     try 
-//     {
-//          doc = await Kitty.findById(kittyId);
-//     } 
-//     catch(err) 
-//     {
-//         res.status(500).json({ message: `Could not find record with id: ${kittyId}` });
-//         return;
-//     }
+    let doc;
 
-//     // return requested kitty
-//     res.json(doc);    
-// });
+    try 
+    {
+        doc = await findKittyById(kittyId);
+
+        if (!req.user || req.user.id != doc.user) {
+            res.status(500).json({ message: `You are not authorized to see this kitty.` });
+            return;
+        }
+
+    } 
+    catch(err) 
+    {
+        res.status(500).json({ message: `Could not find record with id: ${kittyId}` });
+        return;
+    }
+
+    res.json(doc); 
+    return;   
+});
 
 // PUT METHOD
 // Edit kitty

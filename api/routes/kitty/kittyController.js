@@ -64,3 +64,19 @@ exports.findAllKitties = async (user) => {
     }
 
 }
+
+exports.findKittyById = async (id) => {
+
+    try {
+        const kitty = await Kitty.findById(id)
+        .select('-__v')
+        .populate('participants', '-_id -__v');;
+
+        return kitty;
+    } 
+    catch(ex) {
+
+        throw ex;
+    }
+
+}

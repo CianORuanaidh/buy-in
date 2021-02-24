@@ -28,11 +28,9 @@ function KittyPreview(props) {
             </div>
             <div className="controls">
 
-                <button className="btn btn-sm">delete</button>
-                <button className="btn btn-sm">close</button>
                 {/* <button className="btn btn-sm" onClick={handleEditClick}>edit</button> */}
                 {/* <Link to="/kitty" className="btn btn-sm">edit</Link> */}
-                <Link to={`/kitty/${kitty._id}`} className="btn btn-sm">edit</Link>
+                <Link to={`/kitty/${kitty._id}`} className="btn btn-sm">view</Link>
 
             </div>
 

@@ -52,7 +52,7 @@ export function GetKittyById(kittyId) {
 
         const fetchData = async () => {
 
-            const response = await axios.get(`kitty/${kittyId}`);
+            const response = await axiosReq.get(`kitty/${kittyId}`);
             
             setKittyData(response.data)
         }
@@ -61,5 +61,5 @@ export function GetKittyById(kittyId) {
         
     }, []);
 
-    return [kittyData];
+    return kittyData;
 }

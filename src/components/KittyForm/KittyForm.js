@@ -11,10 +11,17 @@ const minimumParticipantCount =  1;
 class KittyForm extends React.Component {
     constructor(props) {
         super(props);
+
+        const { kitty } = props;
+
+        console.log('FKITTY FORM')
+        console.log(kitty)
+
+
         this.state = {
-            name: '',
-            buyInAmount: '',
-            participants: [this.newParticipant()]
+            name: kitty ? kitty.name : '',
+            buyInAmount: kitty ? kitty.buyInAmount : '',
+            participants: kitty ? kitty.participants : [this.newParticipant()]
         };
 
 
@@ -26,8 +33,9 @@ class KittyForm extends React.Component {
     }
 
     componentDidMount(){
-        const starterParticipants = [];
+        const starterParticipants = this.props.kitty ? [...this.props.kitty.participants] : [];
 
+        console.log(starterParticipants)
         for (let i = 0; i < minimumParticipantCount; i++) {
             starterParticipants.push(this.newParticipant());
         }

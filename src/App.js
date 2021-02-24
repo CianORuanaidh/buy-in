@@ -10,7 +10,9 @@ import LoginPage from './page_login/LoginPage';
 import HomePage from './page_home/HomePage';
 import SignUp from './page_signup/SignupPage';
 
-import KittyPage from './components/KittyPage/KittyPage';
+// import KittyPage from './components/KittyPage/KittyPage';
+
+import KittyPage from './page_kitty/KittyPage';
 
 function App() {
   const [user, setUser] = useState(undefined);

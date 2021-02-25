@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useParams } from "react-router-dom";
-import { GetKittyById } from "../services/api.services";
+import { GetKittyById, deleteKittyById } from "../services/api.services";
 
 import KittyForm from '../components/KittyForm/KittyForm';
 
@@ -34,9 +34,17 @@ const  KittyPage = () => {
 
     }
 
+    const handleDeleteClick = (e) => {
+        console.log('handleDeleteClick')
+        console.log(kittyId)
+        deleteKittyById(kittyId)
+            .then(resp => console.log("DELETED: ", resp))
+            .catch(error => console.log(error));
+    }
+
     return (
         kitty && 
-            <section>
+            <section style={{padding: '0 30px'}}>
                 <h2>{ kitty.name }</h2>
 
                 <h3>Players</h3>
@@ -45,11 +53,11 @@ const  KittyPage = () => {
                 <div className="controls">
                     <button className="btn btn-sm" onClick={handleUpdateClick}>update</button>
                     <button className="btn btn-sm">close</button>
-                    <button className="btn btn-sm">delete</button>
+                    <button className="btn btn-sm" onClick={handleDeleteClick}>delete</button>
                 </div>
 
                 { check && 
-                    <KittyForm kitty={kitty}></KittyForm>
+                    <KittyForm kitty={kitty} id={kitty._id}></KittyForm>
                 }
 
             </section>

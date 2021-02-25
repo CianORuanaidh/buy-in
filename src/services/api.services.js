@@ -11,9 +11,20 @@ const axiosReq = axios.create({
     baseURL: BASE_URL 
 })
 
-export const createKitty = (kitty) => { 
+export const createKitty = (kittyDto) => { 
     const url = `kitty`
-    return axiosReq.post(url, kitty);
+    return axiosReq.post(url, kittyDto);
+}
+
+// update existing kitty
+export function updateExisitingKitty(kittyDto) {
+    const url = `kitty/${kittyDto.id}`;
+    return axiosReq.patch(url, kittyDto);
+}
+
+export function deleteKittyById(KittyId) {
+    const url = `kitty/${KittyId}`;
+    return axiosReq.delete(url);
 }
 
 
@@ -63,3 +74,5 @@ export function GetKittyById(kittyId) {
 
     return kittyData;
 }
+
+

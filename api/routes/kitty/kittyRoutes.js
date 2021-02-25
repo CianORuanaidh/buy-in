@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createKitty, findAllKitties, findKittyById } = require('./kittyController');
-
+const { createKitty, findAllKitties, findKittyById, updateKitty, deleteKittyById } = require('./kittyController');
 const { verifyToken } = require('../../middleware/verifyToken');
 
 // POST METHOD
@@ -79,8 +78,8 @@ router
 
     let doc;
 
-    try 
-    {
+    try {
+
         doc = await findKittyById(kittyId);
 
         if (!req.user || req.user.id != doc.user) {
@@ -91,7 +90,7 @@ router
     } 
     catch(err) 
     {
-        res.status(500).json({ message: `Could not find record with id: ${kittyId}` });
+        res.status(500).json({ message: `There was a problen saving these changes.`, error: err });
         return;
     }
 
@@ -101,62 +100,68 @@ router
 
 // PUT METHOD
 // Edit kitty
-// router.patch('/:kittyId', async (req, res) => {
-
-//     if (!req.params.kittyId) {
-//         res.status(400).json({ message: 'Please provide a kittyId parameter' });
-//     }
+router
+.route('/:kittyId')
+.patch(async (req, res) => {
     
-//     const kittyId = req.params.kittyId;
-//     let kitty;
+    const { kittyId } = req.params;
+    const newKittyDto = req.body; 
     
-//     kitty = await Kitty.findById(kittyId);
-
-//     if (!kitty) {
-//         res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
-//         return;
-//     }
+    if (!kittyId || !newKittyDto) {
+        res.status(400).json({ message: 'Please provide a kittyId parameter' });
+    }
     
-//     const { name, buyInAmount, participants} = req.body;
-
-//     if (name) {
-//         kitty.name = name;
-//     }
-//     if (buyInAmount) {
-//         kitty.buyInAmount = buyInAmount;
-//     }
-//     if (participants && Array.isArray(participants)) {
-//         kitty.participants = participants;        
-//     }
-
-//     const doc = await kitty.save()
+    let doc 
     
-//     // return requested kitty
-//     res.json(doc);
-// });
+    try {
+        doc = await updateKitty(kittyId, newKittyDto);
+
+        if (!req.user || req.user.id != doc.user) {
+            res.status(500).json({ message: `You are not authorized to see this kitty.` });
+            return;
+        }
+    } 
+    catch (err) 
+    {
+        res.status(500).json({ message: `There was a problen saving these changes.`, error: err.message });
+        return;
+    }
+    
+    res.json(doc);
+    return;
+});
 
 // // DELETE METHOD
 // // Delete kitty
-// router.delete('/:kittyId', async (req, res) => {
+router
+.route('/:kittyId')
+.delete(async (req, res) => {
 
-//     if (!req.params.kittyId) {
-//         res.status(400).json({ message: 'Please provide a kittyId parameter' });
-//     }
+    console.log('HERE')
+    console.log(req.params)
 
-//     const kittyId = req.params.kittyId;
-//     let kitty;
+    
+    const { kittyId } = req.params;
+    
+    if (!kittyId) {
+        res.status(400).json({ message: 'Please provide a kittyId parameter' });
+    }
+    
+    res.json(deleteKittyById(kittyId))
+    // let kitty;
 
-//     kitty = await Kitty.findById(kittyId);
+    // kitty = await Kitty.findById(kittyId);
 
-//     if (!kitty) {
-//         res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
-//         return;
-//     }
+    // if (!kitty) {
+    //     res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
+    //     return;
+    // }
 
-//     const doc = await kitty.delete();
+    // const doc = await kitty.delete();
 
-//     res.json(doc)
-// });
+    // res.json(doc)
+    return;
+});
 
 // export the route
 module.exports = router;

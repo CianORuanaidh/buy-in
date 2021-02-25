@@ -1,6 +1,6 @@
 import React from 'react';
 import './KittyForm.scss';
-import { createKitty } from '../../services/api.services';
+import { createKitty, updateExisitingKitty } from '../../services/api.services';
 
 /*
 * form for creating a new Kitty
@@ -21,7 +21,7 @@ class KittyForm extends React.Component {
         this.state = {
             name: kitty ? kitty.name : '',
             buyInAmount: kitty ? kitty.buyInAmount : '',
-            participants: kitty ? kitty.participants : [this.newParticipant()]
+            participants: kitty ? kitty.participants : [this.newParticipant()],
         };
 
 
@@ -30,6 +30,7 @@ class KittyForm extends React.Component {
         this.handleKittyBuyInAmountChange = this.handleKittyBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.populateForm =  this.populateForm.bind(this);
+        this.updateForm =  this.updateForm.bind(this);
     }
 
     componentDidMount(){
@@ -105,13 +106,35 @@ class KittyForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         
+        const { kitty } = this.props;
+
         console.log('new kitty')
         console.log(this.state)
 
-        createKitty({ ...this.state })
-            .then(resp => console.log("RESPONSE: ", resp))
-            .catch(error => console.log('ERROR: ', error));
+        console.log('isNewKitty')
+        console.log(!kitty)
 
+
+        if (!kitty) {
+
+            // createKitty({ ...this.state })
+            //     .then(resp => console.log("RESPONSE: ", resp))
+            //     .catch(error => console.log('ERROR: ', error));
+        
+        } else {
+
+            const { id } = this.props;
+
+            const kittyDto = { 
+                ...this.state,
+                id: id
+            }; 
+
+            updateExisitingKitty(kittyDto)
+                .then(resp => console.log("RESPONSE: ", resp))
+                .catch(error => console.log("ERROR: ",  error));
+
+        }
         
     }
     
@@ -122,6 +145,17 @@ class KittyForm extends React.Component {
             participants: [
                 this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
                 this.newMockParticipant('Willy', 'willy.wool@gmail.com')
+            ]
+        })
+    }
+
+    updateForm() {
+        this.setState({
+            name: 'Burgeroo Boo',
+            buyInAmount: 5.5,
+            participants: [
+                this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
+                this.newMockParticipant('Silly Oh', 'sill.oh@gmail.com')
             ]
         })
     }
@@ -187,6 +221,12 @@ class KittyForm extends React.Component {
                             type="button"
                             style={{marginLeft: 20}} 
                             onClick={this.populateForm}>Populate form</button>
+                        <button 
+                            className="btn" 
+                            type="button"
+                            style={{marginLeft: 20}} 
+                            onClick={this.updateForm}>UPDATE</button>
+
                     </div>                    
                 </form>
             </div>

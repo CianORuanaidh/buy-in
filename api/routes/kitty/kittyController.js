@@ -96,7 +96,11 @@ exports.updateKitty = async (id, newKittyDto) => {
     return savedKitty;    
 }
 
-exports.deleteKittyById = (kittyId) => {
+exports.deleteKittyById = async (kittyId) => {
+
+    const doc = await Kitty.deleteOne({ _id: kittyId});
+
+    console.log('IS DELETED? ', doc);
 
     return 'DELETED ' + kittyId;
 }

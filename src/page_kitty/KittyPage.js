@@ -42,8 +42,18 @@ const  KittyPage = () => {
             .catch(error => console.log(error));
     }
 
+
+
+    if (kitty && kitty.error) {
+        return (
+            <section>
+                <h1>we could find your kitty :/</h1>
+            </section>
+        )
+    }
+
     return (
-        kitty && 
+        kitty && !kitty.error && 
             <section style={{padding: '0 30px'}}>
                 <h2>{ kitty.name }</h2>
 
@@ -60,8 +70,7 @@ const  KittyPage = () => {
                     <KittyForm kitty={kitty} id={kitty._id}></KittyForm>
                 }
 
-            </section>
-        
+            </section>        
     )
 }
 

@@ -82,6 +82,11 @@ router
 
         doc = await findKittyById(kittyId);
 
+        if (!doc) {
+            res.status(404).json({ message: `Kitty not found.` });
+            return;
+        }
+
         if (!req.user || req.user.id != doc.user) {
             res.status(500).json({ message: `You are not authorized to see this kitty.` });
             return;
@@ -90,7 +95,7 @@ router
     } 
     catch(err) 
     {
-        res.status(500).json({ message: `There was a problen saving these changes.`, error: err });
+        res.status(500).json({ message: `There was a problen retrieving your kitty.`, error: err.message });
         return;
     }
 

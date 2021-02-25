@@ -68,7 +68,9 @@ export function GetKittyById(kittyId) {
             setKittyData(response.data)
         }
 
-        fetchData();
+        fetchData().catch(error => {
+            setKittyData({ error })
+        });
         
     }, []);
 

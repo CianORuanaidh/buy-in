@@ -117,9 +117,9 @@ class KittyForm extends React.Component {
 
         if (!kitty) {
 
-            // createKitty({ ...this.state })
-            //     .then(resp => console.log("RESPONSE: ", resp))
-            //     .catch(error => console.log('ERROR: ', error));
+            createKitty({ ...this.state })
+                .then(resp => console.log("RESPONSE: ", resp))
+                .catch(error => console.log('ERROR: ', error));
         
         } else {
 

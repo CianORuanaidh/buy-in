@@ -11,6 +11,17 @@ const axiosReq = axios.create({
     baseURL: BASE_URL 
 })
 
+export function getUserWithToken() {
+    const url = `users/getuser`;
+    return axiosReq.get(url);
+}
+
+export function userLogout(arg) {
+    console.log(arg)
+    const url = `users/logout`;
+    return axiosReq.post(url);
+}
+
 export const createKitty = (kittyDto) => { 
     const url = `kitty`
     return axiosReq.post(url, kittyDto);
@@ -68,9 +79,7 @@ export function GetKittyById(kittyId) {
             setKittyData(response.data)
         }
 
-        fetchData().catch(error => {
-            setKittyData({ error })
-        });
+        fetchData().catch(error => setKittyData({ error }));
         
     }, []);
 

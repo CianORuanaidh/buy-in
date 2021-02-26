@@ -1,29 +1,52 @@
 import './Header.scss';
-import {
-    // BrowserRouter as Router,
-    // Switch,
-    // Route,
-    Link
-  } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { GetUserData } from '../../services/app.hooks';
+import { userLogout } from '../../services/api.services';
 
 function Header() {
+    const user = GetUserData();
+    
+    console.log('HEADER')
+    console.log(user)
+
+
+    const onLogoutClick = () => {
+        console.log('onLogoutClick')
+
+        userLogout('WHUT')
+            .then(resp => { 
+                window.location.href = '/'
+            })
+            .catch(err => console.log('ERROR: ', err))
+
+
+    }
     return (
         <header>
             <nav className="container">
                 <ul>
                     <li className="logo">
-                        <span>B.I.</span> 
-                        <span>(BuyIn)</span>
+                        <Link to="/">B.I.</Link>
                     </li>
-                    <li>
-                        <Link to="/dashboard">Dashboard</Link>
-                    </li>
-                    <li>
-                        <Link to="/login">Login</Link>
-                    </li>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
+                    {
+                        user && 
+                        <li>
+                            <Link to="/dashboard">Dashboard</Link>
+                        </li>
+                    }
+                    {
+                        !user &&
+                        <li>
+                            <Link className="btn btn-link" to="/login">Login</Link>
+                        </li>
+                    }
+                    {
+                        user && 
+                        <li>
+                            <button className="btn btn-link" onClick={onLogoutClick}>logout</button>
+                        </li>
+                    }
                 </ul>
             </nav>
         </header>

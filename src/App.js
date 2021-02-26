@@ -2,6 +2,8 @@ import { useEffect, useState, useCallback } from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from 'axios';
 
+import { getUserWithToken } from './services/api.services';
+
 import './App.scss';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -9,8 +11,6 @@ import DashboardPage from './page_dashboard/DashboardPage';
 import LoginPage from './page_login/LoginPage';
 import HomePage from './page_home/HomePage';
 import SignUp from './page_signup/SignupPage';
-
-// import KittyPage from './components/KittyPage/KittyPage';
 
 import KittyPage from './page_kitty/KittyPage';
 
@@ -21,13 +21,10 @@ function App() {
 
     try {
 
-      const url ='http://localhost:4000/api/users/getuser';
-      const response = await axios.get(url, { withCredentials: true });
-      // console.log('ACTIVE USER')
-      // console.log(response.data)
+      const { data: user } = await getUserWithToken();
+      console.log(user)
 
     } catch (err) {
-      console.log('ERROR: ', err)
       setUser(undefined);
     }
 

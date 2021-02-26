@@ -3,6 +3,7 @@ const { createUser, findUserByEmail, findUserById,
         validateRequiredBodyParams, validateBodyParamsNotEmpty } = require('./userController')
 const { createToken } = require('../../tokens/tokenService');
 const { verifyToken } = require('../../middleware/verifyToken');
+const url = require('url');   
 
 const router = express.Router();
 
@@ -95,6 +96,19 @@ router
             res.status(500).json({ message: 'internal server error' });
         
         }
+    });
+
+router
+    .use(verifyToken)
+    .route('/logout')
+    .post(async (req,res) => {
+
+        const { user } = req;
+
+        console.log(user);
+        res.cookie("token", null)
+        res.json('LOGGED_OUT')
+
     });
 
 module.exports = router;

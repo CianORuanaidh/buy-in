@@ -2,15 +2,17 @@
 
 .user-login {
 
-    background-color: $color-light-grey;
-    border: 1px solid $color-my-black;
+    margin: $space-four auto 0 auto;
     border-radius: $space-one;
+    max-width: 500px;
     
-    max-width: 800px;
-    padding: $space-four;
-
     .text-input {
         margin-bottom: $space-two;
+    }
+
+    .btn-login {
+        width: 100%;
+        margin-top: $space-one;
     }
 
 }

@@ -1,28 +1,20 @@
-import { useState, useEffect, useReducer } from 'react';
-
-import './LoginPage.scss';
+import { useState, useEffect } from 'react';
 import UserLogin from './components/Login/UserLogin';
-
-import UserSignup from '../page_signup/SignupPage';
+import UserSignup from './components/Signup/Signup'
+import './LoginPage.scss';
 
 /*
 * LoginPage Page
 */
+const LoginPage = () => {
 
+    const [isLogin, setIsLogin] = useState(true);
 
-
-function LoginPage() {
-    const [isOn, toggleIsOn] = useToggle();
-    
-    function useToggle(initialValue = false) {
-        return useReducer((state) => !state, initialValue);  
+    const handleSigninToggle = () => {
+        setIsLogin(state => !state);
     }
 
-
     const [userData, setUserData] = useState(null);
-
-    // console.log('userData')
-    // console.log(userData)
 
     useEffect(() =>{
         // console.log('init function')
@@ -33,28 +25,21 @@ function LoginPage() {
         // console.log('USE DATA CHANGED')
     },[userData])
 
-    // console.log('LOGIN PAGE')
     return (
         <div>
-            {isOn &&            
-                <div>
-                    <p>have user: TRUE login</p>
-                    <div className="page-container login-page">
-                        <UserLogin></UserLogin>
-                    </div>
-                </div>
+            {isLogin &&            
+                <UserLogin></UserLogin>
             }
-            {!isOn &&                 
-                <div>
-                    <p>have user: {userData} signup</p>
-                    <div className="page-container login-page">
-                        <UserSignup></UserSignup>
-                    </div>
-                </div>
+            {!isLogin &&                 
+                <UserSignup></UserSignup>
             }
-            <div className="">
-                <div className="text-input" onClick={toggleIsOn}>
-                    <button className="btn btn-link" type="button">I'm a new use, sign me up</button>
+            <div className="signup-login-toggle">
+                <div className="text-input" onClick={handleSigninToggle}>
+                    { isLogin ? 
+                    <button className="btn btn-link" type="button">I'm a new user, sign me up!</button>
+                    : 
+                    <button className="btn btn-link" type="button">I'm an existing user, log me in!</button>
+                    }
                 </div>
             </div>
         </div>

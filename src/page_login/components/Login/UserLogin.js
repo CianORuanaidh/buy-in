@@ -1,6 +1,5 @@
 import './UserLogin.scss';
 import { useState, useEffect } from 'react';
-import { useToggleLogin } from '../../LoginPage'
 
 /*
 * Login component
@@ -9,17 +8,15 @@ function UserLogin() {
 
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
-    const [userName, setUserName] = useState("");
     
-    // const [showLogin, setShowLogin] = useState(true);
-    // const onShowSingup = (e) => {
-    //     console.log(e)
-    //     setShowLogin(false)
-    // }
-
     const onSubmitLogin = (e) => {
         e.preventDefault();
+        console.log('onSubmitLogin')
+
+        return;
+
         // todo validation
+        const userName = 'userNAme';
         const data = { userName: userName, userEmail: userEmail, userPassword: userPassword };
         postUserCredentials(data);
     }
@@ -40,11 +37,6 @@ function UserLogin() {
         console.log('RESPONSE')
         console.log(parsed)
     }
-
-    const handleNameChange = (e) => {
-        // todo validation
-        setUserName(e.target.value);
-    }
     
     const handleEmailChange = (e) => {
         // todo validation
@@ -60,11 +52,7 @@ function UserLogin() {
         <div className="user-login">
             <form onSubmit={onSubmitLogin}>
                 <div className="text-input">
-                    <label htmlFor="userName">user name:</label>
-                    <input className="form-input" type="tet" name="userName" id="userName" value={userName} onChange={handleNameChange} />
-                </div>
-                <div className="text-input">
-                    <label htmlFor="userEmail">user email:</label>
+                    <label htmlFor="userEmail">user email</label>
                     <input className="form-input" type="email" name="userEmail" id="userEmail" value={userEmail} onChange={handleEmailChange} />
                 </div>
                 <div className="text-input">
@@ -72,7 +60,7 @@ function UserLogin() {
                     <input className="form-input" type="password" name="userPassword" id="userPassword" value={userPassword} onChange={handlePasswordChange}/>
                 </div>
                 <div className="text-input">
-                    <button className="btn" type="submit">Login</button>
+                    <button className="btn btn-login" type="submit">Login</button>
                 </div>
             </form>
         </div>

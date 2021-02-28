@@ -34,6 +34,9 @@ $color-transition: color 0.4s ease;
 // font variables
 $primary-font: 'Roboto', sans-serif;
 
+// BREAK POINTS
+$bp-one: 400px;
+
 html {
     font-size: 125%;
     font-family: $primary-font;
@@ -153,7 +156,7 @@ ul {
     background-color: inherit;
     color: $color-summer-salmon;
     text-decoration: none;
-    padding: $space-two;
+    padding: $space-two 0;
     font-weight: 400;
 
     transition: $color-transition;
@@ -178,5 +181,10 @@ ul {
 
 // PAGE STYLES
 .page-container {
-    min-height: calc( 100vh - 72px );
+    min-height: calc( 100vh - 160px );
+    margin-top: 60px;
+}
+
+.main-container {
+    padding: $space-three;
 }

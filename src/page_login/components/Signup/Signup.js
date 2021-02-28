@@ -6,53 +6,101 @@ import axios from 'axios';
 * Login component
 */
 function Signup() {
-    
-    const [passwordClass, setPasswordClass] = useState('password-strength-bar');
 
-    const [email, setUserEmail] = useState("");
-    const [password, setUserPassword] = useState("");
-    const [lastName, setUserLastName] = useState("");
-    const [firstName, setUserFirstName] = useState("");
+    // let hasSubmittedForm =  false;
+
+    
+    const defaultPasswordMsgClass = 'password-msg hide';
+    const passwordMsgClassShow = 'password-msg show';
+    const passwwordMsgDefault = 'min length 8 characters, must contain at least one letter and one number.'
+    const passwwordHint = 'have at least one uppercase and one lowercase to make stronger.';
+    const passwwordHintTwo = 'add a special character to make even stronger.';
+
+    const [passwordClass, setPasswordClass] = useState('password-strength-bar');
+    const [passwordMsgClass, setPasswordMsgClass] = useState(defaultPasswordMsgClass);
+    const [passwordMsg, setPasswordMsg] = useState(passwwordMsgDefault);
+
+    const [email, setUserEmail] = useState({value: "", isValid: false });
+    const [password, setUserPassword] = useState({ value: "", isValid: false });
+    const [lastName, setUserLastName] = useState({ value: "", isValid: false });
+    const [firstName, setUserFirstName] = useState({ value: "", isValid: false });
+
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
+    const validateName = (name) => {
+        return !!name;
+    }
 
     const onSubmitSignup = (e) => {
         e.preventDefault();
-        // todo validation
-        const data = { firstName, lastName , email, password };
+        setFormSubmitted(true);
+
+        const isValid = firstName.isValid && lastName.isValid && email.isValid && password.isValid;
+
+        if (!isValid) {
+            console.log('FORM NOT VALID')
+            return;
+        }
+        console.log('FORM IS VALID')
+
+        const data = { 
+            firstName: firstName.value, 
+            lastName: lastName.value, 
+            email: email.value, 
+            password: password.value 
+        };
+
+        console.log(data);
+        
+        return;
         signupUserCredentials(data)
             .catch(err => console.log('THIS IS THE ERROR: ', err) );
     }
     
     const signupUserCredentials = async (data) => {
-        console.log(data)
         const url ='http://localhost:4000/api/users/signup';
         const response  = (await axios.post(url, data)).data;
-        console.log('RESPONSE')
-        console.log(response)
     }
 
     const handleFirstNameChange = (e) => {
-        // todo validation
-        setUserFirstName(e.target.value);
+        const updatedFirstName = { 
+            ...firstName, 
+            value: e.target.value,
+            isValid: validateName(e.target.value)
+        }
+        setUserFirstName(updatedFirstName);
     }
 
     const handleLastNameChange = (e) => {
-        // todo validation
-        setUserLastName(e.target.value);
+        const updatedLastName = { 
+            ...lastName, 
+            value: e.target.value,
+            isValid: validateName(e.target.value)
+        }
+        setUserLastName(updatedLastName);
     }
     
     const handleEmailChange = (e) => {
-        // todo validation
-        setUserEmail(e.target.value);       
+        const updatedEmail = { 
+            ...email, 
+            value: e.target.value,
+            isValid: validateEmail(e.target.value)
+        }
+        setUserEmail(updatedEmail);       
     }
 
     const handlePasswordChange = (e) => {
-        // todo validation
-        validatePassword(e.target.value);
-        setUserPassword(e.target.value);       
-
+        const updatedPassword = { 
+            ...password, 
+            value: e.target.value,
+            isValid: validatePassword(e.target.value) > 0
+        }
         if (!e.target.value){
-            setPasswordClass('password-strength-bar')
+            setPasswordClass('password-strength-bar');
+            setPasswordMsgClass(defaultPasswordMsgClass);
+            setPasswordMsg(passwwordMsgDefault);
         }    
+        setUserPassword(updatedPassword);       
     }
 
     function validateEmail(email) {
@@ -63,60 +111,64 @@ function Signup() {
 
     function validatePassword(password) {
 
-        console.log(password)
         // https://stackoverflow.com/questions/19605150/regex-for-password-must-contain-at-least-eight-characters-at-least-one-number-a
-        
-
         const strengthOne = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
         const strengthTwo = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
         const strengthThree = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
         // eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
-        // ghfEXE222@@
         if (strengthThree.test(password)) {
             setPasswordClass(' password-strength-bar strong');
+            setPasswordMsgClass(defaultPasswordMsgClass);
             return 3;
         }
         
         // eight characters, at least one uppercase letter, one lowercase letter and one number
-        // ewdewdDEWD22
         if (strengthTwo.test(password)) {
             setPasswordClass(' password-strength-bar medium');
+            setPasswordMsgClass(passwordMsgClassShow);
+            setPasswordMsg(passwwordHintTwo);
             return 2;
         }
         
         // eight characters, at least one letter and one number
-        // cbjdse11
         if (strengthOne.test(password)) {
-            setPasswordClass(' password-strength-bar weak');
+            setPasswordClass('password-strength-bar weak');
+            setPasswordMsgClass(passwordMsgClassShow);
+            setPasswordMsg(passwwordHint);
             return 1;
         }
-        
+
+        setPasswordMsgClass(passwordMsgClassShow);
         setPasswordClass('password-strength-bar invalid');
-        return null;
+        setPasswordMsg(passwwordMsgDefault);
+        return 0;
     }
 
     return (
         <div className="user-signup">
-            <form onSubmit={onSubmitSignup}>
+            <form onSubmit={onSubmitSignup} submitted={`${formSubmitted}`}>
                 <div className="user-name-box">
                     <div className="text-input">
                         <label htmlFor="userName">first name</label>
-                        <input className="form-input" type="text" name="userFirstName" id="userFirstName" value={firstName} onChange={handleFirstNameChange} />
+                        <input className="form-input" type="text" name="userFirstName" id="userFirstName" value={firstName.value} isvalid={`${firstName.isValid}`} onChange={handleFirstNameChange} />
                     </div>
                     <div className="text-input">
                         <label htmlFor="userName">last name</label>
-                        <input className="form-input" type="text" name="userLastName" id="userLastName" value={lastName} onChange={handleLastNameChange} />
+                        <input className="form-input" type="text" name="userLastName" id="userLastName" value={lastName.value} isvalid={`${lastName.isValid}`} onChange={handleLastNameChange} />
                     </div>
                 </div>
                 <div className="text-input">
-                    <label htmlFor="userEmail">email:</label>
-                    <input className="form-input" type="email" name="userEmail" id="userEmail" value={email} onChange={handleEmailChange} />
+                    <label htmlFor="userEmail">email</label>
+                    <input className="form-input" type="email" name="userEmail" id="userEmail" value={email.value} isvalid={`${email.isValid}`} onChange={handleEmailChange} />
                 </div>
                 <div className="text-input">
                     <label htmlFor="userPassword">password</label>
-                    <input className="form-input" type="password" name="userPassword" id="userPassword" value={password} onChange={handlePasswordChange}/>
+                    <input className="form-input" type="password" name="userPassword" id="userPassword" value={password.value} isvalid={`${password.isValid}`} onChange={handlePasswordChange}/>
                     <div className="password-strength-bar" className={passwordClass}></div>
+                    <p className={passwordMsgClass}>
+                        {passwordMsg}
+                    </p>
                 </div>
                 <div className="text-input">
                     <button className="btn btn-signup" type="submit">Signup</button>

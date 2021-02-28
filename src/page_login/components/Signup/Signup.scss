@@ -1,24 +1,19 @@
 @import '../../../App.scss';
 
 .user-signup {
-
     max-width: 500px;
     margin: 0 auto;
     
     .user-name-box {
-
         display: flex;
 
         .text-input:first-of-type {
             margin-right: $space-one;
         }
-
         .text-input:last-of-type {
             margin-left: $space-one;
         }
     }
-
-
 
     .text-input {
         margin-bottom: $space-two;
@@ -35,9 +30,6 @@
     position: relative;
     top: -5px;
     z-index: -10;
-    // border: 1px solid burlywood;
-    // width: 100%;
-    // display: non;
 }
 
 .password-strength-bar::after {
@@ -73,12 +65,33 @@
     background-color: $color-coybi-green;
 }
 
+.password-msg {
+    font-size: 0.9rem;
+    margin: 0;
+    padding-top: 10px;
+    overflow: hidden;
+    
+    &.hide {
+        max-height: 0px;
+        transition: max-height 0.4s ease;
+    }
 
+    &.show {
+        max-height: 100px;
+        transition: max-height 0.4s ease;
+    }
+
+}
+
+form[submitted="true"] {
+    input[isvalid="false"] {
+        border: 1px solid $color-danger;
+        box-shadow: 0px 0px 5px 0px $color-danger-light;
+    }
+}
 
 @media only screen and (max-width: $bp-one) {
-
     .user-signup .user-name-box {
-
         flex-wrap: wrap;
 
         .text-input:first-of-type {
@@ -91,7 +104,7 @@
             margin-left: 0;
         }
     }
-    
+
 }
 
 

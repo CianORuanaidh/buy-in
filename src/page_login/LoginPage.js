@@ -34,11 +34,11 @@ const LoginPage = () => {
                 <UserSignup></UserSignup>
             }
             <div className="signup-login-toggle">
-                <div className="text-input" onClick={handleSigninToggle}>
+                <div className="text-input">
                     { isLogin ? 
-                    <button className="btn btn-link" type="button">I'm a new user, sign me up!</button>
+                    <button className="btn btn-link" type="button" onClick={handleSigninToggle}>I'm a new user, sign me up!</button>
                     : 
-                    <button className="btn btn-link" type="button">I'm an existing user, log me in!</button>
+                    <button className="btn btn-link" type="button" onClick={handleSigninToggle}>I'm an existing user, log me in!</button>
                     }
                 </div>
             </div>

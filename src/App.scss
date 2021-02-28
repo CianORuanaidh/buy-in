@@ -20,6 +20,9 @@ $color-realnice-navy-light: lighten($color-realnice-navy, 70%);
 $color-coybi-green: #00B3A4;
 $color-summer-salmon: #DB2C6F;
 
+$color-danger: #dc3545 !important;
+$color-danger-light: lighten(#dc3545, 20%) !important;
+
 // spacing variables
 $space-one: 6px;
 $space-two: $space-one * 2;

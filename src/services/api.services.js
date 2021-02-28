@@ -11,6 +11,15 @@ const axiosReq = axios.create({
     baseURL: BASE_URL 
 })
 
+// user apis
+export function signupUserCredentials(userDto) {
+    console.log('signupUserCredentials')
+    console.log(userDto)
+
+    const url = `/users/signup`;
+    return axiosReq.post(url, userDto);
+}
+
 export function getUserWithToken() {
     const url = `users/getuser`;
     return axiosReq.get(url);

@@ -47,22 +47,25 @@
 
 .password-strength-bar.invalid::after {
     width: 25%;
-    background-color: $color-summer-salmon;
+    background-color: $color-danger;
 }
 
 .password-strength-bar.weak::after {
     width: 50%;
-    background-color: lighten($color-beauty-blue, 20%);
+    background-color: $color-coybi-green;
+    opacity: 0.5;
 }
 
 .password-strength-bar.medium::after {
     width: 75%;
-    background-color: $color-beauty-blue;
+    background-color: $color-coybi-green;
+    opacity: 0.8;
 }
 
 .password-strength-bar.strong::after {
     width: 100%;
     background-color: $color-coybi-green;
+    opacity: 1;
 }
 
 .password-msg {
@@ -88,6 +91,15 @@ form[submitted="true"] {
         border: 1px solid $color-danger;
         box-shadow: 0px 0px 5px 0px $color-danger-light;
     }
+}
+
+.error-msg {
+    background-color: $color-danger;
+    color: white;
+    padding: $space-one $space-two;
+    border-radius: $space-one;
+    text-align: center;
+    font-weight: 100;
 }
 
 @media only screen and (max-width: $bp-one) {

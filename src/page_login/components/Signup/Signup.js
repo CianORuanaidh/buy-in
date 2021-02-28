@@ -1,24 +1,24 @@
+import { useState } from 'react';
+import { useHistory } from "react-router-dom";
+import { signupUserCredentials } from '../../../services/api.services';
 import './Signup.scss';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 /*
 * Login component
 */
 function Signup() {
+    const history = useHistory();
 
-    // let hasSubmittedForm =  false;
-
-    
     const defaultPasswordMsgClass = 'password-msg hide';
     const passwordMsgClassShow = 'password-msg show';
-    const passwwordMsgDefault = 'min length 8 characters, must contain at least one letter and one number.'
-    const passwwordHint = 'have at least one uppercase and one lowercase to make stronger.';
-    const passwwordHintTwo = 'add a special character to make even stronger.';
+    const passwordMsgDefault = 'min length 8 characters, must contain at least one letter and one number.'
+    const passwordHint = 'have at least one uppercase and one lowercase to make stronger.';
+    const passwordHintTwo = 'add a special character to make even stronger.';
 
+    const [errorMsg, setErrorMsg] = useState('');
     const [passwordClass, setPasswordClass] = useState('password-strength-bar');
     const [passwordMsgClass, setPasswordMsgClass] = useState(defaultPasswordMsgClass);
-    const [passwordMsg, setPasswordMsg] = useState(passwwordMsgDefault);
+    const [passwordMsg, setPasswordMsg] = useState(passwordMsgDefault);
 
     const [email, setUserEmail] = useState({value: "", isValid: false });
     const [password, setUserPassword] = useState({ value: "", isValid: false });
@@ -34,6 +34,7 @@ function Signup() {
     const onSubmitSignup = (e) => {
         e.preventDefault();
         setFormSubmitted(true);
+        setErrorMsg('');
 
         const isValid = firstName.isValid && lastName.isValid && email.isValid && password.isValid;
 
@@ -43,25 +44,25 @@ function Signup() {
         }
         console.log('FORM IS VALID')
 
-        const data = { 
+        const userDto = { 
             firstName: firstName.value, 
             lastName: lastName.value, 
             email: email.value, 
             password: password.value 
         };
 
-        console.log(data);
-        
-        return;
-        signupUserCredentials(data)
-            .catch(err => console.log('THIS IS THE ERROR: ', err) );
+        signupUserCredentials(userDto)
+            .then(resp => {
+                console.log('RESP: ', resp)
+                history.push("/dashboard");
+            })
+            .catch(error => {
+                if (error.response) {
+                    setErrorMsg(error.response.data.message);
+                }
+            });
     }
     
-    const signupUserCredentials = async (data) => {
-        const url ='http://localhost:4000/api/users/signup';
-        const response  = (await axios.post(url, data)).data;
-    }
-
     const handleFirstNameChange = (e) => {
         const updatedFirstName = { 
             ...firstName, 
@@ -98,7 +99,7 @@ function Signup() {
         if (!e.target.value){
             setPasswordClass('password-strength-bar');
             setPasswordMsgClass(defaultPasswordMsgClass);
-            setPasswordMsg(passwwordMsgDefault);
+            setPasswordMsg(passwordMsgDefault);
         }    
         setUserPassword(updatedPassword);       
     }
@@ -127,7 +128,7 @@ function Signup() {
         if (strengthTwo.test(password)) {
             setPasswordClass(' password-strength-bar medium');
             setPasswordMsgClass(passwordMsgClassShow);
-            setPasswordMsg(passwwordHintTwo);
+            setPasswordMsg(passwordHintTwo);
             return 2;
         }
         
@@ -135,13 +136,13 @@ function Signup() {
         if (strengthOne.test(password)) {
             setPasswordClass('password-strength-bar weak');
             setPasswordMsgClass(passwordMsgClassShow);
-            setPasswordMsg(passwwordHint);
+            setPasswordMsg(passwordHint);
             return 1;
         }
 
         setPasswordMsgClass(passwordMsgClassShow);
         setPasswordClass('password-strength-bar invalid');
-        setPasswordMsg(passwwordMsgDefault);
+        setPasswordMsg(passwordMsgDefault);
         return 0;
     }
 
@@ -170,6 +171,11 @@ function Signup() {
                         {passwordMsg}
                     </p>
                 </div>
+                {errorMsg && 
+                    <div className="error-msg">
+                        {errorMsg}
+                    </div>
+                }
                 <div className="text-input">
                     <button className="btn btn-signup" type="submit">Signup</button>
                 </div>

@@ -1,4 +1,5 @@
 import './UserLogin.scss';
+import '../Signup/Signup.scss'
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { userLogin } from '../../../services/api.services';
@@ -9,13 +10,19 @@ import { userLogin } from '../../../services/api.services';
 function UserLogin() {
     const history = useHistory();
 
-    const [userEmail, setUserEmail] = useState("");
-    const [userPassword, setUserPassword] = useState("");
+    const [formSubmitted, setFormSubmitted] = useState(false);
+
+    const [userEmail, setUserEmail] = useState({value: "", isValid: false });
+    const [userPassword, setUserPassword] = useState({value: "", isValid: false });
     
     const onSubmitLogin = (e) => {
-        // todo validation
         e.preventDefault();
-        console.log('onSubmitLogin')
+        setFormSubmitted(true);
+
+        if(!userEmail.isValid || !userPassword.isValid) {
+
+            return;
+        }
 
         const loginDto = { userEmail: userEmail, userPassword: userPassword };
 
@@ -30,25 +37,35 @@ function UserLogin() {
     }
         
     const handleEmailChange = (e) => {
-        // todo validation
-        setUserEmail(e.target.value);       
+        const updatedEmail = { 
+            ...userEmail, 
+            value: e.target.value,
+            isValid: !!e.target.value
+        }
+
+        setUserEmail(updatedEmail);       
     }
 
     const handlePasswordChange = (e) => {
-        // todo validation
-        setUserPassword(e.target.value);       
+        const updatedPassword = { 
+            ...userPassword, 
+            value: e.target.value,
+            isValid: !!e.target.value
+        }
+   
+        setUserPassword(updatedPassword);       
     }
 
     return (
         <div className="user-login">
-            <form onSubmit={onSubmitLogin}>
+            <form onSubmit={onSubmitLogin} submitted={`${formSubmitted}`}>
                 <div className="text-input">
                     <label htmlFor="userEmail">user email</label>
-                    <input className="form-input" type="email" name="userEmail" id="userEmail" value={userEmail} onChange={handleEmailChange} />
+                    <input className="form-input" type="email" name="userEmail" id="userEmail" value={userEmail.value} onChange={handleEmailChange} isvalid={`${userEmail.isValid}`}/>
                 </div>
                 <div className="text-input">
                     <label htmlFor="userPassword">password</label>
-                    <input className="form-input" type="password" name="userPassword" id="userPassword" value={userPassword} onChange={handlePasswordChange}/>
+                    <input className="form-input" type="password" name="userPassword" id="userPassword" value={userPassword.value} isvalid={`${userPassword.isValid}`} onChange={handlePasswordChange}/>
                 </div>
                 <div className="text-input">
                     <button className="btn btn-login" type="submit">Login</button>

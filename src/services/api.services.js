@@ -10,12 +10,10 @@ const axiosReq = axios.create({
     withCredentials: true,
     baseURL: BASE_URL 
 })
-
+//
 // user apis
+//
 export function signupUserCredentials(userDto) {
-    console.log('signupUserCredentials')
-    console.log(userDto)
-
     const url = `/users/signup`;
     return axiosReq.post(url, userDto);
 }
@@ -31,12 +29,19 @@ export function userLogout(arg) {
     return axiosReq.post(url);
 }
 
+export function userLogin(loginDto) {
+    const url = `users/login`;
+    return axiosReq.post(url, loginDto);
+}
+
+//
+// kitty apis
+//
 export const createKitty = (kittyDto) => { 
     const url = `kitty`
     return axiosReq.post(url, kittyDto);
 }
 
-// update existing kitty
 export function updateExisitingKitty(kittyDto) {
     const url = `kitty/${kittyDto.id}`;
     return axiosReq.patch(url, kittyDto);
@@ -46,7 +51,6 @@ export function deleteKittyById(KittyId) {
     const url = `kitty/${KittyId}`;
     return axiosReq.delete(url);
 }
-
 
 //
 // Custom Hooks

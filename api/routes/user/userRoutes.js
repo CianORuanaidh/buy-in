@@ -3,7 +3,6 @@ const { createUser, findUserByEmail, findUserById,
         validateRequiredBodyParams, validateBodyParamsNotEmpty } = require('./userController')
 const { createToken } = require('../../tokens/tokenService');
 const { verifyToken } = require('../../middleware/verifyToken');
-const url = require('url');   
 
 const router = express.Router();
 
@@ -25,6 +24,7 @@ router.route('/signup')
         };
 
         try {
+
             const foundUser = await findUserByEmail(email);
             if (foundUser) {
                 res.status(400).json({message: `email ${email} already exists`});
@@ -32,6 +32,9 @@ router.route('/signup')
             }
 
             const user = await createUser(req.body);
+            const token = createToken({ id: user._id });
+
+            res.cookie('token', token);
             res.json({ data: user });
 
         } catch (ex) {
@@ -42,13 +45,13 @@ router.route('/signup')
     });
 
 // LOGIN ROUTE
-router.route('/login')
+router
+    .route('/login')
     .post(async (req, res) => {
-        const where = "USER LOGIN ROUTE POST";
-        console.log(req.body)
-        const { userEmail, userPassword } = req.body;        
 
+        const { userEmail, userPassword } = req.body;        
         const requiredParams = ['userEmail', 'userPassword'];
+
         if (!validateRequiredBodyParams(req.body, requiredParams).isValid) {
             res.status(400).json({message : validateRequiredBodyParams(req.body, requiredParams).errorMessage});
             return;
@@ -60,26 +63,29 @@ router.route('/login')
         };
 
         const user = await findUserByEmail(userEmail);
+
         if (!user) {
             res.status(400).json({ message: `EMAIL There was a problem signing you in. Please check user email and password` } )
         }
 
         try {
             const isEmailVerified = await user.comparePasswords(userPassword);
+        
             if (!isEmailVerified) {
                 res.status(400).json({ message: `PASSWORD There was a problem signing you in. Please check user email and password` } )
             }
-            console.log('isEmailVerified: ', isEmailVerified)
-    
+        
             const token = createToken({ id: user._id });
             res.cookie('token', token);
             res.json({message: "SIGNED IN WOOOOOO", user })
         }
+
         catch (ex) {
             res.status(500).json({ message: 'internal server error', err: ex });
         }
     });
 
+// GET USER ROUTE
 router
     .use(verifyToken)
     .route('/getuser')
@@ -98,17 +104,23 @@ router
         }
     });
 
+// LOGOUT ROUTE
 router
     .use(verifyToken)
     .route('/logout')
     .post(async (req,res) => {
 
-        const { user } = req;
+        try {
+            
+            const { user } = req;
+            res.cookie("token", '');
+            res.json({message:'User logged out'});
+        
+        } catch (ex) {
 
-        console.log(user);
-        res.cookie("token", null)
-        res.json('LOGGED_OUT')
-
+            res.status(500).json({message: 'there was a problem loggin you out'});
+        }
+        
     });
 
 module.exports = router;

@@ -18,6 +18,7 @@ function App() {
 
       const { data: user } = await getUserWithToken();
       console.log(user)
+      setUser(user);
 
     } catch (err) {
       setUser(undefined);
@@ -27,12 +28,12 @@ function App() {
 
   useEffect(() => {
     getUser();
-  }, [getUser])
+  }, [])
 
   return (
     <Router>
 
-      <Header kitty={user}></Header>
+      <Header user={user}></Header>
       <div className="page-container">
       
         <main className="main-container">

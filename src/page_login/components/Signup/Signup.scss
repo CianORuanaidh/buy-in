@@ -94,12 +94,14 @@ form[submitted="true"] {
 }
 
 .error-msg {
-    background-color: $color-danger;
-    color: white;
-    padding: $space-one $space-two;
+    color: $color-danger;
     border-radius: $space-one;
-    text-align: center;
     font-weight: 100;
+    
+    // background-color: $color-danger;
+    // color: white;
+    // padding: $space-one $space-two;
+    // text-align: center;
 }
 
 @media only screen and (max-width: $bp-one) {

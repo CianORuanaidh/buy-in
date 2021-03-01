@@ -1,43 +1,34 @@
 import './UserLogin.scss';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useHistory } from "react-router-dom";
+import { userLogin } from '../../../services/api.services';
 
 /*
 * Login component
 */
 function UserLogin() {
+    const history = useHistory();
 
     const [userEmail, setUserEmail] = useState("");
     const [userPassword, setUserPassword] = useState("");
     
     const onSubmitLogin = (e) => {
+        // todo validation
         e.preventDefault();
         console.log('onSubmitLogin')
 
-        return;
+        const loginDto = { userEmail: userEmail, userPassword: userPassword };
 
-        // todo validation
-        const userName = 'userNAme';
-        const data = { userName: userName, userEmail: userEmail, userPassword: userPassword };
-        postUserCredentials(data);
+        userLogin(loginDto)
+            .then(resp => {
+                history.push("/dashboard");
+            })
+            .catch(err => {
+                console.log('ERROR')
+                console.log(err)
+            })
     }
-    
-    const postUserCredentials = async (data) => {
         
-        const url ='http://localhost:4000/api/users/login';
-        const response = await fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-        const parsed = await response.json();
-
-        console.log('RESPONSE')
-        console.log(parsed)
-    }
-    
     const handleEmailChange = (e) => {
         // todo validation
         setUserEmail(e.target.value);       

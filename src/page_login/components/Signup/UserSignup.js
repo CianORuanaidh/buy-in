@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { signupUserCredentials } from '../../../services/api.services';
-import './Signup.scss';
+import './UserSignup.scss';
 
 /*
 * Login component
 */
-function Signup() {
+function UserSignup(props) {
     const history = useHistory();
 
     const defaultPasswordMsgClass = 'password-msg hide';
@@ -39,10 +39,8 @@ function Signup() {
         const isValid = firstName.isValid && lastName.isValid && email.isValid && password.isValid;
 
         if (!isValid) {
-            console.log('FORM NOT VALID')
             return;
         }
-        console.log('FORM IS VALID')
 
         const userDto = { 
             firstName: firstName.value, 
@@ -53,7 +51,7 @@ function Signup() {
 
         signupUserCredentials(userDto)
             .then(resp => {
-                console.log('RESP: ', resp)
+                props.onSetAppUser(resp);
                 history.push("/dashboard");
             })
             .catch(error => {
@@ -184,4 +182,4 @@ function Signup() {
     )
 }
 
-export default Signup;
+export default UserSignup;

@@ -5,17 +5,12 @@ import { userLogout } from '../../services/api.services';
 
 function Header({user}) {
 
-    console.log('HEADER')
-    console.log(user)
+    // console.log('HEADER')
+    // console.log(user)
 
-    // const user = props.user;
     const onLogoutClick = () => {
-        console.log('onLogoutClick')
-
-        userLogout('WHUT')
-            .then(resp => { 
-                window.location.href = '/'
-            })
+        userLogout()
+            .then(resp => window.location.href = '/')
             .catch(err => console.log('ERROR: ', err))
     }
 
@@ -23,28 +18,34 @@ function Header({user}) {
         <header>
             <nav className="container">
                 <ul>
-                    <li className="logo">
-                        <Link to="/">B.I.</Link>
+                    {user && 
+                    <li>
+                        <span>Hi {user.firstName}!</span>
                     </li>
-                    {
-                        // true &&     // 
-                        user &&
+                    }
+                    <li className="logo">
+                        <Link to="/">BuyIn</Link>
+                    </li>
+                    {user &&
                         <li>
                             <Link to="/dashboard">Dashboard</Link>
                         </li>
                     }
-                    {
-                        // true &&    // 
-                        !user &&
+                    {!user &&
                         <li>
                             <Link className="btn btn-link" to="/login">Login</Link>
                         </li>
                     }
-                    {
-                        // !true &&     // 
-                        user &&
+                    {user &&
                         <li>
                             <button className="btn btn-link" onClick={onLogoutClick}>logout</button>
+                        </li>
+                    }
+                    {!user && 
+                        <li>
+                            {/* <button className="btn btn-sm get-started">Get started</button> */}
+                            {/* <Link className="btn btn-sm get-started" to={{ pathname: '/login', state: {newUser: true}}}>Get started</Link> */}
+                            <Link className="btn btn-sm get-started" to="/signup">Get started</Link>
                         </li>
                     }
                 </ul>

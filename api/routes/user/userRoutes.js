@@ -77,7 +77,7 @@ router
         
             const token = createToken({ id: user._id });
             res.cookie('token', token);
-            res.json({message: "SIGNED IN WOOOOOO", user })
+            res.json(user)
         }
 
         catch (ex) {

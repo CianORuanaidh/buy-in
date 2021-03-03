@@ -1,37 +1,27 @@
 import { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import UserLogin from './components/Login/UserLogin';
-import UserSignup from './components/Signup/Signup'
+import UserSignup from './components/Signup/UserSignup'
 import './LoginPage.scss';
 
 /*
 * LoginPage Page
 */
-const LoginPage = () => {
+const LoginPage = (props) => {
 
-    const [isLogin, setIsLogin] = useState(true);
+    console.log(props)
 
-    const handleSigninToggle = () => {
-        setIsLogin(state => !state);
-    }
+    const [isLogin, setIsLogin] = useState(props.login);
 
-    const [userData, setUserData] = useState(null);
-
-    useEffect(() =>{
-        // console.log('init function')
-        setUserData('NEW USER')
-    }, [])
-
-    useEffect(() => {
-        // console.log('USE DATA CHANGED')
-    },[userData])
+    const handleSigninToggle = () => setIsLogin(state => !state);
 
     return (
         <div>
             {isLogin &&            
-                <UserLogin></UserLogin>
+                <UserLogin onSetAppUser={(userData) => props.onSetAppUser(userData)}></UserLogin>
             }
             {!isLogin &&                 
-                <UserSignup></UserSignup>
+                <UserSignup onSetAppUser={(userData) => props.onSetAppUser(userData)}></UserSignup>
             }
             <div className="signup-login-toggle">
                 <div className="text-input">

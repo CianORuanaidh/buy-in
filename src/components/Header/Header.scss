@@ -1,7 +1,7 @@
 @import '../../App.scss';
 
 header {
-    background-color: $color-light-grey;
+    // background-color: $color-light-grey;
     color: $color-realnice-navy;
     padding: $space-one 0;
     position: absolute;
@@ -9,6 +9,11 @@ header {
     height: 60px;
     top: 0;
     
+    border-bottom: 1px solid $color-light-grey;
+    border-bottom: 1px solid $color-realnice-navy-light;
+    
+    // border-bottom: 1px solid $color-summer-salmon;
+
     ul {
         display: flex;
         justify-content: space-between;
@@ -24,5 +29,10 @@ header {
 
     a {
         display: block;
+    }
+
+
+    .get-started {
+        margin-left: $space-two;
     }
 }

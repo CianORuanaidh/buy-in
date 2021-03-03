@@ -1,5 +1,5 @@
 import './UserLogin.scss';
-import '../Signup/Signup.scss'
+import '../Signup/UserSignup.scss'
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
 import { userLogin } from '../../../services/api.services';
@@ -7,11 +7,10 @@ import { userLogin } from '../../../services/api.services';
 /*
 * Login component
 */
-function UserLogin() {
+function UserLogin(props) {
     const history = useHistory();
-
+    
     const [formSubmitted, setFormSubmitted] = useState(false);
-
     const [userEmail, setUserEmail] = useState({value: "", isValid: false });
     const [userPassword, setUserPassword] = useState({value: "", isValid: false });
     
@@ -20,18 +19,17 @@ function UserLogin() {
         setFormSubmitted(true);
 
         if(!userEmail.isValid || !userPassword.isValid) {
-
             return;
         }
-
-        const loginDto = { userEmail: userEmail, userPassword: userPassword };
-
+        
+        const loginDto = { userEmail: userEmail.value, userPassword: userPassword.value };
+        
         userLogin(loginDto)
             .then(resp => {
+                props.onSetAppUser(resp);
                 history.push("/dashboard");
             })
             .catch(err => {
-                console.log('ERROR')
                 console.log(err)
             })
     }

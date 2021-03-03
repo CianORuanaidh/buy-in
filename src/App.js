@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import DashboardPage from './page_dashboard/DashboardPage';
@@ -15,7 +15,6 @@ function App() {
   const getUser = useCallback(async function() {
 
     try {
-
       const { data: user } = await getUserWithToken();
       console.log(user)
       setUser(user);
@@ -23,8 +22,12 @@ function App() {
     } catch (err) {
       setUser(undefined);
     }
-
   });
+
+  const setAppUser = (userData) => {
+    const { data: user } = userData;
+    setUser(user);
+  }
 
   useEffect(() => {
     getUser();
@@ -35,17 +38,46 @@ function App() {
 
       <Header user={user}></Header>
       <div className="page-container">
-      
         <main className="main-container">
           <Switch>
-            <Route path="/dashboard">
-              <DashboardPage></DashboardPage>
-            </Route>
-            <Route path="/login">
-              <LoginPage></LoginPage>
-            </Route>
-            <Route path="/kitty/:kittyId" children={<KittyPage></KittyPage>}>
-            </Route>
+            <Route exact path="/login"
+              render={props => {
+                if(user) {
+                  return <Redirect to="/dashboard"/>
+                } 
+                return <LoginPage onSetAppUser={(e) => setAppUser(e)} login={true}></LoginPage>
+              }} 
+            />
+
+            <Route exact path="/signup"
+              render={props => {
+                if(user) {
+                  return <Redirect to="/dashboard"/>
+                } 
+                return <LoginPage onSetAppUser={(e) => setAppUser(e)} signup={true}></LoginPage>
+              }} 
+            />
+
+            <Route exact path="/dashboard"
+              render={props => {
+                if(!user) {
+                  return <Redirect to="/"/>
+                } 
+                return <DashboardPage {...props}/>
+              }} 
+            />
+            
+            {/* <Route path="/kitty/optin/:kittyId">
+              <KittyPage></KittyPage>
+            </Route> */}
+            <Route path="/kitty/:kittyId"
+              render ={props => {
+                if(!user) {
+                  return <Redirect to="/"/>
+                }
+                return <KittyPage {...props}></KittyPage>
+              }}
+            />
             <Route path="/">
               <HomePage></HomePage>
             </Route>

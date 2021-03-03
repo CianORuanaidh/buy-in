@@ -23,8 +23,7 @@ export function getUserWithToken() {
     return axiosReq.get(url);
 }
 
-export function userLogout(arg) {
-    console.log(arg)
+export function userLogout() {
     const url = `users/logout`;
     return axiosReq.post(url);
 }

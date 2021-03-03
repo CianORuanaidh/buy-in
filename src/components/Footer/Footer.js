@@ -4,6 +4,7 @@ function Footer() {
     return (
         <footer>
             {/* Footer */}
+            BuyIn app
         </footer>
     )
 }

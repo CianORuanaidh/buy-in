@@ -1,0 +1,124 @@
+@import '../../../App.scss';
+
+.user-signup {
+    max-width: 500px;
+    margin: $space-four auto 0 auto;
+    
+    .user-name-box {
+        display: flex;
+
+        .text-input:first-of-type {
+            margin-right: $space-one;
+        }
+        .text-input:last-of-type {
+            margin-left: $space-one;
+        }
+    }
+
+    .text-input {
+        margin-bottom: $space-two;
+    }
+
+    .btn-signup {
+        width: 100%;
+        margin-top: $space-one;
+    }
+
+}
+
+.password-strength-bar {
+    position: relative;
+    top: -5px;
+    z-index: -10;
+}
+
+.password-strength-bar::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    display: block;
+    background-color: $color-summer-salmon;
+    height: 10px;
+    margin-top: 1px;
+    border-radius: 3px;
+
+    transition: all 0.4s ease;
+}
+
+.password-strength-bar.invalid::after {
+    width: 25%;
+    background-color: $color-danger;
+}
+
+.password-strength-bar.weak::after {
+    width: 50%;
+    background-color: $color-coybi-green;
+    opacity: 0.5;
+}
+
+.password-strength-bar.medium::after {
+    width: 75%;
+    background-color: $color-coybi-green;
+    opacity: 0.8;
+}
+
+.password-strength-bar.strong::after {
+    width: 100%;
+    background-color: $color-coybi-green;
+    opacity: 1;
+}
+
+.password-msg {
+    font-size: 0.9rem;
+    margin: 0;
+    padding-top: 10px;
+    overflow: hidden;
+    
+    &.hide {
+        max-height: 0px;
+        transition: max-height 0.4s ease;
+    }
+
+    &.show {
+        max-height: 100px;
+        transition: max-height 0.4s ease;
+    }
+
+}
+
+form[submitted="true"] {
+    input[isvalid="false"] {
+        border: 1px solid $color-danger;
+        box-shadow: 0px 0px 5px 0px $color-danger-light;
+    }
+}
+
+.error-msg {
+    color: $color-danger;
+    border-radius: $space-one;
+    font-weight: 100;
+    
+    // background-color: $color-danger;
+    // color: white;
+    // padding: $space-one $space-two;
+    // text-align: center;
+}
+
+@media only screen and (max-width: $bp-one) {
+    .user-signup .user-name-box {
+        flex-wrap: wrap;
+
+        .text-input:first-of-type {
+            min-width: 100%;
+            margin-right: 0;
+        }
+    
+        .text-input:last-of-type {
+            min-width: 100%;
+            margin-left: 0;
+        }
+    }
+
+}
+
+

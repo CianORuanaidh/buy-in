@@ -1,0 +1,13 @@
+@import '../App.scss';
+
+.dashboard-views{
+    border-bottom: 1px solid $color-light-grey;
+    padding-bottom: $space-two;
+
+    ul {
+        display: flex;
+        li {
+            margin-right: $space-one;
+        }
+    }
+}

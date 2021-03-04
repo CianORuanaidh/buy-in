@@ -1,0 +1,18 @@
+@import '../../../App.scss';
+
+.user-login {
+
+    margin: $space-four auto 0 auto;
+    border-radius: $space-one;
+    max-width: 500px;
+    
+    .text-input {
+        margin-bottom: $space-two;
+    }
+
+    .btn-login {
+        width: 100%;
+        margin-top: $space-one;
+    }
+
+}

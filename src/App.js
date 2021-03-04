@@ -1,19 +1,114 @@
+import { useEffect, useState, useCallback } from 'react';
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import DashboardPage from './page_dashboard/DashboardPage';
+import LoginPage from './page_login/LoginPage';
+import HomePage from './page_home/HomePage';
+import KittyPage from './page_kitty/KittyPage';
+import { getUserWithToken } from './services/api.services';
 import './App.scss';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const [user, setUser] = useState(undefined);
+
+
+  const getUser = useCallback(async function() {
+
+    try {
+      const { data: user } = await getUserWithToken();
+      // console.log(user)
+      setUser(user);
+      setIsLoading(false);
+
+    } catch (err) {
+      setUser(undefined);
+      setIsLoading(false);
+    }
+  });
+
+  const setAppUser = (userData) => {
+    const { data: user } = userData;
+    setUser(user);
+  }
+
+  useEffect(() => {
+    getUser();
+  }, [])
+
+  console.log(user)
+
+  if (isLoading) {
+    return (
+        <div className="is-loading">
+          LOADING...
+        </div>
+    )
+  } 
+
   return (
-    <div className="buy-in-app">
-      <header>
-        <h1>Head</h1>
-      </header>
-      <main>
-        <p>This is Buyin app</p>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Repellat porro dolore quidem doloremque labore reprehenderit! Dolorum mollitia, laborum incidunt sequi ipsum nesciunt iusto dolorem aut sint natus nobis odio at.</p>
-      </main>
-      <footer>
-        <p>footer</p>
-      </footer>
-    </div>
+    <Router>
+
+      <Header user={user}></Header>
+      
+      <div className="page-container">
+        <main className="main-container">
+          <Switch>
+
+            {/* LOGIN ROUTE */}
+            <Route exact path="/login"
+              render={props => {
+                if(user) {
+                  return <Redirect to="/dashboard"/>
+                } 
+                return <LoginPage onSetAppUser={(e) => setAppUser(e)} login={true}></LoginPage>
+              }} 
+            />
+
+            {/* SIGNUP ROUTE */}
+            <Route exact path="/signup"
+              render={props => {
+                if(user) {
+                  return <Redirect to="/dashboard"/>
+                } 
+                return <LoginPage onSetAppUser={(e) => setAppUser(e)} signup={true}></LoginPage>
+              }} 
+            />
+
+            {/* DASHBOARD ROUTE */}
+            <Route exact path="/dashboard"
+              render={props => {
+                if(!user) {
+                  return <Redirect to="/"/>
+                } 
+                return <DashboardPage {...props}/>
+              }} 
+            />
+
+            {/* KITTY PAGE ROUTE */}
+            <Route path="/kitty/:kittyId"
+              render ={props => {
+                if(!user) {
+                  return <Redirect to="/"/>
+                }
+                return <KittyPage {...props}></KittyPage>
+              }}
+            />
+
+            {/* HOME PAGE ROUTE */}
+            <Route path="/">
+              <HomePage></HomePage>
+            </Route>
+
+          </Switch>
+        </main>
+      </div>
+      
+      <Footer></Footer>
+
+    </Router>
   );
 }
 

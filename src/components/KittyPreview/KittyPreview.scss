@@ -1,0 +1,28 @@
+@import '../../App.scss';
+
+.kitty-preview {
+    border: 1px solid $color-light-grey;
+
+    padding: $space-two;
+    margin: $space-two;
+
+    cursor: pointer;
+
+    &:hover {
+        // border: 2px solid $color-light-grey;
+        background-color: lighten($color-beauty-blue, 30%);
+        // background-color: lighten($color-my-black, 40%);
+        // color: $color-cantBe-white;
+    }
+
+    .controls {
+
+        text-align: right;
+
+        .btn {
+            margin-right: $space-one;
+        }
+    }
+    
+}
+

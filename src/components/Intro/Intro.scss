@@ -1,0 +1,43 @@
+@import '../../App.scss';
+
+.intro {
+
+    padding: $space-four 0;
+    // border-bottom: 1px solid $color-my-black;
+        
+    h1 {
+        margin: $space-four 0;
+    }
+    
+    .container {
+        display: flex;
+        flex-wrap: wrap;
+        padding-bottom: $space-four;
+
+        .block {
+            flex-basis: 500px;
+            flex-grow: 1;
+            flex-shrink: 0;
+        }
+
+        .block.primary {
+            padding-right: $space-three;            
+            p {
+                margin: 0;
+                margin-bottom: $space-four;
+
+                .text-v1 {
+                    color: $color-beauty-blue;
+                }
+
+                .text-v2 {
+                    font-weight: 300;
+                }
+            }
+        }
+
+        .block.secondary {
+            padding-left: $space-three;
+        }
+    }
+}

@@ -43,8 +43,6 @@ function Header({user}) {
                     }
                     {!user && 
                         <li>
-                            {/* <button className="btn btn-sm get-started">Get started</button> */}
-                            {/* <Link className="btn btn-sm get-started" to={{ pathname: '/login', state: {newUser: true}}}>Get started</Link> */}
                             <Link className="btn btn-sm get-started" to="/signup">Get started</Link>
                         </li>
                     }

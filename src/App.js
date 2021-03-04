@@ -37,9 +37,12 @@ function App() {
     <Router>
 
       <Header user={user}></Header>
+      
       <div className="page-container">
         <main className="main-container">
           <Switch>
+
+            {/* LOGIN ROUTE */}
             <Route exact path="/login"
               render={props => {
                 if(user) {
@@ -49,6 +52,7 @@ function App() {
               }} 
             />
 
+            {/* SIGNUP ROUTE */}
             <Route exact path="/signup"
               render={props => {
                 if(user) {
@@ -58,6 +62,7 @@ function App() {
               }} 
             />
 
+            {/* DASHBOARD ROUTE */}
             <Route exact path="/dashboard"
               render={props => {
                 if(!user) {
@@ -66,10 +71,8 @@ function App() {
                 return <DashboardPage {...props}/>
               }} 
             />
-            
-            {/* <Route path="/kitty/optin/:kittyId">
-              <KittyPage></KittyPage>
-            </Route> */}
+
+            {/* KITTY PAGE ROUTE */}
             <Route path="/kitty/:kittyId"
               render ={props => {
                 if(!user) {
@@ -78,9 +81,12 @@ function App() {
                 return <KittyPage {...props}></KittyPage>
               }}
             />
+
+            {/* HOME PAGE ROUTE */}
             <Route path="/">
               <HomePage></HomePage>
             </Route>
+
           </Switch>
         </main>
       </div>

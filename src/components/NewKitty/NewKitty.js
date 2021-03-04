@@ -7,7 +7,7 @@ import KittyForm from '../KittyForm/KittyForm';
 function NewKitty() {
     return (
         <section className="new-kitty">
-            <div className="container">
+            <div className="containerX">
 
                 <h2>New Kitty</h2>
                 <p>Create a new kitty using the form below.</p>

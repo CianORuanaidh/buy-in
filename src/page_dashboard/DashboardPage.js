@@ -35,7 +35,7 @@ function DashboardPage() {
     }
 
     return (
-        <div>
+        <div className="container">
             <section className="dashboard-views">
                 <ul onClick={handleViewSelect}>
 

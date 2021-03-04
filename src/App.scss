@@ -132,13 +132,14 @@ ul {
 
 
 .btn {
+    cursor: pointer;
     background-color: $color-my-black;
     border-radius: $space-one;
     border: none;
     color: $color-light-grey;
     font-weight: 100;
     padding: $space-two $space-three;
-
+    
     transition: $background-transition;
 
     &.btn-sm {
@@ -156,7 +157,9 @@ ul {
 
 .btn:hover,
 .btn:focus,
-.btn:active {
+.btn:active,
+.btn.selected {
+
     background-color: lighten($color-my-black, 10%); 
 
     transition: $background-transition;
@@ -192,4 +195,8 @@ ul {
     text-align: center;
     font-size: 3rem;
     color: #DB2C6F;
+}
+
+label {
+    display: inline-block;
 }

@@ -56,7 +56,7 @@ export function deleteKittyById(KittyId) {
 //
 
 // get all kitties for user
-export function GetAllKitties() {
+export function GetAllKittiesForUser() {
     const [kittyData, setKittyData] = useState(null);
 
     useEffect(() => {

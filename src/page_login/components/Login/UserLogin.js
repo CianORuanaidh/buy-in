@@ -9,14 +9,17 @@ import { userLogin } from '../../../services/api.services';
 */
 function UserLogin(props) {
     const history = useHistory();
-    
+
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [userEmail, setUserEmail] = useState({value: "", isValid: false });
     const [userPassword, setUserPassword] = useState({value: "", isValid: false });
     
+    const [errorMsg, setErrorMsg] = useState('');
+    
     const onSubmitLogin = (e) => {
         e.preventDefault();
         setFormSubmitted(true);
+        setErrorMsg('')
 
         if(!userEmail.isValid || !userPassword.isValid) {
             return;
@@ -29,8 +32,14 @@ function UserLogin(props) {
                 props.onSetAppUser(resp);
                 history.push("/dashboard");
             })
-            .catch(err => {
-                console.log(err)
+            .catch(error => {
+                console.log(error)
+                console.log(error.response)
+                console.log(error.response.data)
+
+                setErrorMsg(error.response.data.message)
+
+
             })
     }
         
@@ -68,6 +77,12 @@ function UserLogin(props) {
                 <div className="text-input">
                     <button className="btn btn-login" type="submit">Login</button>
                 </div>
+                {errorMsg && 
+                    <div className="error-msg">
+                        {errorMsg}
+                    </div>
+                }
+
             </form>
         </div>
     )

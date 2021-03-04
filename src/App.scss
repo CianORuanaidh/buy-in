@@ -74,9 +74,13 @@ a:hover,
 a:focus,
 a:active {
     color: darken($color-summer-salmon, 20%); 
-
     transition: $color-transition;
+
+    &.btn {
+        color: $color-cantBe-white;
+    }
 }
+
 
 // GLOBAL STYLES
 .container {
@@ -140,10 +144,13 @@ ul {
     &.btn-sm {
         padding: $space-one $space-two;
     }
+
+    &.btn-secondary {
+        background-color: $color-beauty-blue;
+    }
 }
 
 .btn:disabled {
-    // border: 3px solid #00B3A4;
     background-color: lighten($color-my-black, 40%); 
 }
 
@@ -153,6 +160,10 @@ ul {
     background-color: lighten($color-my-black, 10%); 
 
     transition: $background-transition;
+
+    &.btn-link {
+        color: darken($color-summer-salmon, 20%); 
+    }
 }
 
 .btn.btn-link {
@@ -165,23 +176,6 @@ ul {
     transition: $color-transition;
 }
 
-.btn.btn-link:hover
-.btn.btn-link:focus
-.btn.btn-link:active {
-    color: darken($color-summer-salmon, 20%); 
-
-    transition: $color-transition;
-}
-
-.btn:hover,
-.btn:focus,
-.btn:active {
-    color: lighten($color-summer-salmon, 30%); 
-
-    transition: $color-transition;
-}
-
-
 // PAGE STYLES
 .page-container {
     min-height: calc( 100vh - 160px );
@@ -190,4 +184,12 @@ ul {
 
 .main-container {
     padding: $space-three;
+}
+
+
+.is-loading {
+    margin-top: 40vh;
+    text-align: center;
+    font-size: 3rem;
+    color: #DB2C6F;
 }

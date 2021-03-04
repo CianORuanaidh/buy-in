@@ -65,14 +65,14 @@ router
         const user = await findUserByEmail(userEmail);
 
         if (!user) {
-            res.status(400).json({ message: `EMAIL There was a problem signing you in. Please check user email and password` } )
+            res.status(400).json({ message: `There was a problem signing you in. Please check user email and password.` } )
         }
 
         try {
             const isEmailVerified = await user.comparePasswords(userPassword);
         
             if (!isEmailVerified) {
-                res.status(400).json({ message: `PASSWORD There was a problem signing you in. Please check user email and password` } )
+                res.status(400).json({ message: `There was a problem signing you in. Please check user email and password.` } )
             }
         
             const token = createToken({ id: user._id });

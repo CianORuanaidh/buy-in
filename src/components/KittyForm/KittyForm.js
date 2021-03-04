@@ -14,8 +14,8 @@ class KittyForm extends React.Component {
 
         const { kitty } = props;
 
-        console.log('FKITTY FORM')
-        console.log(kitty)
+        // console.log('FKITTY FORM')
+        // console.log(kitty)
 
 
         this.state = {
@@ -23,7 +23,6 @@ class KittyForm extends React.Component {
             buyInAmount: kitty ? kitty.buyInAmount : '',
             participants: kitty ? kitty.participants : [this.newParticipant()],
         };
-
 
         this.handleAddParticipant = this.handleAddParticipant.bind(this);
         this.handleKittyNameChange = this.handleKittyNameChange.bind(this);

@@ -10,17 +10,22 @@ import { getUserWithToken } from './services/api.services';
 import './App.scss';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  
   const [user, setUser] = useState(undefined);
+
 
   const getUser = useCallback(async function() {
 
     try {
       const { data: user } = await getUserWithToken();
-      console.log(user)
+      // console.log(user)
       setUser(user);
+      setIsLoading(false);
 
     } catch (err) {
       setUser(undefined);
+      setIsLoading(false);
     }
   });
 
@@ -32,6 +37,16 @@ function App() {
   useEffect(() => {
     getUser();
   }, [])
+
+  console.log(user)
+
+  if (isLoading) {
+    return (
+        <div className="is-loading">
+          LOADING...
+        </div>
+    )
+  } 
 
   return (
     <Router>

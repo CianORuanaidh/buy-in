@@ -3,14 +3,17 @@
 .kitty-form {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     margin: 0 ($space-two * -1);
 
+    max-width: 900px;
+    // border: 1px solid dodgerblue;
 
     .block {
+        border: 2px solid pink;
         flex-basis: 500px;
         flex-grow: 1;
         margin: $space-two;
-
     }
 
     .form-controls {
@@ -21,15 +24,11 @@
     .add-participant {
         margin: $space-two;
         margin-left: auto;
-        
-
     }
 
     .text-input,
-    .number-input {
-    
+    .number-input {    
         margin-bottom: $space-three;
-        
     }
     
     .form-row {

@@ -24,14 +24,13 @@ class KittyForm extends React.Component {
         this.handleKittyNameChange = this.handleKittyNameChange.bind(this);
         this.handleKittyBuyInAmountChange = this.handleKittyBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.populateForm =  this.populateForm.bind(this);
-        this.updateForm =  this.updateForm.bind(this);
+        // this.populateForm =  this.populateForm.bind(this);
+        // this.updateForm =  this.updateForm.bind(this);
     }
 
     componentDidMount(){
         const starterParticipants = this.props.kitty ? [...this.props.kitty.participants] : [];
 
-        console.log(starterParticipants)
         for (let i = 0; i < minimumParticipantCount; i++) {
             starterParticipants.push(this.newParticipant());
         }
@@ -52,9 +51,7 @@ class KittyForm extends React.Component {
             ...this.state.participants,
             this.newParticipant()
         ]
-        
         this.setState({ participants: participants });
-
     }
     
     handleKittyNameChange(event) {
@@ -65,36 +62,27 @@ class KittyForm extends React.Component {
         this.setState({ buyInAmount: event.target.value});
     }
     
-    
     handleParticipantNameChange(event, i, participant) {
-        
         const editedParticipant = { 
             ...this.state.participants[i],
             name: event.target.value
         };
-        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });
-        
-        this.setState({ participants: updatedParticipants })
+        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+        this.setState({ participants: updatedParticipants });
     }
     
     handleParticipantEmailChange(event, i, participant) {
-        
         // Todo add validation
-        
         const editedParticipant = { 
             ...this.state.participants[i],
             email: event.target.value
         };
-        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });
-        
+        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
         this.setState({ participants: updatedParticipants })
     }
     
     removeParticipant(event, i) {
-        console.log(event, i)
-        
-        const updatedParticipants = this.state.participants.filter((p, index) => index !== i);
-        
+        const updatedParticipants = this.state.participants.filter((p, index) => index !== i);        
         this.setState({ participants: updatedParticipants });
     }
     
@@ -135,27 +123,27 @@ class KittyForm extends React.Component {
         
     }
     
-    populateForm() {
-        this.setState({
-            name: 'Burgeroooo',
-            buyInAmount: 15,
-            participants: [
-                this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
-                this.newMockParticipant('Willy', 'willy.wool@gmail.com')
-            ]
-        })
-    }
+    // populateForm() {
+    //     this.setState({
+    //         name: 'Burgeroooo',
+    //         buyInAmount: 15,
+    //         participants: [
+    //             this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
+    //             this.newMockParticipant('Willy', 'willy.wool@gmail.com')
+    //         ]
+    //     })
+    // }
 
-    updateForm() {
-        this.setState({
-            name: 'Burgeroo Boo',
-            buyInAmount: 5.5,
-            participants: [
-                this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
-                this.newMockParticipant('Silly Oh', 'sill.oh@gmail.com')
-            ]
-        })
-    }
+    // updateForm() {
+    //     this.setState({
+    //         name: 'Burgeroo Boo',
+    //         buyInAmount: 5.5,
+    //         participants: [
+    //             this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
+    //             this.newMockParticipant('Silly Oh', 'sill.oh@gmail.com')
+    //         ]
+    //     })
+    // }
 
     functionTest(a,b) {
         return a + b;
@@ -166,19 +154,34 @@ class KittyForm extends React.Component {
             <div>
                 <form onSubmit={this.handleSubmit} className="kitty-form">
 
-                    <div className="block block-1">
+                    <div className="block">
                         <div className="text-input">
                             <label className="form-label" htmlFor="kitty-name">Name</label>
                             <input className="form-input" id="kitty-name"type="text" value={this.state.name} onChange={this.handleKittyNameChange} placeholder="New Pot name"/>
                         </div>
-        
                         <div className="number-input">
                             <label className="form-label" htmlFor="buyInAmount">Buy in amount</label>
                             <input className="form-input" id="buyInAmount" type="number" value={this.state.buyInAmount} onChange={this.handleKittyBuyInAmountChange}/>
                         </div>
+
+                        <div className="number-input">
+                            <label className="form-label" htmlFor="buyInAmount">Invite by link</label>
+                            <input className="form-input" id="buyInAmount" type="checkbox"/>
+                        </div>
+
+                        <div className="number-input">
+                            <label className="form-label" htmlFor="buyInAmount">is closed</label>
+                            <input className="form-input" id="buyInAmount" type="checkbox"/>
+                        </div>
+
+                        <div className="number-input">
+                            <label className="form-label" htmlFor="buyInAmount">Opt in deadline</label>
+                            <input className="form-input" id="buyInAmount" type="date"/>
+                        </div>
+
                     </div>
     
-                    <div className="block block-2" style={{ marginBottom: 0 }}>
+                    {/* <div className="block block-2" style={{ marginBottom: 0 }}>
                         <div className="form-row">
                             <div className="input">
                                 <label className="form-label" htmlFor="participent-name">Participant name</label>
@@ -187,9 +190,9 @@ class KittyForm extends React.Component {
                                 <label className="form-label" htmlFor="participent-email">Participant email</label>
                             </div>        
                         </div>
-                    </div>
+                    </div> */}
 
-                    <div className="block block-2">
+                    {/* <div className="block block-2">
                         {this.state.participants.map((participant, i) => {
                             return (
                                 <div className="form-row" key={i}>
@@ -210,10 +213,10 @@ class KittyForm extends React.Component {
                         <div className="form-row">
                             <button className="btn add-participant" type="button" onClick={this.handleAddParticipant}>Add another participant</button>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="form-controls">
                         <button className="btn" type="submit">Save</button>
-                        <button 
+                        {/* <button 
                             className="btn" 
                             type="button"
                             style={{marginLeft: 20}} 
@@ -222,7 +225,7 @@ class KittyForm extends React.Component {
                             className="btn" 
                             type="button"
                             style={{marginLeft: 20}} 
-                            onClick={this.updateForm}>UPDATE</button>
+                            onClick={this.updateForm}>UPDATE</button> */}
 
                     </div>                    
                 </form>

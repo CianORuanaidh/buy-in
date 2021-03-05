@@ -1,6 +1,6 @@
 import './Header.scss';
 import { Link } from "react-router-dom";
-import { userLogout } from '../../services/api.services';
+import { userLogout } from '../../services/api/api.services';
 
 
 function Header({user}) {

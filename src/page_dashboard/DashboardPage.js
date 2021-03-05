@@ -1,9 +1,9 @@
 import './DashboardPage.scss';
 import { useState, useEffect, useCallback } from 'react';
-import { GetAllKittiesForUser } from '../services/api.services';
+import { GetAllKittiesForUser } from '../services/api/api.services';
 import NewKitty from '../components/NewKitty/NewKitty';
-import KittyPreview from '../components/KittyPreview/KittyPreview'
-import Enums from './dashboard.enum.types'
+import KittyPreview from '../components/KittyPreview/KittyPreview';
+import Enums from '../services/enums/enum.types';
 
 /*
 * Dashboard Page
@@ -11,25 +11,25 @@ import Enums from './dashboard.enum.types'
 function DashboardPage() {
     console.log('DASHBOARD PAGE')
     
-    console.log(Enums)
+    // console.log(Enums)
     const [allKittys] = GetAllKittiesForUser();
     const [dashboardView, setDashboardView] = useState(Enums.DashboardViews.NewGame);
 
     
-    console.log('allKittys') 
-    console.log(allKittys)
+    // console.log('allKittys') 
+    // console.log(allKittys)
 
-    useEffect(() => {
-        console.log('INIT Dashboard');
-        return () => {
-            // console.log('will run when the component unmounts');
-        }
-    }, []);
+    // useEffect(() => {
+    //     console.log('INIT Dashboard');
+    //     return () => {
+    //         // console.log('will run when the component unmounts');
+    //     }
+    // }, []);
 
     const handleViewSelect = (e) => {
 
-        console.log('handleViewSelect')
-        console.log(e.target.value)
+        // console.log('handleViewSelect')
+        // console.log(e.target.value)
         setDashboardView(e.target.value)
        
     }

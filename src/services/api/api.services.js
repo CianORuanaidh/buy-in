@@ -10,6 +10,7 @@ const axiosReq = axios.create({
     withCredentials: true,
     baseURL: BASE_URL 
 })
+
 //
 // user apis
 //

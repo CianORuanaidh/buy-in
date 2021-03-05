@@ -1,6 +1,6 @@
 import React from 'react';
 import './KittyForm.scss';
-import { createKitty, updateExisitingKitty } from '../../services/api.services';
+import { createKitty, updateExisitingKitty } from '../../services/api/api.services';
 
 /*
 * form for creating a new Kitty
@@ -13,10 +13,6 @@ class KittyForm extends React.Component {
         super(props);
 
         const { kitty } = props;
-
-        // console.log('FKITTY FORM')
-        // console.log(kitty)
-
 
         this.state = {
             name: kitty ? kitty.name : '',
@@ -113,6 +109,8 @@ class KittyForm extends React.Component {
         console.log('isNewKitty')
         console.log(!kitty)
 
+
+        return;
 
         if (!kitty) {
 

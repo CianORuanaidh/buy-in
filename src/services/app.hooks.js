@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { getUserWithToken } from './api.services';
+import { getUserWithToken } from './api/api.services';
 
 export function GetUserData() {
     const [userData, setUserData] = useState(null);

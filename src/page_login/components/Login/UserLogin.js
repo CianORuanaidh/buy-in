@@ -2,7 +2,7 @@ import './UserLogin.scss';
 import '../Signup/UserSignup.scss'
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
-import { userLogin } from '../../../services/api.services';
+import { userLogin } from '../../../services/api/api.services';
 
 /*
 * Login component

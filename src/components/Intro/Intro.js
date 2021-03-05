@@ -14,7 +14,7 @@ function Intro() {
                         <span className="text-v1"> Your money can only be released when you have a unanimous decision.</span> 
                         <span className="text-v2"> If you cannot all agree, your money will be returned to each participant.</span></p> 
                     </div>
-                    <Link className="btn" to="/login">Get started</Link>
+                    <Link className="btn" to="/signup">Get started</Link>
                 </div>
                 <div className="block secondary">
                     {/* placeholder */}

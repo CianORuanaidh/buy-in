@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useParams } from "react-router-dom";
-import { GetKittyById, deleteKittyById } from "../services/api.services";
+import { GetKittyById, deleteKittyById } from "../services/api/api.services";
 
 import KittyForm from '../components/KittyForm/KittyForm';
 

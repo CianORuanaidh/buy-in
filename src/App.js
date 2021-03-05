@@ -6,7 +6,7 @@ import DashboardPage from './page_dashboard/DashboardPage';
 import LoginPage from './page_login/LoginPage';
 import HomePage from './page_home/HomePage';
 import KittyPage from './page_kitty/KittyPage';
-import { getUserWithToken } from './services/api.services';
+import { getUserWithToken } from './services/api/api.services';
 import './App.scss';
 
 function App() {

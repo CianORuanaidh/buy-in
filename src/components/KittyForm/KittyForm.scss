@@ -1,48 +1,101 @@
 @import '../../App.scss';
 
-.kitty-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0 ($space-two * -1);
+.new-kitty-form-container {
 
-    max-width: 900px;
-    // border: 1px solid dodgerblue;
+    border: 2px solid pink;
+    max-width: 800px;
 
-    .block {
-        border: 2px solid pink;
-        flex-basis: 500px;
-        flex-grow: 1;
-        margin: $space-two;
+    .form-block {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 
-    .form-controls {
+    .closing-label {
         width: 100%;
-        margin: $space-two;
     }
 
-    .add-participant {
-        margin: $space-two;
-        margin-left: auto;
-    }
+    .input-group {
+        &.name {
+            width: 60%;
+        }
+        &.amount {
+            // $space-two == 12px
+            // calc() doesn't take variables?
+            width: calc(40% - 12px);
+            margin-left: $space-two;
+        }
 
-    .text-input,
-    .number-input {    
+        // &.date {
+        //     max-width:200px;            
+        // }
+        // &.time {
+        //     width: 100px;
+        //     margin-left: $space-two;
+        // }
+        &.create-button {
+            padding-top: 30px;
+        }
+
         margin-bottom: $space-three;
     }
-    
-    .form-row {
+
+
+    .closing-time {
+        width: 320px;
+        padding: 0;
+        border: none;
+
         display: flex;
-        margin: 0 ($space-two * -1);
-    
-        .input {
-            margin-left: $space-two;
-            margin-right: $space-two;
-    
-            flex-basis: 300px;
-            flex-grow: 1;
-        }
+        // border: 4px springgreen solid;
     }
 
+
 }
+
+// .Xkitty-form {
+//     display: flex;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     margin: 0 ($space-two * -1);
+
+//     max-width: 900px;
+//     // border: 1px solid dodgerblue;
+
+//     .block {
+//         border: 2px solid pink;
+//         flex-basis: 500px;
+//         flex-grow: 1;
+//         margin: $space-two;
+//     }
+
+//     .form-controls {
+//         width: 100%;
+//         margin: $space-two;
+//     }
+
+//     .add-participant {
+//         margin: $space-two;
+//         margin-left: auto;
+//     }
+
+//     .text-input,
+//     .number-input {    
+//         margin-bottom: $space-three;
+//     }
+    
+//     .form-row {
+//         display: flex;
+//         margin: 0 ($space-two * -1);
+    
+//         .input {
+//             margin-left: $space-two;
+//             margin-right: $space-two;
+    
+//             flex-basis: 300px;
+//             flex-grow: 1;
+//         }
+//     }
+
+// }
 

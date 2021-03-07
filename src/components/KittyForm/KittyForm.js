@@ -15,10 +15,12 @@ class KittyForm extends React.Component {
         const { kitty } = props;
 
         this.state = {
-            name: kitty ? kitty.name : '',
-            buyInAmount: kitty ? kitty.buyInAmount : '',
-            closeDate: kitty ? kitty.closeDate : '',
-            closeTime: kitty ? kitty.closeTime : '',
+            name: kitty ? kitty.name : { value : '', isValid: false },
+            buyInAmount: kitty ? kitty.buyInAmount : { value : '', isValid: false },
+            closeDate: kitty ? kitty.closeDate : { value : this.getDefaultDate(), isValid: false },
+            closeTime: kitty ? kitty.closeTime : { value : this.getDefaultTime(), isValid: false },
+            noClosingDate: kitty ? kitty.noClosingDate : { value: false, isValid: true },
+            formSubmitted: false
             // participants: kitty ? kitty.participants : [this.newParticipant()],
         };
 
@@ -29,50 +31,124 @@ class KittyForm extends React.Component {
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleBuyInAmountChange = this.handleBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleCloseTimeChange = this.handleCloseTimeChange.bind(this)
-        this.handleCloseDateChange = this.handleCloseDateChange.bind(this)
+        this.handleCloseTimeChange = this.handleCloseTimeChange.bind(this);
+        this.handleCloseDateChange = this.handleCloseDateChange.bind(this);
+        this.toggleNoClosingDate = this.toggleNoClosingDate.bind(this);
         
+
+        console.log(this.getDefaultDate())
+        console.log(this.getDefaultTime())
+    }
+
+    getDefaultDate() {
+        var defaultDay = new Date();
+        defaultDay.setHours(defaultDay.getHours() + 12)
+        return defaultDay.toISOString().slice(0,10);
+        // return defaultDay.toISOString().slice(14,19);
+    }
+
+    getDefaultTime() { 
+        var defaultTime = new Date();
+        defaultTime.setHours(defaultTime.getHours())
+        return defaultTime.toISOString().slice(11,16);
     }
     
     componentDidMount(){
         // const starterParticipants = this.props.kitty ? [...this.props.kitty.participants] : [];
-        
         // for (let i = 0; i < minimumParticipantCount; i++) {
             //     starterParticipants.push(this.newParticipant());
             // }
-            
             // this.setState({ participants: starterParticipants });
     }
-        
-    handleCloseDateChange(event) {
-        console.log(event.target.value)
-        this.setState({ closeDate: event.target.value});
+
+    validateRequired(value) {
+        return !!value;
     }
 
-    handleCloseTimeChange(event) {
-        console.log(event.target.value)
-        this.setState({ closeTime: event.target.value});
+    dateTimeValidation(value) {
+        const required = this.state.noClosingDate;
+        if (!required) {
+            return true;
+        }
+        return !!value;
     }
 
-    handleNameChange(event) {
-        this.setState({ name: event.target.value});
+    updateDateTimeValidState(required) {
+        const closeTime = this.state.closeTime;
+        const closeDate = this.state.closeDate;
+        const updatedCloseTime = { 
+            ...closeTime, 
+            isValid: required ? !!closeTime.value : true,
+        };
+        const updatedCloseDate = { 
+            ...closeDate, 
+            isValid: required ? !!closeDate.value : true,
+        };
+        this.setState({ closeDate: updatedCloseDate});
+        this.setState({ closeTime: updatedCloseTime});
     }
-    
-    handleBuyInAmountChange(event) {
-        this.setState({ buyInAmount: event.target.value});
+
+    toggleNoClosingDate(e) {
+        const closeToggle = this.state.noClosingDate;
+        const closeToggleUpdate = { 
+            ...closeToggle, 
+            value: !closeToggle.value,
+            isValid: true
+        }
+        this.setState({ noClosingDate: closeToggleUpdate});
+
+        this.updateDateTimeValidState(!closeToggle.value);
+    }
+
+    handleCloseDateChange(e) {
+        const closeDate = this.state.closeDate;
+        const updatedCloseDate = { 
+            ...closeDate, 
+            value: e.target.value,
+            isValid: this.dateTimeValidation(e.target.value)
+        }
+        this.setState({ closeDate: updatedCloseDate});
+    }
+
+    handleCloseTimeChange(e) {
+        const closeTime = this.state.closeTime;
+        const updatedCloseTime = { 
+            ...closeTime, 
+            value: e.target.value,
+            isValid: this.dateTimeValidation(e.target.value)
+        }
+        this.setState({ closeTime: updatedCloseTime});
+    }
+
+    handleNameChange = (e) => {
+        const name = this.state.name;
+        const updatedName = { 
+            ...name, 
+            value: e.target.value,
+            isValid: this.validateRequired(e.target.value)
+        }
+        this.setState({ name: updatedName});
+    }
+ 
+    handleBuyInAmountChange = (e) => {
+        const buyInAmount = this.state.buyInAmount;
+        const updatedAmount = { 
+            ...buyInAmount, 
+            value: e.target.value,
+            isValid: this.validateRequired(e.target.value)
+        }
+        this.setState({ buyInAmount: updatedAmount});
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        this.setState({ formSubmitted: true });
         
         const { kitty } = this.props;
-
         console.log('new kitty')
         console.log(this.state)
-
         console.log('isNewKitty')
         console.log(!kitty)
-
 
         return;
 
@@ -166,31 +242,35 @@ class KittyForm extends React.Component {
     }
     
     render() {
-        return (
+        return (  // submitted={`${formSubmitted}`}
             <div className="new-kitty-form-container">
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit} submitted={`${this.state.formSubmitted}`}>
 
                     <div className="form-block">
                         <div className="input-group name text-input">
                             <label className="form-label" htmlFor="kitty-name">Name</label>
-                            <input className="form-input" id="kitty-name"type="text" value={this.state.name} onChange={this.handleNameChange} placeholder="New Pot name"/>
+                            <input className="form-input" id="kitty-name"type="text" value={this.state.name.value} isvalid={`${this.state.name.isValid}`} onChange={this.handleNameChange} placeholder="New Pot name"/>
                         </div>
                         <div className="input-group amount number-input">
                             <label className="form-label" htmlFor="buyInAmount">Buy in amount</label>
-                            <input className="form-input" id="buyInAmount" type="number" value={this.state.buyInAmount} onChange={this.handleBuyInAmountChange}/>
+                            <input className="form-input" id="buyInAmount" type="number" value={this.state.buyInAmount.value} isvalid={`${this.state.buyInAmount.isValid}`} onChange={this.handleBuyInAmountChange}/>
                         </div>
 
                         <fieldset className="form-fieldset closing-time">
                             <legend className="form-label">Closing time</legend>
-
                             <div className="input-group date date-input">
                                 <label className="form-label visually-hidden" htmlFor="buyInAmount">Closing date</label>
-                                <input className="form-input" id="buyInAmount" type="date" value={this.state.closeDate} onChange={this.handleCloseDateChange}/>
+                                <input className="form-input" id="buyInAmount" type="date" value={this.state.closeDate.value} isvalid={`${this.state.closeDate.isValid}`} onChange={this.handleCloseDateChange}/>
                             </div>
                             <div className="input-group time time-input">
                                 <label className="form-label visually-hidden" htmlFor="buyInAmount">Closing time</label>
-                                <input className="form-input" id="buyInAmount" type="time" value={this.state.closeTime} onChange={this.handleCloseTimeChange}/>
-                            </div>                        
+                                <input className="form-input" id="buyInAmount" type="time" value={this.state.closeTime.value} isvalid={`${this.state.closeTime.isValid}`} onChange={this.handleCloseTimeChange}/>
+                            </div> 
+                            <div className="input-group checkbox">
+                                <label>
+                                    <input type="checkbox" value={this.state.noClosingDate.value}  onChange={this.toggleNoClosingDate} /> No closing time
+                                </label>
+                            </div>                       
                         </fieldset>
 
                         {/* <div className="closing-label">

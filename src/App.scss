@@ -113,6 +113,12 @@ ul {
 }
 
 .form-input {
+    &[type="date"],
+    &[type="time"]
+     {
+        padding: 9px $space-two;
+    }
+    
     background-color: lighten($color-beauty-blue, 30%);
     border: 1px solid $color-beauty-blue;
     border-radius: 5px;
@@ -125,6 +131,8 @@ ul {
 
 .form-input:active,
 .form-input:focus {
+
+
     background-color: $color-cantBe-white;
     
     transition: $background-transition;

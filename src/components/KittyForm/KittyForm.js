@@ -17,8 +17,8 @@ class KittyForm extends React.Component {
         this.state = {
             name: kitty ? kitty.name : { value : '', isValid: false },
             buyInAmount: kitty ? kitty.buyInAmount : { value : '', isValid: false },
-            closeDate: kitty ? kitty.closeDate : { value : this.getDefaultDate(), isValid: false },
-            closeTime: kitty ? kitty.closeTime : { value : this.getDefaultTime(), isValid: false },
+            closeDate: kitty ? kitty.closeDate : { value : '', isValid: false },
+            closeTime: kitty ? kitty.closeTime : { value : '', isValid: false },
             noClosingDate: kitty ? kitty.noClosingDate : { value: false, isValid: true },
             formSubmitted: false
             // participants: kitty ? kitty.participants : [this.newParticipant()],
@@ -90,14 +90,13 @@ class KittyForm extends React.Component {
 
     toggleNoClosingDate(e) {
         const closeToggle = this.state.noClosingDate;
+        this.updateDateTimeValidState(closeToggle.value);
         const closeToggleUpdate = { 
             ...closeToggle, 
             value: !closeToggle.value,
             isValid: true
         }
         this.setState({ noClosingDate: closeToggleUpdate});
-
-        this.updateDateTimeValidState(!closeToggle.value);
     }
 
     handleCloseDateChange(e) {
@@ -144,11 +143,15 @@ class KittyForm extends React.Component {
         event.preventDefault();
         this.setState({ formSubmitted: true });
         
-        const { kitty } = this.props;
-        console.log('new kitty')
-        console.log(this.state)
-        console.log('isNewKitty')
-        console.log(!kitty)
+        const kitty = { ...this.state };
+        const isFormValid = kitty.name.isValid && kitty.buyInAmount.isValid && kitty.closeTime.isValid && kitty.closeDate.isValid;
+
+        console.log('isValid? ', isFormValid)
+        if(!isFormValid) {
+            return;
+        }
+        console.log('SEND DATA')
+        console.log(kitty)
 
         return;
 

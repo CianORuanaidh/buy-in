@@ -146,28 +146,37 @@ class KittyForm extends React.Component {
         const kitty = { ...this.state };
         const isFormValid = kitty.name.isValid && kitty.buyInAmount.isValid && kitty.closeTime.isValid && kitty.closeDate.isValid;
 
-        console.log('isValid? ', isFormValid)
         if(!isFormValid) {
             return;
         }
-        console.log('SEND DATA')
-        console.log(kitty)
 
-        return;
+        const { id: updateKittyId } = this.props;
 
-        if (!kitty) {
+        if (true || !updateKittyId) {
 
-            createKitty({ ...this.state })
+            const closeDateArr = kitty.closeDate.value.split('-')
+            const closeTimeArr = kitty.closeTime.value.split(':')
+            const closeDateTime = !kitty.noClosingDate.value ? new Date(...closeDateArr, ...closeTimeArr) : null;
+
+            const newKittyDto = {
+                name: kitty.name.value,
+                buyInAmount: kitty.buyInAmount.value,
+                closeDateTime: closeDateTime,
+                noClosingDate: kitty.noClosingDate.value
+            }
+
+            console.log(newKittyDto)
+            return;
+
+            createKitty(newKittyDto)
                 .then(resp => console.log("RESPONSE: ", resp))
                 .catch(error => console.log('ERROR: ', error));
         
         } else {
 
-            const { id } = this.props;
-
             const kittyDto = { 
                 ...this.state,
-                id: id
+                id: updateKittyId
             }; 
 
             updateExisitingKitty(kittyDto)

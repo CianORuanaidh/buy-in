@@ -3,26 +3,30 @@ const Player = require('./playerModel');
 
 exports.createKitty = async (user, kittyDto) => {
     
-    const players = kittyDto.participants;
+
+    console.log('kittyDto')
+    console.log(kittyDto)
+
+    // const players = kittyDto.participants;
 
     
-    const playerDtos = await Promise.all( 
-    players.map(async p => {
+    // const playerDtos = await Promise.all( 
+    // players.map(async p => {
         
-        let player = await Player.findOne({ email: p.email });
+    //     let player = await Player.findOne({ email: p.email });
         
-        // if player does not exist > create a new one
-        if (player == null) {
-            player = await new Player(p).save();
-        }
+    //     // if player does not exist > create a new one
+    //     if (player == null) {
+    //         player = await new Player(p).save();
+    //     }
         
-        return player._id;
-    })
-    );
+    //     return player._id;
+    // })
+    // );
     
     const newKittyDto = {
         ...kittyDto,
-        participants: playerDtos,
+        // participants: playerDtos,
         user: user.id
     }
     

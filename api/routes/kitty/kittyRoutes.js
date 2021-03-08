@@ -17,8 +17,8 @@ router
 
     let { name, buyInAmount, participants } = req.body;
     
-    if (!(name && buyInAmount && participants)) {
-        res.status(400).json({ message: 'Please provide name, buyInAmount & participants' });
+    if (!(name && buyInAmount)) {
+        res.status(400).json({ message: 'Please provide name & buyInAmount' });
         return;
     }
     
@@ -43,7 +43,7 @@ router
 router
 .route('/')
 .get(async (req, res) => {
-    console.log('GET ALL KITTYA')
+    // console.log('GET ALL KITTYA')
     let doc;
         
     try {

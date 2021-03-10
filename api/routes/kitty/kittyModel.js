@@ -5,20 +5,27 @@ const kittySchema = new Schema({
     name: {
         type: String,
     },
-    isClosed: { 
-        type: Boolean, 
-        default: false 
-    },
     participants: [
         {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: 'Player'
+            ref: 'Player',
         }
     ],
-    // participants: [String],
     buyInAmount: {
         type: Number,
+    },
+    isClosed: { 
+        type: Boolean, 
+        default: false 
+    },
+    noClosingDate: { 
+        type: Boolean, 
+        default: false 
+    },
+    closeDateTime: {
+        type: Date,
+        default: null
     },
     user : {
         type: Schema.Types.ObjectId,

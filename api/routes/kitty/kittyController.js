@@ -3,30 +3,29 @@ const Player = require('./playerModel');
 
 exports.createKitty = async (user, kittyDto) => {
     
+    let playersDto = [];
 
-    console.log('kittyDto')
-    console.log(kittyDto)
-
-    // const players = kittyDto.participants;
-
+    const players = kittyDto.participants;
+    if (players && players.length > 0) {
+        playersDto = await Promise.all( 
+        players.map(async p => {
+            
+            let player = await Player.findOne({ email: p.email });
+            
+            // if player does not exist > create a new one
+            if (player == null) {
+                player = await new Player(p).save();
+            }
+            
+            return player._id;
+        })
+        );
+    }
     
-    // const playerDtos = await Promise.all( 
-    // players.map(async p => {
-        
-    //     let player = await Player.findOne({ email: p.email });
-        
-    //     // if player does not exist > create a new one
-    //     if (player == null) {
-    //         player = await new Player(p).save();
-    //     }
-        
-    //     return player._id;
-    // })
-    // );
     
     const newKittyDto = {
         ...kittyDto,
-        // participants: playerDtos,
+        participants: playersDto,
         user: user.id
     }
     
@@ -39,8 +38,9 @@ exports.createKitty = async (user, kittyDto) => {
     // retrive kitty with populated references
     const returnKitty = await Kitty
     .findOne({ _id: doc._id })
-    .populate('user')
+    .select('-__v -user')
     .populate('participants');
+    // .populate('user')
     
     return returnKitty;
     
@@ -103,8 +103,6 @@ exports.updateKitty = async (id, newKittyDto) => {
 exports.deleteKittyById = async (kittyId) => {
 
     const doc = await Kitty.deleteOne({ _id: kittyId});
-
-    console.log('IS DELETED? ', doc);
 
     return 'DELETED ' + kittyId;
 }

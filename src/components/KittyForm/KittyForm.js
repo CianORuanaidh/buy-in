@@ -166,7 +166,7 @@ class KittyForm extends React.Component {
             }
 
             console.log(newKittyDto)
-            return;
+            // return;
 
             createKitty(newKittyDto)
                 .then(resp => console.log("RESPONSE: ", resp))

@@ -15,21 +15,18 @@ router
     const kittyDto = req.body;
     const user = req.user;
 
-    let { name, buyInAmount, participants } = req.body;
+    let { name, buyInAmount, closeDateTime, noClosingDate } = req.body;
     
-    if (!(name && buyInAmount)) {
-        res.status(400).json({ message: 'Please provide name & buyInAmount' });
+    if (!(name && buyInAmount && closeDateTime !== undefined && noClosingDate !== undefined)) {
+        res.status(400).json({ message: 'Please provide name, buyInAmount, closeDateTime & noClosingDate' });
         return;
     }
     
-
     try {
-
-        doc = await createKitty(user, kittyDto);
-    
+        doc = await createKitty(user, kittyDto);    
     } 
     catch(err) {
-
+        console.log(err)
         res.status(500).json({ message: `Could not create kitty, please try again` });
         return;
     }
@@ -43,7 +40,6 @@ router
 router
 .route('/')
 .get(async (req, res) => {
-    // console.log('GET ALL KITTYA')
     let doc;
         
     try {
@@ -141,10 +137,6 @@ router
 router
 .route('/:kittyId')
 .delete(async (req, res) => {
-
-    console.log('HERE')
-    console.log(req.params)
-
     
     const { kittyId } = req.params;
     

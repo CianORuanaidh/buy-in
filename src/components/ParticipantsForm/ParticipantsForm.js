@@ -5,6 +5,8 @@ import { useState, useEffect, useCallback } from 'react';
 // import KittyPreview from '../components/KittyPreview/KittyPreview';
 // import Enums from '../services/enums/enum.types';
 
+import { validateRequired, validateEmail } from '../../services/form/form.validators';
+
 /*
 * ParticipantsForm
 */
@@ -21,6 +23,22 @@ function ParticipantsForm({participants, onHandleAddParticipant, onRemovePartici
         onRemoveParticipant(i);
     }
 
+    const handleParticipantNameChange = (e) => {
+        console.log('handleParticipantNameChange')
+        console.log(e)
+    }
+
+    const handleParticipantEmailChange = () => {
+        console.log('handleParticipantEmailChange')
+    }
+
+    const isNameValid = (value) => {
+        return `${validateRequired(value)}`;
+    }
+    const isEmailValid = (value) => {
+        return `${validateEmail(value)}`;
+    }
+
     return (
         <div className="block block-2">
             <fieldset className="form-fieldset participants">
@@ -30,11 +48,15 @@ function ParticipantsForm({participants, onHandleAddParticipant, onRemovePartici
                     <div className="form-row participant-box" key={i}>
                         <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-name">Participant name</label>
-                            <input className="form-input" id="participent-name" type="text" value={participant.name} placeholder="name" onChange={(e) => { this.handleParticipantNameChange(e, i, participant) }}/>
+                            <input className="form-input" id="participent-name" type="text" value={participant.name} placeholder="name" 
+                                onChange={(e) => { handleParticipantNameChange(e, i, participant) }}
+                                isvalid={isNameValid(participant.name)}/>
                         </div>
                         <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-email">Participant email</label>
-                            <input className="form-input" id="participent-email" type="text" value={participant.email} placeholder="email" onChange={(e) => { this.handleParticipantEmailChange(e, i, participant)}}/>
+                            <input className="form-input" id="participent-email" type="text" value={participant.email} placeholder="email" 
+                                onChange={(e) => { handleParticipantEmailChange(e, i, participant)}}
+                                isvalid={isEmailValid(participant.email)}/>
                         </div>
                         <div>
                             <button disabled={i < minimumParticipantCount} className="btn" type="button" title="Remove participant" onClick={(e) => { removeParticipant(e, i)}}>x</button>

@@ -195,6 +195,24 @@ class KittyForm extends React.Component {
         this.setState({ participants: updatedParticipants });
     }
 
+    handleParticipantNameChange(event, i, participant) {
+        // const editedParticipant = { 
+        //     ...this.state.participants[i],
+        //     name: event.target.value
+        // };
+        // const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+        // this.setState({ participants: updatedParticipants });
+    }
+
+    handleParticipantEmailChange(event, i, participant) {
+        // const editedParticipant = { 
+        //     ...this.state.participants[i],
+        //     email: event.target.value
+        // };
+        // const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+        // this.setState({ participants: updatedParticipants })
+    }
+
     functionTest(a,b) {
         return a + b;
     }

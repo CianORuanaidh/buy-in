@@ -1,0 +1,20 @@
+@import '../../App.scss';
+
+.participants {
+    padding: 0;
+    border: none;
+    margin: 0;
+    
+    .add-participant {
+    }
+}
+        
+.participant-box {
+    display: flex;
+    margin-bottom: $space-two;
+
+    .input:not(:last-of-type) {
+        margin-right: $space-two;
+    }
+
+}

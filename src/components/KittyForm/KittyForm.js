@@ -1,13 +1,11 @@
 import React from 'react';
 import './KittyForm.scss';
 import { createKitty, updateExisitingKitty } from '../../services/api/api.services';
+import ParticipantsForm from '../ParticipantsForm/ParticipantsForm';
 
 /*
 * form for creating a new Kitty
 */
-
-const minimumParticipantCount =  1;
-
 class KittyForm extends React.Component {
     constructor(props) {
         super(props);
@@ -20,31 +18,27 @@ class KittyForm extends React.Component {
             closeDate: kitty ? kitty.closeDate : { value : '', isValid: false },
             closeTime: kitty ? kitty.closeTime : { value : '', isValid: false },
             noClosingDate: kitty ? kitty.noClosingDate : { value: false, isValid: true },
-            formSubmitted: false
-            // participants: kitty ? kitty.participants : [this.newParticipant()],
+            formSubmitted: false,
+            participants: kitty ? kitty.participants : [this.newParticipant()],
+            id: null,
         };
 
-        // this.handleAddParticipant = this.handleAddParticipant.bind(this);
-        // this.populateForm =  this.populateForm.bind(this);
-        // this.updateForm =  this.updateForm.bind(this);
-        
         this.handleNameChange = this.handleNameChange.bind(this);
         this.handleBuyInAmountChange = this.handleBuyInAmountChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleCloseTimeChange = this.handleCloseTimeChange.bind(this);
         this.handleCloseDateChange = this.handleCloseDateChange.bind(this);
         this.toggleNoClosingDate = this.toggleNoClosingDate.bind(this);
-        
 
-        console.log(this.getDefaultDate())
-        console.log(this.getDefaultTime())
+    }
+
+    componentDidMount(){
     }
 
     getDefaultDate() {
         var defaultDay = new Date();
         defaultDay.setHours(defaultDay.getHours() + 12)
         return defaultDay.toISOString().slice(0,10);
-        // return defaultDay.toISOString().slice(14,19);
     }
 
     getDefaultTime() { 
@@ -53,14 +47,6 @@ class KittyForm extends React.Component {
         return defaultTime.toISOString().slice(11,16);
     }
     
-    componentDidMount(){
-        // const starterParticipants = this.props.kitty ? [...this.props.kitty.participants] : [];
-        // for (let i = 0; i < minimumParticipantCount; i++) {
-            //     starterParticipants.push(this.newParticipant());
-            // }
-            // this.setState({ participants: starterParticipants });
-    }
-
     validateRequired(value) {
         return !!value;
     }
@@ -152,32 +138,27 @@ class KittyForm extends React.Component {
 
         const { id: updateKittyId } = this.props;
 
-        if (true || !updateKittyId) {
+        if (!updateKittyId) {
 
             const closeDateArr = kitty.closeDate.value.split('-')
             const closeTimeArr = kitty.closeTime.value.split(':')
             const closeDateTime = !kitty.noClosingDate.value ? new Date(...closeDateArr, ...closeTimeArr) : null;
 
-            const newKittyDto = {
-                name: kitty.name.value,
-                buyInAmount: kitty.buyInAmount.value,
-                closeDateTime: closeDateTime,
-                noClosingDate: kitty.noClosingDate.value
-            }
+            const newKittyDto = { name: kitty.name.value, buyInAmount: kitty.buyInAmount.value,
+                closeDateTime: closeDateTime, noClosingDate: kitty.noClosingDate.value }
 
             console.log(newKittyDto)
-            // return;
-
+                
             createKitty(newKittyDto)
-                .then(resp => console.log("RESPONSE: ", resp))
+                .then(resp => {
+                    console.log("RESPONSE: ", resp)
+                    this.updateKittyData(resp.data);
+                })
                 .catch(error => console.log('ERROR: ', error));
         
         } else {
 
-            const kittyDto = { 
-                ...this.state,
-                id: updateKittyId
-            }; 
+            const kittyDto = { ...this.state, id: updateKittyId }; 
 
             updateExisitingKitty(kittyDto)
                 .then(resp => console.log("RESPONSE: ", resp))
@@ -186,75 +167,40 @@ class KittyForm extends React.Component {
         }
         
     }
-    
-    // newParticipant() {
-    //     return({ name: '', email: '' });
-    // }
 
-    // newMockParticipant(name, email) {
-    //     return({ name, email });
-    // }
+    updateKittyData(newKittyDto) {
+        const state = { ...this.state };
+        const id = newKittyDto._id;
 
-    // handleAddParticipant() {
-    //     const participants = [
-    //         ...this.state.participants,
-    //         this.newParticipant()
-    //     ]
-    //     this.setState({ participants: participants });
-    // }
+        this.setState({ 
+            ...state,
+            id,
+        })
+    }
     
-    // handleParticipantNameChange(event, i, participant) {
-    //     const editedParticipant = { 
-    //         ...this.state.participants[i],
-    //         name: event.target.value
-    //     };
-    //     const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
-    //     this.setState({ participants: updatedParticipants });
-    // }
-    
-    // handleParticipantEmailChange(event, i, participant) {
-    //     // Todo add validation
-    //     const editedParticipant = { 
-    //         ...this.state.participants[i],
-    //         email: event.target.value
-    //     };
-    //     const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
-    //     this.setState({ participants: updatedParticipants })
-    // }
-    
-    // removeParticipant(event, i) {
-    //     const updatedParticipants = this.state.participants.filter((p, index) => index !== i);        
-    //     this.setState({ participants: updatedParticipants });
-    // }
-        
-    // populateForm() {
-    //     this.setState({
-    //         name: 'Burgeroooo',
-    //         buyInAmount: 15,
-    //         participants: [
-    //             this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
-    //             this.newMockParticipant('Willy', 'willy.wool@gmail.com')
-    //         ]
-    //     })
-    // }
+    newParticipant() {
+        return({ name: '', email: '' });
+    }
 
-    // updateForm() {
-    //     this.setState({
-    //         name: 'Burgeroo Boo',
-    //         buyInAmount: 5.5,
-    //         participants: [
-    //             this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
-    //             this.newMockParticipant('Silly Oh', 'sill.oh@gmail.com')
-    //         ]
-    //     })
-    // }
+    onHandleAddParticipant(event) {
+        const participants = [
+            ...this.state.participants,
+            this.newParticipant()
+        ]
+        this.setState({ participants: participants });
+    }
+
+    removeParticipant(i) {        
+        const updatedParticipants = this.state.participants.filter((p, index) => index !== i);        
+        this.setState({ participants: updatedParticipants });
+    }
 
     functionTest(a,b) {
         return a + b;
     }
     
     render() {
-        return (  // submitted={`${formSubmitted}`}
+        return (
             <div className="new-kitty-form-container">
                 <form onSubmit={this.handleSubmit} submitted={`${this.state.formSubmitted}`}>
 
@@ -285,73 +231,24 @@ class KittyForm extends React.Component {
                             </div>                       
                         </fieldset>
 
-                        {/* <div className="closing-label">
-                            <label className="form-label" >Closing time</label>
-                        </div> */}
-
-
                         <div className="input-group create-button">
                             <button className="btn" type="submit">Create</button>
-                        </div>                    
+                        </div>    
+
                     </div>
 
-                    {/* <div className="number-input">
-                        <label className="form-label" htmlFor="buyInAmount">Invite by link</label>
-                        <input className="form-input" id="buyInAmount" type="checkbox"/>
-                    </div> */}
+                    {!this.id && 
+                        <div>
+                            <h4>INVITE BY LINK</h4>
+                            <h4>IS CLOSED CHECKBOX</h4>
+                            <ParticipantsForm 
+                                participants={this.state.participants} 
+                                onHandleAddParticipant={(e) => this.onHandleAddParticipant(e)}
+                                onRemoveParticipant={(e) => this.removeParticipant(e)}
+                                ></ParticipantsForm>
 
-                    {/* <div className="number-input">
-                        <label className="form-label" htmlFor="buyInAmount">is closed</label>
-                        <input className="form-input" id="buyInAmount" type="checkbox"/>
-                    </div> */}
-    
-                    {/* <div className="block block-2" style={{ marginBottom: 0 }}>
-                        <div className="form-row">
-                            <div className="input">
-                                <label className="form-label" htmlFor="participent-name">Participant name</label>
-                            </div>
-                            <div className="input">
-                                <label className="form-label" htmlFor="participent-email">Participant email</label>
-                            </div>        
                         </div>
-                    </div> */}
-
-                    {/* <div className="block block-2">
-                        {this.state.participants.map((participant, i) => {
-                            return (
-                                <div className="form-row" key={i}>
-                                    <div className="input text-input">
-                                        <label className="form-label visually-hidden" htmlFor="participent-name">Participant name</label>
-                                        <input className="form-input" id="participent-name" type="text" value={participant.name} onChange={(e) => { this.handleParticipantNameChange(e, i, participant) }}/>
-                                    </div>
-                                    <div className="input text-input">
-                                        <label className="form-label visually-hidden" htmlFor="participent-email">Participant email</label>
-                                        <input className="form-input" id="participent-email" type="text" value={participant.email} onChange={(e) => { this.handleParticipantEmailChange(e, i, participant)}}/>
-                                    </div>
-                                    <div>
-                                        <button disabled={i < minimumParticipantCount} className="btn" type="button" title="Remove participant" onClick={(e) => { this.removeParticipant(e, i)}}>x</button>
-                                    </div>              
-                                </div>
-                            );
-                        })}
-                        <div className="form-row">
-                            <button className="btn add-participant" type="button" onClick={this.handleAddParticipant}>Add another participant</button>
-                        </div>
-                    </div> */}
-                    {/* <div className="form-controls-block">
-                        <button className="btn" type="submit">Create</button>
-                        <button 
-                            className="btn" 
-                            type="button"
-                            style={{marginLeft: 20}} 
-                            onClick={this.populateForm}>Populate form</button>
-                        <button 
-                            className="btn" 
-                            type="button"
-                            style={{marginLeft: 20}} 
-                            onClick={this.updateForm}>UPDATE</button>
-
-                    </div>                     */}
+                    }
                 </form>
             </div>
         );
@@ -359,3 +256,61 @@ class KittyForm extends React.Component {
 }
 
 export default KittyForm;
+
+// {/*<button 
+//         className="btn" 
+//         type="button"
+//         style={{marginLeft: 20}} 
+//         onClick={this.updateForm}>UPDATE</button>
+        
+//     </div>*/}
+
+// this.populateForm =  this.populateForm.bind(this);
+// this.updateForm =  this.updateForm.bind(this);
+
+
+// newMockParticipant(name, email) {
+//     return({ name, email });
+// }
+
+// handleParticipantNameChange(event, i, participant) {
+//     const editedParticipant = { 
+//         ...this.state.participants[i],
+//         name: event.target.value
+//     };
+//     const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+//     this.setState({ participants: updatedParticipants });
+// }
+
+// handleParticipantEmailChange(event, i, participant) {
+//     // Todo add validation
+//     const editedParticipant = { 
+//         ...this.state.participants[i],
+//         email: event.target.value
+//     };
+//     const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+//     this.setState({ participants: updatedParticipants })
+// }
+
+    
+// populateForm() {
+//     this.setState({
+//         name: 'Burgeroooo',
+//         buyInAmount: 15,
+//         participants: [
+//             this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
+//             this.newMockParticipant('Willy', 'willy.wool@gmail.com')
+//         ]
+//     })
+// }
+
+// updateForm() {
+//     this.setState({
+//         name: 'Burgeroo Boo',
+//         buyInAmount: 5.5,
+//         participants: [
+//             this.newMockParticipant('Billy', 'bill.bob@gmail.com'),
+//             this.newMockParticipant('Silly Oh', 'sill.oh@gmail.com')
+//         ]
+//     })
+// }

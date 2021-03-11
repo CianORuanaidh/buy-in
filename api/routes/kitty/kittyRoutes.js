@@ -132,8 +132,8 @@ router
     return;
 });
 
-// // DELETE METHOD
-// // Delete kitty
+// DELETE METHOD
+// Delete kitty
 router
 .route('/:kittyId')
 .delete(async (req, res) => {

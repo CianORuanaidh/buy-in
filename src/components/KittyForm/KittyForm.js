@@ -195,22 +195,22 @@ class KittyForm extends React.Component {
         this.setState({ participants: updatedParticipants });
     }
 
-    handleParticipantNameChange(event, i, participant) {
-        // const editedParticipant = { 
-        //     ...this.state.participants[i],
-        //     name: event.target.value
-        // };
-        // const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
-        // this.setState({ participants: updatedParticipants });
+    handleParticipantNameChange({value, i}) {
+        const editedParticipant = { 
+            ...this.state.participants[i],
+            name: value
+        };
+        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+        this.setState({ participants: updatedParticipants });
     }
 
-    handleParticipantEmailChange(event, i, participant) {
-        // const editedParticipant = { 
-        //     ...this.state.participants[i],
-        //     email: event.target.value
-        // };
-        // const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
-        // this.setState({ participants: updatedParticipants })
+    handleParticipantEmailChange({value, i}) {
+        const editedParticipant = { 
+            ...this.state.participants[i],
+            email: value
+        };
+        const updatedParticipants = this.state.participants.map((p, index) => { return index === i ? editedParticipant : p });        
+        this.setState({ participants: updatedParticipants })
     }
 
     functionTest(a,b) {
@@ -263,8 +263,9 @@ class KittyForm extends React.Component {
                                 participants={this.state.participants} 
                                 onHandleAddParticipant={(e) => this.onHandleAddParticipant(e)}
                                 onRemoveParticipant={(e) => this.removeParticipant(e)}
+                                onHandleParticipantEmailChange={(e) => this.handleParticipantEmailChange(e)}
+                                onHandleParticipantNameChange={(e) => this.handleParticipantNameChange(e)}
                                 ></ParticipantsForm>
-
                         </div>
                     }
                 </form>
@@ -274,6 +275,7 @@ class KittyForm extends React.Component {
 }
 
 export default KittyForm;
+{
 
 // {/*<button 
 //         className="btn" 
@@ -332,3 +334,5 @@ export default KittyForm;
 //         ]
 //     })
 // }
+
+}

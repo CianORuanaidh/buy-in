@@ -1,17 +1,11 @@
 import './ParticipantsForm.scss';
-import { useState, useEffect, useCallback } from 'react';
-// import { GetAllKittiesForUser } from '../services/api/api.services';
-// import NewKitty from '../components/NewKitty/NewKitty';
-// import KittyPreview from '../components/KittyPreview/KittyPreview';
-// import Enums from '../services/enums/enum.types';
-
+import { useState } from 'react';
 import { validateRequired, validateEmail } from '../../services/form/form.validators';
 
 /*
 * ParticipantsForm
 */
-function ParticipantsForm({participants, onHandleAddParticipant, onRemoveParticipant}) {
-    console.log(participants)
+function ParticipantsForm({ participants, onHandleAddParticipant, onRemoveParticipant, onHandleParticipantEmailChange, onHandleParticipantNameChange }) {
 
     const [minimumParticipantCount] = useState(1)
 
@@ -19,17 +13,18 @@ function ParticipantsForm({participants, onHandleAddParticipant, onRemovePartici
         onHandleAddParticipant(e);
     }
 
-    const removeParticipant = (e, i) => {
+    const removeParticipant = (i) => {
         onRemoveParticipant(i);
     }
 
-    const handleParticipantNameChange = (e) => {
-        console.log('handleParticipantNameChange')
-        console.log(e)
+    const handleParticipantNameChange = ({e, i}) => {
+        const value = e.target.value;
+        onHandleParticipantNameChange({ value, i });
     }
 
-    const handleParticipantEmailChange = () => {
-        console.log('handleParticipantEmailChange')
+    const handleParticipantEmailChange = ({e, i}) => {
+        const value = e.target.value;
+        onHandleParticipantEmailChange({ value, i })
     }
 
     const isNameValid = (value) => {
@@ -49,17 +44,17 @@ function ParticipantsForm({participants, onHandleAddParticipant, onRemovePartici
                         <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-name">Participant name</label>
                             <input className="form-input" id="participent-name" type="text" value={participant.name} placeholder="name" 
-                                onChange={(e) => { handleParticipantNameChange(e, i, participant) }}
+                                onChange={(e) => { handleParticipantNameChange({e, i}) }}
                                 isvalid={isNameValid(participant.name)}/>
                         </div>
                         <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-email">Participant email</label>
                             <input className="form-input" id="participent-email" type="text" value={participant.email} placeholder="email" 
-                                onChange={(e) => { handleParticipantEmailChange(e, i, participant)}}
+                                onChange={(e) => { handleParticipantEmailChange({e, i}) }}
                                 isvalid={isEmailValid(participant.email)}/>
                         </div>
                         <div>
-                            <button disabled={i < minimumParticipantCount} className="btn" type="button" title="Remove participant" onClick={(e) => { removeParticipant(e, i)}}>x</button>
+                            <button disabled={i < minimumParticipantCount} className="btn" type="button" title="Remove participant" onClick={() => { removeParticipant(i)}}>x</button>
                         </div>              
                     </div>
                     );

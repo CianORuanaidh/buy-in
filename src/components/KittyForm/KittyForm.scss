@@ -25,11 +25,13 @@
             width: calc(40% - 12px);
             margin-left: $space-two;
         }
-        &.create-button {
-            padding-top: 28px;
-            margin-left: auto;
+        &.create-button,
+        &.control-buttons {
+            // padding-top: 28px;
+            // margin-left: auto;
+            // width: calc(100% - 354px);
 
-            width: calc(100% - 354px);
+            width: 100%;
 
             button {
                 width: 100%;

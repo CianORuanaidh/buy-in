@@ -37,16 +37,16 @@ function ParticipantsForm({ participants, onHandleAddParticipant, onRemovePartic
     return (
         <div className="block block-2">
             <fieldset className="form-fieldset participants">
-                <legend className="form-label">invite players</legend>
+                <legend className="form-label">invite with email</legend>
                 {participants.map((participant, i) => {
                     return (
                     <div className="form-row participant-box" key={i}>
-                        <div className="input text-input">
+                        {/* <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-name">Participant name</label>
                             <input className="form-input" id="participent-name" type="text" value={participant.name} placeholder="name" 
                                 onChange={(e) => { handleParticipantNameChange({e, i}) }}
                                 isvalid={isNameValid(participant.name)}/>
-                        </div>
+                        </div> */}
                         <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-email">Participant email</label>
                             <input className="form-input" id="participent-email" type="text" value={participant.email} placeholder="email" 
@@ -54,13 +54,13 @@ function ParticipantsForm({ participants, onHandleAddParticipant, onRemovePartic
                                 isvalid={isEmailValid(participant.email)}/>
                         </div>
                         <div>
-                            <button disabled={i < minimumParticipantCount} className="btn" type="button" title="Remove participant" onClick={() => { removeParticipant(i)}}>x</button>
+                            <button className="btn" type="button" title="Remove participant" onClick={() => { removeParticipant(i)}}>x</button>
                         </div>              
                     </div>
                     );
                 })}
                 <div className="form-row add-participant">
-                    <button className="btn add-participantX" type="button" onClick={handleAddParticipant}>Add another participant</button>
+                    <button className="btn add-participantX" type="button" onClick={handleAddParticipant}>Add {participants.length ? 'another ' : ''}participant</button>
                 </div>
             </fieldset>
         </div>

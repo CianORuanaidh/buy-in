@@ -2,6 +2,7 @@ import React from 'react';
 import './KittyForm.scss';
 import { createKitty, updateExisitingKitty } from '../../services/api/api.services';
 import ParticipantsForm from '../ParticipantsForm/ParticipantsForm';
+import InviteLink from '../InviteLink/InviteLink'
 
 /*
 * form for creating a new Kitty
@@ -20,6 +21,8 @@ class KittyForm extends React.Component {
             noClosingDate: kitty ? kitty.noClosingDate : { value: false, isValid: true },
             formSubmitted: false,
             participants: kitty ? kitty.participants : [this.newParticipant()],
+            isClosed: kitty ? kitty.isClosed : false,
+            inviteUrl: kitty ? kitty.inviteUrl : '_invite_link',
             id: null,
         };
 
@@ -168,6 +171,13 @@ class KittyForm extends React.Component {
         
     }
 
+    handleCloseGame = (e) => {        
+        this.setState((state) => {
+            const { isClosed } = state;
+            return ({ isClosed: !isClosed })
+        });
+    }
+
     updateKittyData(newKittyDto) {
         const state = { ...this.state };
         const id = newKittyDto._id;
@@ -232,7 +242,7 @@ class KittyForm extends React.Component {
                             <input className="form-input" id="buyInAmount" type="number" value={this.state.buyInAmount.value} isvalid={`${this.state.buyInAmount.isValid}`} onChange={this.handleBuyInAmountChange}/>
                         </div>
 
-                        <fieldset className="form-fieldset closing-time">
+                        {/* <fieldset className="form-fieldset closing-time">
                             <legend className="form-label">Closing time</legend>
                             <div className="input-group date date-input">
                                 <label className="form-label visually-hidden" htmlFor="buyInAmount">Closing date</label>
@@ -247,18 +257,28 @@ class KittyForm extends React.Component {
                                     <input type="checkbox" value={this.state.noClosingDate.value}  onChange={this.toggleNoClosingDate} /> No closing time
                                 </label>
                             </div>                       
-                        </fieldset>
-
-                        <div className="input-group create-button">
-                            <button className="btn" type="submit">Create</button>
-                        </div>    
+                        </fieldset> */}
 
                     </div>
 
+                    <div className="input-group control-buttons">
+                        { !this.id ?
+                        <button className="btn" type="submit">Create</button>
+                        :
+                        <button className="btn" type="submit">Save</button>
+                        }
+                    </div>    
+
                     {!this.id && 
                         <div>
-                            <h4>INVITE BY LINK</h4>
-                            <h4>IS CLOSED CHECKBOX</h4>
+                            {/* <div className="input-group checkbox">
+                                <label>
+                                    <input type="checkbox" checked={this.isClosed} value={this.state.noClosingDate.value}  onChange={this.handleCloseGame} /> Close game
+                                </label>
+                            </div>                        */}
+
+                            <InviteLink inviteUrl={this.state.inviteUrl}/>
+
                             <ParticipantsForm 
                                 participants={this.state.participants} 
                                 onHandleAddParticipant={(e) => this.onHandleAddParticipant(e)}

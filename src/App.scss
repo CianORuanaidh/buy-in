@@ -141,9 +141,10 @@ ul {
 
 .btn {
     cursor: pointer;
+    
+    border: 1px solid $color-my-black;
     background-color: $color-my-black;
     border-radius: $space-one;
-    border: 1px solid $color-my-black;
     color: $color-light-grey;
     font-weight: 100;
     padding: $space-two $space-three;
@@ -156,6 +157,26 @@ ul {
 
     &.btn-secondary {
         background-color: $color-beauty-blue;
+        border: 1px solid $color-beauty-blue;
+    
+        &:hover,
+        &:focus,
+        &:active {
+            border: 1px solid lighten($color-beauty-blue, 10%);
+            background-color: lighten($color-beauty-blue, 10%);   
+        }
+    }
+
+    &.btn-highlight {
+        background-color: $color-summer-salmon;
+        border: 1px solid $color-summer-salmon;
+
+        &:hover,
+        &:focus,
+        &:active {
+            border: 1px solid lighten($color-summer-salmon, 10%);
+            background-color: lighten($color-summer-salmon, 10%);   
+        }
     }
 }
 
@@ -168,6 +189,7 @@ ul {
 .btn:active,
 .btn.selected {
 
+    border: 1px solid lighten($color-my-black, 10%);
     background-color: lighten($color-my-black, 10%); 
 
     transition: $background-transition;
@@ -183,6 +205,7 @@ ul {
     text-decoration: none;
     padding: $space-two 0;
     font-weight: 400;
+    border: none;
 
     transition: $color-transition;
 }

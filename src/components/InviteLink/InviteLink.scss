@@ -1,0 +1,39 @@
+@import '../../App.scss';
+
+.invite-link-block {
+
+    padding: $space-three 0;
+    // border: 1px solid red;
+
+    .form-input.invite-link {
+
+        // display: inline;
+        // width: max-content;
+        cursor: pointer;
+        // color: $color-cantBe-white;
+        // border-radius: $space-one;
+
+        margin: $space-one 0;
+        // font-weight: 300;
+        // padding: $space-two;
+        background-color: lighten($color-summer-salmon, 40%);
+        border: 1px solid lighten($color-summer-salmon, 40%);
+    
+        // transition: $background-transition;
+
+        &:hover,
+        &:focus,
+        &:active,
+        &:active {
+
+            border: 1px solid $color-summer-salmon !important; 
+            outline-color: $color-summer-salmon;
+            outline-width: 0px;
+            background-color: lighten($color-summer-salmon, 40%);
+            transition: $background-transition;
+
+        }
+        
+    }
+
+}

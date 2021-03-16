@@ -24,7 +24,7 @@ function KittyPreview(props) {
     return (
         <div className="kitty-preview">
             <div className="">
-                <h4>{kitty.name}: { kitty.buyInAmount }</h4>
+                <div>{kitty.name}: { kitty.buyInAmount }</div>
             </div>
             <div className="controls">
 

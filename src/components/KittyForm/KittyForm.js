@@ -2,7 +2,9 @@ import React from 'react';
 import './KittyForm.scss';
 import { createKitty, updateExisitingKitty } from '../../services/api/api.services';
 import ParticipantsForm from '../ParticipantsForm/ParticipantsForm';
-import InviteLink from '../InviteLink/InviteLink'
+import InviteLink from '../InviteLink/InviteLink';
+
+import { withRouter } from "react-router-dom";
 
 /*
 * form for creating a new Kitty
@@ -13,17 +15,20 @@ class KittyForm extends React.Component {
 
         const { kitty } = props;
 
+        console.log('HERE')
+        console.log(kitty)
+
         this.state = {
-            name: kitty ? kitty.name : { value : '', isValid: false },
-            buyInAmount: kitty ? kitty.buyInAmount : { value : '', isValid: false },
-            closeDate: kitty ? kitty.closeDate : { value : '', isValid: false },
-            closeTime: kitty ? kitty.closeTime : { value : '', isValid: false },
-            noClosingDate: kitty ? kitty.noClosingDate : { value: false, isValid: true },
+            name: kitty ? { value : kitty.name, isValid: true } : { value : '', isValid: false },
+            buyInAmount: kitty ? { value : kitty.buyInAmount, isValid: true } : { value : '', isValid: false },
+            closeDate: kitty ? { value : kitty.closeDate, isValid: true } : { value : '', isValid: false },
+            closeTime: kitty ? { value : kitty.closeTime, isValid: true } : { value : '', isValid: false },
+            noClosingDate: kitty ? { value : kitty.noClosingDate, isValid: true } : { value: false, isValid: true },
             formSubmitted: false,
             participants: kitty ? kitty.participants : [this.newParticipant()],
             isClosed: kitty ? kitty.isClosed : false,
             inviteUrl: kitty ? kitty.inviteUrl : '_invite_link',
-            id: null,
+            id: kitty ? kitty._id : null
         };
 
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -35,7 +40,9 @@ class KittyForm extends React.Component {
 
     }
 
-    componentDidMount(){
+    componentDidMount() {
+        console.log('PAGE')
+        console.log(this)
     }
 
     getDefaultDate() {
@@ -130,10 +137,12 @@ class KittyForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+
         this.setState({ formSubmitted: true });
         
         const kitty = { ...this.state };
-        const isFormValid = kitty.name.isValid && kitty.buyInAmount.isValid && kitty.closeTime.isValid && kitty.closeDate.isValid;
+
+        const isFormValid = kitty.name.isValid && kitty.buyInAmount.isValid;
 
         if(!isFormValid) {
             return;
@@ -143,19 +152,17 @@ class KittyForm extends React.Component {
 
         if (!updateKittyId) {
 
-            const closeDateArr = kitty.closeDate.value.split('-')
-            const closeTimeArr = kitty.closeTime.value.split(':')
+            const closeDateArr = kitty.closeDate.value.split('-');
+            const closeTimeArr = kitty.closeTime.value.split(':');
             const closeDateTime = !kitty.noClosingDate.value ? new Date(...closeDateArr, ...closeTimeArr) : null;
 
             const newKittyDto = { name: kitty.name.value, buyInAmount: kitty.buyInAmount.value,
-                closeDateTime: closeDateTime, noClosingDate: kitty.noClosingDate.value }
-
-            console.log(newKittyDto)
+                closeDateTime: closeDateTime, noClosingDate: kitty.noClosingDate.value };
                 
             createKitty(newKittyDto)
                 .then(resp => {
-                    console.log("RESPONSE: ", resp)
                     this.updateKittyData(resp.data);
+                    this.props.history.push(`/kitty/${resp.data._id}`);
                 })
                 .catch(error => console.log('ERROR: ', error));
         
@@ -262,20 +269,20 @@ class KittyForm extends React.Component {
                     </div>
 
                     <div className="input-group control-buttons">
-                        { !this.id ?
+                        { !this.state.id ?
                         <button className="btn" type="submit">Create</button>
                         :
                         <button className="btn" type="submit">Save</button>
                         }
                     </div>    
 
-                    {!this.id && 
+                    {this.state.id && 
                         <div>
                             {/* <div className="input-group checkbox">
                                 <label>
                                     <input type="checkbox" checked={this.isClosed} value={this.state.noClosingDate.value}  onChange={this.handleCloseGame} /> Close game
                                 </label>
-                            </div>                        */}
+                            </div> */}
 
                             <InviteLink inviteUrl={this.state.inviteUrl}/>
 
@@ -294,7 +301,7 @@ class KittyForm extends React.Component {
     }
 }
 
-export default KittyForm;
+export default withRouter(KittyForm);
 {
 
 // {/*<button 

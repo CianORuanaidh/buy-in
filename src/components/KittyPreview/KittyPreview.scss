@@ -1,21 +1,29 @@
 @import '../../App.scss';
 
 .kitty-preview {
-    border: 1px solid $color-light-grey;
-    
+    border: 2px solid $color-light-grey;
+    border-radius: $space-one;
+
     -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.1);
     -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.1);
     box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.1);
 
     
     padding: $space-two;
-    margin: $space-two 0;
+    margin: $space-two;
+
+    width: 22%;
+
+    p {
+        word-break: break-word;
+    }
 
     cursor: pointer;
 
     &:hover {
-        // border: 2px solid $color-light-grey;
-        background-color: lighten($color-beauty-blue, 30%);
+        border: 2px solid $color-realnice-navy;
+
+        // background-color: lighten($color-beauty-blue, 30%);
         // background-color: lighten($color-my-black, 40%);
         // color: $color-cantBe-white;
     }

@@ -40,7 +40,7 @@ function DashboardPage() {
                 </div>
                 }
                 { dashboardView == Enums.DashboardViews.AllGames && 
-                <div>
+                <div className="kitty-list">
                     { allKittys && allKittys.map((kitty, i) => <KittyPreview kitty={kitty} key={`${kitty.name}_${i}`}></ KittyPreview>)}
                 </div>
                 }

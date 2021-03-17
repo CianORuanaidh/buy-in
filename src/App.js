@@ -88,7 +88,7 @@ function App() {
             />
 
             {/* KITTY PAGE ROUTE */}
-            <Route path="/kitty/:kittyId"
+            <Route exact path="/kitty/:kittyId"
               render ={props => {
                 if(!user) {
                   return <Redirect to="/"/>
@@ -96,6 +96,12 @@ function App() {
                 return <KittyPage {...props}></KittyPage>
               }}
             />
+
+            {/* OPT IN PAGE  */}
+            <Route path="/public/kitty/join/">
+              <h1>JOIN THE GAE HERE</h1>
+            </Route>
+
 
             {/* HOME PAGE ROUTE */}
             <Route path="/">

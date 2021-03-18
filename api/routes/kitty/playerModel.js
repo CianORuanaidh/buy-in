@@ -9,7 +9,7 @@ const playerSchema = new Schema({
     email: {
         type: String,
         required: true
-    }
+    },
 })
 
 const Player = mongoose.model("Player", playerSchema);

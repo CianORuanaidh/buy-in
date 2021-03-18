@@ -12,8 +12,18 @@ function DashboardPage() {
     console.log('DASHBOARD PAGE')
     
     const [allKittys] = GetAllKittiesForUser();
-    const [dashboardView, setDashboardView] = useState(Enums.DashboardViews.AllGames);
+    const [dashboardView, setDashboardView] = useState(Enums.DashboardViews.NewGame);
         
+
+    useEffect(() => {
+
+        if (allKittys && allKittys.length > 0) {
+            setDashboardView(Enums.DashboardViews.AllGames)
+        }
+
+    }, [allKittys])
+
+
     const handleViewSelect = (e) => {
         if (e.target.value) {
             setDashboardView(e.target.value);       

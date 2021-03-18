@@ -15,12 +15,24 @@ router
     const kittyDto = req.body;
     const user = req.user;
 
-    let { name, buyInAmount, closeDateTime, noClosingDate } = req.body;
+    console.log('kittyDto')
+    console.log(kittyDto)
+    console.log('user')
+    console.log(user)
+
     
-    if (!(name && buyInAmount && closeDateTime !== undefined && noClosingDate !== undefined)) {
+    let { name, buyInAmount } = kittyDto;
+        
+    console.log(name)
+    console.log(buyInAmount)
+    console.log(name && buyInAmount)
+
+    if (!(name && buyInAmount)) {
+        console.log('IN IF')
         res.status(400).json({ message: 'Please provide name, buyInAmount, closeDateTime & noClosingDate' });
         return;
     }
+    
     
     try {
         doc = await createKitty(user, kittyDto);    
@@ -30,6 +42,9 @@ router
         res.status(500).json({ message: `Could not create kitty, please try again` });
         return;
     }
+    
+    // res.json('DONE')
+    // return;
 
     res.json(doc);
     return;

@@ -99,7 +99,7 @@ function App() {
 
             {/* OPT IN PAGE  */}
             <Route path="/public/kitty/join/">
-              <h1>JOIN THE GAE HERE</h1>
+              <h1>JOIN THE GAME HERE</h1>
             </Route>
 
 

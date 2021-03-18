@@ -1,37 +1,48 @@
 const Kitty = require('./kittyModel');
 const Player = require('./playerModel');
+const PlayerGroup = require('./playerGroupModel');
+const User = require('../user/userModel');
 
 exports.createKitty = async (user, kittyDto) => {
     
-    let playersDto = [];
+    // let playersDto = [];
 
-    const players = kittyDto.participants;
-    if (players && players.length > 0) {
-        playersDto = await Promise.all( 
-        players.map(async p => {
+    // const players = kittyDto.participants;
+    // if (players && players.length > 0) {
+    //     playersDto = await Promise.all( 
+    //     players.map(async p => {
             
-            let player = await Player.findOne({ email: p.email });
+    //         let player = await Player.findOne({ email: p.email });
             
-            // if player does not exist > create a new one
-            if (player == null) {
-                player = await new Player(p).save();
-            }
+    //         // if player does not exist > create a new one
+    //         if (player == null) {
+    //             player = await new Player(p).save();
+    //         }
             
-            return player._id;
-        })
-        );
-    }
-    
+    //         return player._id;
+    //     })
+    //     );
+    // }
+
+
+    const player = await addUserToPLayerGroup(user);    
+    let dateCreated = new Date().toISOString();
     
     const newKittyDto = {
         ...kittyDto,
-        participants: playersDto,
-        user: user.id
+        // participants: playersDto,
+        user: user.id,
+        dateCreated
     }
     
     // create an new instance of Kitty model
     const newKitty = new Kitty(newKittyDto);
-    
+
+    // console.log('IN CONTROLLER')
+    // console.log(newKitty)    
+    // return ({ someting:'something' });
+
+
     // Save the kitty just 
     const doc = await newKitty.save();
     
@@ -39,11 +50,25 @@ exports.createKitty = async (user, kittyDto) => {
     const returnKitty = await Kitty
     .findOne({ _id: doc._id })
     .select('-__v -user')
-    .populate('participants');
+    // .populate('participants');
     // .populate('user')
     
     return returnKitty;
     
+}
+
+const addUserToPLayerGroup = async (user) => {
+    const u = await User.findById(user.id);
+    const email = u.email;
+    const name = `${u.firstName} ${u.lastName}`;
+
+    let player = await Player.findOne({ email });
+
+    if (player === null) {
+        player = await new Player({ email, name }).save();
+    }
+
+    return player;
 }
 
 exports.findAllKitties = async (user) => {

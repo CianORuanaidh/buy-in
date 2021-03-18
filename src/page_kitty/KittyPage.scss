@@ -1,3 +1,34 @@
 @import '../App.scss';
 
 // MORE STYLES
+
+.kitty-page-container {
+    padding: 0 30px;
+    
+    .kitty-block {
+        position: relative;
+        border: 1px solid $color-beauty-blue;
+        border-radius: $space-one;
+        padding: $space-three;
+    
+        max-width: $container-width-one;
+        h2 {
+            font-size: 2rem;
+            margin: $space-one 0;
+        }
+    
+        p {
+            margin: $space-one 0;
+        }
+    }
+
+    .controls {
+        * {
+            margin-right: $space-one;
+        }
+        // border: 1px solid green;    
+        position: absolute;
+        top: $space-one;
+        right: $space-one;
+    }
+}

@@ -156,12 +156,18 @@ class KittyForm extends React.Component {
             const closeTimeArr = kitty.closeTime.value.split(':');
             const closeDateTime = !kitty.noClosingDate.value ? new Date(...closeDateArr, ...closeTimeArr) : null;
 
-            const newKittyDto = { name: kitty.name.value, buyInAmount: kitty.buyInAmount.value,
-                closeDateTime: closeDateTime, noClosingDate: kitty.noClosingDate.value };
-                
+            // const newKittyDto = { name: kitty.name.value, buyInAmount: kitty.buyInAmount.value,
+            //     closeDateTime: closeDateTime, noClosingDate: kitty.noClosingDate.value };
+
+            const newKittyDto = {
+                name: kitty.name.value, 
+                buyInAmount: kitty.buyInAmount.value 
+            };
+    
+
             createKitty(newKittyDto)
                 .then(resp => {
-                    this.updateKittyData(resp.data);
+                    // this.updateKittyData(resp.data);
                     this.props.history.push(`/kitty/${resp.data._id}`);
                 })
                 .catch(error => console.log('ERROR: ', error));
@@ -286,13 +292,13 @@ class KittyForm extends React.Component {
 
                             <InviteLink inviteUrl={this.state.inviteUrl}/>
 
-                            <ParticipantsForm 
+                            {/* <ParticipantsForm 
                                 participants={this.state.participants} 
                                 onHandleAddParticipant={(e) => this.onHandleAddParticipant(e)}
                                 onRemoveParticipant={(e) => this.removeParticipant(e)}
                                 onHandleParticipantEmailChange={(e) => this.handleParticipantEmailChange(e)}
                                 onHandleParticipantNameChange={(e) => this.handleParticipantNameChange(e)}
-                                ></ParticipantsForm>
+                                ></ParticipantsForm> */}
                         </div>
                     }
                 </form>

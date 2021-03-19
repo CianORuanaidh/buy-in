@@ -38,11 +38,6 @@ exports.createKitty = async (user, kittyDto) => {
     // create an new instance of Kitty model
     const newKitty = new Kitty(newKittyDto);
 
-    // console.log('IN CONTROLLER')
-    // console.log(newKitty)    
-    // return ({ someting:'something' });
-
-
     // Save the kitty just 
     const doc = await newKitty.save();
     

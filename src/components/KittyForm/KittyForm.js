@@ -290,7 +290,7 @@ class KittyForm extends React.Component {
                                 </label>
                             </div> */}
 
-                            <InviteLink inviteUrl={this.state.inviteUrl}/>
+                            {/* <InviteLink inviteUrl={this.state.inviteUrl}/> */}
 
                             {/* <ParticipantsForm 
                                 participants={this.state.participants} 

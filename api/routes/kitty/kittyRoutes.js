@@ -10,42 +10,27 @@ router
 .route('/')
 .post(async (req, res) => {
 
-    let doc;
-
     const kittyDto = req.body;
     const user = req.user;
-
-    console.log('kittyDto')
-    console.log(kittyDto)
-    console.log('user')
-    console.log(user)
-
-    
-    let { name, buyInAmount } = kittyDto;
+    const { name, buyInAmount } = kittyDto;
+    let doc;
         
-    console.log(name)
-    console.log(buyInAmount)
-    console.log(name && buyInAmount)
-
     if (!(name && buyInAmount)) {
-        console.log('IN IF')
         res.status(400).json({ message: 'Please provide name, buyInAmount, closeDateTime & noClosingDate' });
         return;
     }
-    
-    
-    try {
+        
+    try 
+    {
         doc = await createKitty(user, kittyDto);    
     } 
-    catch(err) {
+    catch(err) 
+    {
         console.log(err)
         res.status(500).json({ message: `Could not create kitty, please try again` });
         return;
     }
     
-    // res.json('DONE')
-    // return;
-
     res.json(doc);
     return;
 });

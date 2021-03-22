@@ -6,6 +6,9 @@ import { validateRequired, validateEmail } from '../../services/form/form.valida
 * ParticipantsForm
 */
 function ParticipantsForm({ participants, onHandleAddParticipant, onRemoveParticipant, onHandleParticipantEmailChange, onHandleParticipantNameChange }) {
+    
+    console.log('ParticipantsForm')
+    console.log(participants)
 
     const [minimumParticipantCount] = useState(1)
 

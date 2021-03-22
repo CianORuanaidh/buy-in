@@ -99,4 +99,25 @@ export function GetKittyById(kittyId) {
     return kittyData;
 }
 
+// get specific kitty by id
+export function GetModifiableKittyById(kittyId) {
+    const [kittyData, setKittyData] = useState(null)
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            const response = await axiosReq.get(`kitty/${kittyId}`);
+            
+            setKittyData(response.data)
+        }
+
+        fetchData().catch(error => setKittyData({ error }));
+        
+    }, []);
+
+    return [kittyData, setKittyData];
+}
+
+
 

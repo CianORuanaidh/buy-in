@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useParams } from "react-router-dom";
-import { GetKittyById, deleteKittyById } from "../services/api/api.services";
+import { GetKittyById, deleteKittyById, GetModifiableKittyById } from "../services/api/api.services";
 import InviteLink from '../components/InviteLink/InviteLink';
 import KittyForm from '../components/KittyForm/KittyForm';
 import ParticipantsForm from '../components/ParticipantsForm/ParticipantsForm';
@@ -12,14 +12,13 @@ const  KittyPage = () => {
     
     let { kittyId } = useParams();
         
-    const kitty = GetKittyById(kittyId);
+    const [kitty, setKittyData] = GetModifiableKittyById(kittyId);
     const [check, setCheck] = useState(false);
 
     const convertInviteIdToUrl = (inviteId) => {
         return `http://localhost:3000/public/kitty/join/${inviteId}`;
     }
 
-    
     console.log('kitty')
     console.log(kitty)
 
@@ -39,6 +38,58 @@ const  KittyPage = () => {
         //     .catch(error => console.log(error));
     }
 
+    const newParticipant = () => {
+        return({ name: '', email: '' });
+    }
+
+    const onHandleAddParticipant = (e) => {
+        const playerGroup = [
+            ...kitty.playerGroup,
+            newParticipant()
+        ]
+        const updateKitty = { 
+            ...kitty,
+            playerGroup
+        };
+        setKittyData(updateKitty);
+    }
+
+    const removeParticipant = (i) => {        
+        const playerGroup = kitty.playerGroup.filter((p, index) => index !== i);   
+        const updateKitty = { 
+            ...kitty,
+            playerGroup
+        };        
+        setKittyData(updateKitty);
+    }
+
+    const handleParticipantNameChange = ({value, i}) => {
+        const editedPlayer = { 
+            ...kitty.playerGroup[i],
+            name: value
+        };
+        const playerGroup = kitty.playerGroup.map((p, index) => { return index === i ? editedPlayer : p });        
+        const updateKitty = { 
+            ...kitty,
+            playerGroup
+        };        
+        setKittyData(updateKitty);
+    }
+
+    const handleParticipantEmailChange = ({value, i}) => {
+        const editedPlayer = { 
+            ...kitty.playerGroup[i],
+            email: value
+        };
+        const playerGroup = kitty.playerGroup.map((p, index) => { return index === i ? editedPlayer : p });        
+        const updateKitty = { 
+            ...kitty,
+            playerGroup
+        };        
+        setKittyData(updateKitty);
+    }
+
+
 
 
     if (kitty && kitty.error) {
@@ -56,13 +107,10 @@ const  KittyPage = () => {
 
                     <h2>{ kitty.name }</h2>
                     <p>Buy in amount: {kitty.buyInAmount}</p>
-
-                    {/* <h3>Players</h3>
-                    { kitty.participants.map((player, i) => <p key={`${player.name}_${i}`}>{player.name}</p>)} */}
                     
-                    {/* { check && 
+                    { check && 
                         <KittyForm kitty={kitty} id={kitty._id}></KittyForm>
-                    } */}
+                    }
 
                     <div className="controls">
                         <button className="btn btn-link" onClick={handleUpdateClick}>update</button>
@@ -74,10 +122,10 @@ const  KittyPage = () => {
 
                     <ParticipantsForm 
                         participants={kitty.playerGroup} 
-                        // onHandleAddParticipant={(e) => this.onHandleAddParticipant(e)}
-                        // onRemoveParticipant={(e) => this.removeParticipant(e)}
-                        // onHandleParticipantEmailChange={(e) => this.handleParticipantEmailChange(e)}
-                        // onHandleParticipantNameChange={(e) => this.handleParticipantNameChange(e)}
+                        onHandleAddParticipant={(e) => onHandleAddParticipant(e)}
+                        onRemoveParticipant={(e) => removeParticipant(e)}
+                        onHandleParticipantEmailChange={(e) => handleParticipantEmailChange(e)}
+                        onHandleParticipantNameChange={(e) => handleParticipantNameChange(e)}
                         ></ParticipantsForm>
 
 

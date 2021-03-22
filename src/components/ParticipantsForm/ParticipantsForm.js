@@ -5,7 +5,13 @@ import { validateRequired, validateEmail } from '../../services/form/form.valida
 /*
 * ParticipantsForm
 */
-function ParticipantsForm({ participants, onHandleAddParticipant, onRemoveParticipant, onHandleParticipantEmailChange, onHandleParticipantNameChange }) {
+function ParticipantsForm({ 
+    participants, 
+    onHandleAddParticipant, 
+    onRemoveParticipant, 
+    onHandleParticipantEmailChange, 
+    onHandleParticipantNameChange,
+    onInvitePlayers }) {
     
     console.log('ParticipantsForm')
     console.log(participants)
@@ -28,6 +34,11 @@ function ParticipantsForm({ participants, onHandleAddParticipant, onRemovePartic
     const handleParticipantEmailChange = ({e, i}) => {
         const value = e.target.value;
         onHandleParticipantEmailChange({ value, i })
+    }
+
+    const invitePlayers = (e) => {
+        e.preventDefault()
+        onInvitePlayers();
     }
 
     const isNameValid = (value) => {
@@ -63,7 +74,10 @@ function ParticipantsForm({ participants, onHandleAddParticipant, onRemovePartic
                     );
                 })}
                 <div className="form-row add-participant">
-                    <button className="btn add-participantX" type="button" onClick={handleAddParticipant}>Add {participants.length ? 'another ' : ''}participant</button>
+                    <button className="btn btn-link" type="button" onClick={handleAddParticipant}>Add {participants.length ? 'another ' : ''} player</button>
+                </div>
+                <div>
+                    <button className="btn btn-secondary" type="button"onClick={invitePlayers}>Invite players</button>
                 </div>
             </fieldset>
         </div>

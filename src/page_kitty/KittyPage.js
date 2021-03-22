@@ -19,11 +19,12 @@ const  KittyPage = () => {
         return `http://localhost:3000/public/kitty/join/${inviteId}`;
     }
 
-    console.log('kitty')
-    console.log(kitty)
+    const newParticipant = () => {
+        return({ name: '', email: '' });
+    }
 
     if (kitty && !kitty.playerGroup) {
-        kitty.playerGroup = [];
+        kitty.playerGroup = [newParticipant()];
     }
     
     const handleUpdateClick = (e) => {
@@ -38,9 +39,6 @@ const  KittyPage = () => {
         //     .catch(error => console.log(error));
     }
 
-    const newParticipant = () => {
-        return({ name: '', email: '' });
-    }
 
     const onHandleAddParticipant = (e) => {
         const playerGroup = [
@@ -89,6 +87,13 @@ const  KittyPage = () => {
         setKittyData(updateKitty);
     }
 
+    const onInvitePlayers = (event) => {
+
+        const inviteEmails = kitty.playerGroup.map(p => p.email);
+        console.log('inviteEmails')
+        console.log(inviteEmails)
+
+    }
 
 
 
@@ -126,6 +131,7 @@ const  KittyPage = () => {
                         onRemoveParticipant={(e) => removeParticipant(e)}
                         onHandleParticipantEmailChange={(e) => handleParticipantEmailChange(e)}
                         onHandleParticipantNameChange={(e) => handleParticipantNameChange(e)}
+                        onInvitePlayers={(e) => onInvitePlayers(e)}
                         ></ParticipantsForm>
 
 

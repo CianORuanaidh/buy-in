@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useParams } from "react-router-dom";
-import { GetKittyById, deleteKittyById, GetModifiableKittyById } from "../services/api/api.services";
+import { GetKittyById, deleteKittyById, GetModifiableKittyById, kittyInvitePlayers } from "../services/api/api.services";
 import InviteLink from '../components/InviteLink/InviteLink';
 import KittyForm from '../components/KittyForm/KittyForm';
 import ParticipantsForm from '../components/ParticipantsForm/ParticipantsForm';
@@ -92,6 +92,10 @@ const  KittyPage = () => {
         const inviteEmails = kitty.playerGroup.map(p => p.email);
         console.log('inviteEmails')
         console.log(inviteEmails)
+
+        kittyInvitePlayers(kitty._id, inviteEmails)
+            .then(resp => console.log('RESP: ', resp))
+            .catch(error => console.log('ERROR: ', error))
 
     }
 

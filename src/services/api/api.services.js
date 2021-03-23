@@ -38,7 +38,7 @@ export function userLogin(loginDto) {
 // kitty apis
 //
 export const createKitty = (kittyDto) => { 
-    const url = `kitty`
+    const url = `kitty`;
     return axiosReq.post(url, kittyDto);
 }
 
@@ -47,9 +47,14 @@ export function updateExisitingKitty(kittyDto) {
     return axiosReq.patch(url, kittyDto);
 }
 
-export function deleteKittyById(KittyId) {
-    const url = `kitty/${KittyId}`;
+export function deleteKittyById(kittyId) {
+    const url = `kitty/${kittyId}`;
     return axiosReq.delete(url);
+}
+
+export function kittyInvitePlayers(kittyId, playerDto){
+    const url = `kitty/${kittyId}/players`;
+    return axiosReq.post(url, playerDto);
 }
 
 //

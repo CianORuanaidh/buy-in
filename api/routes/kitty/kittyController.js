@@ -126,3 +126,74 @@ exports.deleteKittyById = async (kittyId) => {
 
     return 'DELETED ' + kittyId;
 }
+
+exports.getPlayerIds = async (playerList) => {
+
+        playersDto = await Promise.all( 
+            playerList.map(async p => {
+            
+                let player = await Player.findOne({ email: p });
+
+                // // if player does not exist > create a new one
+                if (player == null) {
+                    const newPLayer = { name: p, email: p };
+                    player = await new Player(newPLayer).save();
+                }
+                
+                return player._id;
+            })
+        );
+
+    return playersDto;
+}
+
+exports.getPlayerGroupById = async(id) => {
+    const playerGroup = await PlayerGroup.findById(id)
+                                .select('-__v')
+                                .populate('players', '-__v -_id')
+                                .populate('user', 'email -_id');
+    return playerGroup;
+}
+
+exports.createPlayerGroup = async (playerIds, userId, groupName) => {
+
+
+
+
+    const newPlayerGroupDto = {
+        name: groupName,
+        players: playerIds,
+        user: userId
+    }
+
+
+    // create an new instance of playerGroup model
+    const newPlayerGroup = new PlayerGroup(newPlayerGroupDto);
+
+
+    console.log('newPlayerGroup')
+    console.log(newPlayerGroup)
+
+
+    // Save the playerGroup 
+    const doc = await newPlayerGroup.save();
+
+
+    // playersDto = await Promise.all( 
+    //     playerList.map(async p => {
+        
+    //         let player = await Player.findOne({ email: p });
+
+    //         // // if player does not exist > create a new one
+    //         if (player == null) {
+    //             const newPLayer = { name: p, email: p };
+    //             player = await new Player(newPLayer).save();
+    //         }
+            
+    //         return player._id;
+    //     })
+    // );
+
+    return doc;
+}
+

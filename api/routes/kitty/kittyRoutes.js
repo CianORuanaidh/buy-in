@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createKitty, findAllKitties, findKittyById, updateKitty, deleteKittyById } = require('./kittyController');
+const { createKitty, findAllKitties, findKittyById, updateKitty, deleteKittyById, getPlayerIds, createPlayerGroup, getPlayerGroupById } = require('./kittyController');
 const { verifyToken } = require('../../middleware/verifyToken');
 
 // POST METHOD
@@ -159,6 +159,84 @@ router
     // res.json(doc)
     return;
 });
+
+// DELETE METHOD
+// Delete kitty
+router
+.route('/:kittyId/players')
+.post(async (req, res) => {
+    
+    // console.log(req.body)
+
+    const inviteEmails = req.body;
+    const hasEmptyEmails = inviteEmails.filter(email => !email).length > 0;
+
+    // console.log(inviteEmails)
+    // console.log(hasEmptyEmails)
+
+    // console.log('CHECKS')
+    // console.log(!inviteEmails)
+    // console.log(!inviteEmails.length)
+    // console.log(hasEmptyEmails)
+
+    if(!inviteEmails || !inviteEmails.length || hasEmptyEmails) {
+        res.status(400).json({ message: `One or more emails are invalid` });
+        return;
+    }
+    
+    let playerGoup;
+
+    try 
+    {
+        console.log('NOW TRY THIS')
+        // const playerIds = await getPlayerIds(req.body);
+        // const kitty = await findKittyById(req.params.kittyId);
+        // const user = req.user;
+        
+        // console.log('STUFF')
+        // console.log(playerIds)
+        // console.log(kitty)
+        // console.log(user)
+
+        // const groupName = `${kitty.name}_group`;
+
+        // const newPlayerGoup = await createPlayerGroup(playerIds, user.id, groupName);
+
+        playerGoup =  await getPlayerGroupById('6059c8fcb6df99040a7589a8');
+        console.log(playerGoup)
+
+    }
+    catch (e) 
+    {
+        console.log(e)
+    }
+
+    
+    res.json(playerGoup)
+
+    return;
+    const { kittyId } = req.params;
+    
+    if (!kittyId) {
+        res.status(400).json({ message: 'Please provide a kittyId parameter' });
+    }
+    
+    res.json(deleteKittyById(kittyId))
+    // let kitty;
+
+    // kitty = await Kitty.findById(kittyId);
+
+    // if (!kitty) {
+    //     res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
+    //     return;
+    // }
+
+    // const doc = await kitty.delete();
+
+    // res.json(doc)
+    return;
+});
+
 
 // export the route
 module.exports = router;

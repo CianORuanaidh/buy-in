@@ -74,7 +74,8 @@ function ParticipantsForm({
                     );
                 })}
                 <div className="form-row add-participant">
-                    <button className="btn btn-link" type="button" onClick={handleAddParticipant}>Add {participants.length ? 'another ' : ''} player</button>
+                    {/* <button className="btn btn-link" type="button" onClick={handleAddParticipant}>Add {participants.length ? 'another ' : ''} player</button> */}
+                    <button className="btn btn-link" type="button" onClick={handleAddParticipant}> + </button>
                 </div>
                 <div>
                     <button className="btn btn-secondary" type="button"onClick={invitePlayers}>Invite players</button>

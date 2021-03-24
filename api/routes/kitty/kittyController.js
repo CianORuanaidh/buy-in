@@ -80,7 +80,8 @@ exports.findKittyById = async (id) => {
 
     const kitty = await Kitty.findById(id)
         .select('-__v')
-        .populate('participants', '-_id -__v');
+        .populate({ path: 'playerGroup', select: '-_id -__v -user',
+                    populate: { path: 'players', select : '-_id' } });
 
     return kitty;
 }
@@ -156,44 +157,41 @@ exports.getPlayerGroupById = async(id) => {
 }
 
 exports.createPlayerGroup = async (playerIds, userId, groupName) => {
-
-
-
-
     const newPlayerGroupDto = {
         name: groupName,
         players: playerIds,
         user: userId
     }
 
-
     // create an new instance of playerGroup model
     const newPlayerGroup = new PlayerGroup(newPlayerGroupDto);
 
-
-    console.log('newPlayerGroup')
-    console.log(newPlayerGroup)
-
+    // console.log('newPlayerGroup')
+    // console.log(newPlayerGroup)
 
     // Save the playerGroup 
     const doc = await newPlayerGroup.save();
 
-
-    // playersDto = await Promise.all( 
-    //     playerList.map(async p => {
-        
-    //         let player = await Player.findOne({ email: p });
-
-    //         // // if player does not exist > create a new one
-    //         if (player == null) {
-    //             const newPLayer = { name: p, email: p };
-    //             player = await new Player(newPLayer).save();
-    //         }
-            
-    //         return player._id;
-    //     })
-    // );
-
     return doc;
 }
 
+exports.linkPLayerGroupToKitty = async (kittyId, playerGroupId) => {
+
+    console.log('\n\n\n\nlinkPLayerGroupToKitty')
+    console.log(kittyId)
+    console.log(playerGroupId)
+
+    const kitty = await Kitty.findById(kittyId);
+    console.log(kitty)
+    kitty.playerGroup = playerGroupId;
+    console.log(kitty)
+
+    const doc = await kitty.save();
+
+    doc.populate('playerGroup')
+
+    console.log('doc')
+    console.log(doc)
+
+    return doc;
+}

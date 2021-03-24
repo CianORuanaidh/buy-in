@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createKitty, findAllKitties, findKittyById, updateKitty, deleteKittyById, getPlayerIds, createPlayerGroup, getPlayerGroupById } = require('./kittyController');
+const { createKitty, findAllKitties, findKittyById, updateKitty, deleteKittyById, getPlayerIds, createPlayerGroup, getPlayerGroupById, linkPLayerGroupToKitty } = require('./kittyController');
 const { verifyToken } = require('../../middleware/verifyToken');
 
 // POST METHOD
@@ -76,7 +76,14 @@ router
 
     try {
 
+        console.log('FIND KITTY BY ID')
         doc = await findKittyById(kittyId);
+        console.log(doc)
+        // console.log('POPULATE')
+        // doc.populate('playerGroup')
+        // console.log(doc)
+
+
 
         if (!doc) {
             res.status(404).json({ message: `Kitty not found.` });
@@ -185,10 +192,11 @@ router
     }
     
     let playerGoup;
+    let doc;
 
     try 
     {
-        console.log('NOW TRY THIS')
+        // console.log('NOW TRY THIS')
         // const playerIds = await getPlayerIds(req.body);
         // const kitty = await findKittyById(req.params.kittyId);
         // const user = req.user;
@@ -201,9 +209,13 @@ router
         // const groupName = `${kitty.name}_group`;
 
         // const newPlayerGoup = await createPlayerGroup(playerIds, user.id, groupName);
+         
 
-        playerGoup =  await getPlayerGroupById('6059c8fcb6df99040a7589a8');
+        playerGoup = await getPlayerGroupById('6059c8fcb6df99040a7589a8');
         console.log(playerGoup)
+
+        doc = await linkPLayerGroupToKitty(req.params.kittyId, '6059c8fcb6df99040a7589a8');
+
 
     }
     catch (e) 
@@ -212,7 +224,7 @@ router
     }
 
     
-    res.json(playerGoup)
+    res.json(doc)
 
     return;
     const { kittyId } = req.params;

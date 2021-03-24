@@ -24,7 +24,7 @@ const  KittyPage = () => {
     }
 
     if (kitty && !kitty.playerGroup) {
-        kitty.playerGroup = [newParticipant()];
+        kitty.playerGroup.players = [newParticipant()];
     }
     
     const handleUpdateClick = (e) => {
@@ -41,10 +41,13 @@ const  KittyPage = () => {
 
 
     const onHandleAddParticipant = (e) => {
-        const playerGroup = [
+        const playerGroup = {
             ...kitty.playerGroup,
-            newParticipant()
-        ]
+        }
+
+        playerGroup.players.push(newParticipant())
+
+
         const updateKitty = { 
             ...kitty,
             playerGroup
@@ -53,43 +56,45 @@ const  KittyPage = () => {
     }
 
     const removeParticipant = (i) => {        
-        const playerGroup = kitty.playerGroup.filter((p, index) => index !== i);   
+        const players = kitty.playerGroup.players.filter((p, index) => index !== i);   
         const updateKitty = { 
             ...kitty,
-            playerGroup
         };        
+        updateKitty.playerGroup.players = players;
         setKittyData(updateKitty);
     }
 
     const handleParticipantNameChange = ({value, i}) => {
         const editedPlayer = { 
-            ...kitty.playerGroup[i],
+            ...kitty.playerGroup.players[i],
             name: value
         };
-        const playerGroup = kitty.playerGroup.map((p, index) => { return index === i ? editedPlayer : p });        
+        const players = kitty.playerGroup.players.map((p, index) => { return index === i ? editedPlayer : p });        
         const updateKitty = { 
             ...kitty,
-            playerGroup
+            // playerGroup
         };        
+        updateKitty.playerGroup.players = players;
         setKittyData(updateKitty);
     }
 
     const handleParticipantEmailChange = ({value, i}) => {
         const editedPlayer = { 
-            ...kitty.playerGroup[i],
+            ...kitty.playerGroup.players[i],
             email: value
         };
-        const playerGroup = kitty.playerGroup.map((p, index) => { return index === i ? editedPlayer : p });        
+        const players = kitty.playerGroup.players.map((p, index) => { return index === i ? editedPlayer : p });        
         const updateKitty = { 
             ...kitty,
-            playerGroup
+            // playerGroup
         };        
+        updateKitty.playerGroup.players = players;
         setKittyData(updateKitty);
     }
 
     const onInvitePlayers = (event) => {
 
-        const inviteEmails = kitty.playerGroup.map(p => p.email);
+        const inviteEmails = kitty.playerGroup.players.map(p => p.email);
         console.log('inviteEmails')
         console.log(inviteEmails)
 
@@ -130,7 +135,7 @@ const  KittyPage = () => {
                     <InviteLink inviteUrl={convertInviteIdToUrl(kitty.inviteId)}></InviteLink>
 
                     <ParticipantsForm 
-                        participants={kitty.playerGroup} 
+                        participants={kitty.playerGroup.players} 
                         onHandleAddParticipant={(e) => onHandleAddParticipant(e)}
                         onRemoveParticipant={(e) => removeParticipant(e)}
                         onHandleParticipantEmailChange={(e) => handleParticipantEmailChange(e)}

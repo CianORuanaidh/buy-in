@@ -24,7 +24,10 @@ const  KittyPage = () => {
     }
 
     if (kitty && !kitty.playerGroup) {
-        kitty.playerGroup.players = [newParticipant()];
+        
+        // Todo fix this hack...figure out proper solution
+        kitty['playerGroup'] = {}
+        kitty['playerGroup'].players = [newParticipant()];
     }
     
     const handleUpdateClick = (e) => {

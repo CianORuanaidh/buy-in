@@ -42,12 +42,11 @@ exports.createKitty = async (user, kittyDto) => {
     const doc = await newKitty.save();
     
     // retrive kitty with populated references
-    const returnKitty = await Kitty
-    .findOne({ _id: doc._id })
-    .select('-__v -user')
-    // .populate('participants');
-    // .populate('user')
-    
+    const returnKitty = await Kitty.findOne({ _id: doc._id })
+        .select('-__v -user')
+        // .populate('participants');
+        // .populate('user')
+        
     return returnKitty;
     
 }
@@ -166,9 +165,6 @@ exports.createPlayerGroup = async (playerIds, userId, groupName) => {
     // create an new instance of playerGroup model
     const newPlayerGroup = new PlayerGroup(newPlayerGroupDto);
 
-    // console.log('newPlayerGroup')
-    // console.log(newPlayerGroup)
-
     // Save the playerGroup 
     const doc = await newPlayerGroup.save();
 
@@ -177,21 +173,22 @@ exports.createPlayerGroup = async (playerIds, userId, groupName) => {
 
 exports.linkPLayerGroupToKitty = async (kittyId, playerGroupId) => {
 
-    console.log('\n\n\n\nlinkPLayerGroupToKitty')
-    console.log(kittyId)
-    console.log(playerGroupId)
-
     const kitty = await Kitty.findById(kittyId);
-    console.log(kitty)
     kitty.playerGroup = playerGroupId;
-    console.log(kitty)
 
     const doc = await kitty.save();
+    const populatQuery = { 
+        path: 'playerGroup', 
+        select: '-_id -__v -user',
+        populate: { 
+            path: 'players', 
+            select : '-_id' 
+        } 
+    };
 
-    doc.populate('playerGroup')
+    const updatedKitty = await Kitty.findById(kittyId)
+        .select('-__v')
+        .populate(populatQuery);
 
-    console.log('doc')
-    console.log(doc)
-
-    return doc;
+    return updatedKitty;
 }

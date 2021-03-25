@@ -6,6 +6,7 @@ import DashboardPage from './page_dashboard/DashboardPage';
 import LoginPage from './page_login/LoginPage';
 import HomePage from './page_home/HomePage';
 import KittyPage from './page_kitty/KittyPage';
+import KittyJoinPage from './page_kitty_join/KittyJoinPage';
 import { getUserWithToken } from './services/api/api.services';
 import './App.scss';
 
@@ -98,8 +99,8 @@ function App() {
             />
 
             {/* OPT IN PAGE  */}
-            <Route path="/public/kitty/join/">
-              <h1>JOIN THE GAME HERE</h1>
+            <Route path="/public/kitty/join/:kittyInviteId">
+              <KittyJoinPage></KittyJoinPage>
             </Route>
 
 

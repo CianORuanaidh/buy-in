@@ -75,15 +75,7 @@ router
     let doc;
 
     try {
-
-        console.log('FIND KITTY BY ID')
         doc = await findKittyById(kittyId);
-        console.log(doc)
-        // console.log('POPULATE')
-        // doc.populate('playerGroup')
-        // console.log(doc)
-
-
 
         if (!doc) {
             res.status(404).json({ message: `Kitty not found.` });
@@ -167,85 +159,40 @@ router
     return;
 });
 
-// DELETE METHOD
-// Delete kitty
+
+// Add players to kitty
 router
 .route('/:kittyId/players')
 .post(async (req, res) => {
     
-    // console.log(req.body)
-
     const inviteEmails = req.body;
     const hasEmptyEmails = inviteEmails.filter(email => !email).length > 0;
-
-    // console.log(inviteEmails)
-    // console.log(hasEmptyEmails)
-
-    // console.log('CHECKS')
-    // console.log(!inviteEmails)
-    // console.log(!inviteEmails.length)
-    // console.log(hasEmptyEmails)
 
     if(!inviteEmails || !inviteEmails.length || hasEmptyEmails) {
         res.status(400).json({ message: `One or more emails are invalid` });
         return;
     }
     
-    let playerGoup;
     let doc;
 
     try 
     {
-        // console.log('NOW TRY THIS')
-        // const playerIds = await getPlayerIds(req.body);
-        // const kitty = await findKittyById(req.params.kittyId);
-        // const user = req.user;
-        
-        // console.log('STUFF')
-        // console.log(playerIds)
-        // console.log(kitty)
-        // console.log(user)
+        const kitty = await findKittyById(req.params.kittyId);
+        const playerIds = await getPlayerIds(req.body);
+        const user = req.user;
+        const groupName = `${kitty.name}_group`;
+        const newPlayerGoup = await createPlayerGroup(playerIds, user.id, groupName);
 
-        // const groupName = `${kitty.name}_group`;
-
-        // const newPlayerGoup = await createPlayerGroup(playerIds, user.id, groupName);
-         
-
-        playerGoup = await getPlayerGroupById('6059c8fcb6df99040a7589a8');
-        console.log(playerGoup)
-
-        doc = await linkPLayerGroupToKitty(req.params.kittyId, '6059c8fcb6df99040a7589a8');
-
-
+        doc = await linkPLayerGroupToKitty(req.params.kittyId, newPlayerGoup._id);
     }
     catch (e) 
     {
         console.log(e)
+        res.status(500).json({ message: `There was a problen saving these changes.`, error: err.message });
+        return;
     }
 
-    
     res.json(doc)
-
-    return;
-    const { kittyId } = req.params;
-    
-    if (!kittyId) {
-        res.status(400).json({ message: 'Please provide a kittyId parameter' });
-    }
-    
-    res.json(deleteKittyById(kittyId))
-    // let kitty;
-
-    // kitty = await Kitty.findById(kittyId);
-
-    // if (!kitty) {
-    //     res.status(400).json({ message: `Could not find record with id: ${kittyId}` });
-    //     return;
-    // }
-
-    // const doc = await kitty.delete();
-
-    // res.json(doc)
     return;
 });
 

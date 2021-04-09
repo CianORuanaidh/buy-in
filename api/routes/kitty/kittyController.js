@@ -2,6 +2,7 @@ const Kitty = require('./kittyModel');
 const Player = require('./playerModel');
 const PlayerGroup = require('./playerGroupModel');
 const User = require('../user/userModel');
+const { populate } = require('./playerGroupModel');
 
 exports.createKitty = async (user, kittyDto) => {
     
@@ -25,7 +26,7 @@ exports.createKitty = async (user, kittyDto) => {
     // }
 
 
-    const player = await addUserToPLayerGroup(user);    
+    const player = await addUserToPlayerGroup(user);    
     let dateCreated = new Date().toISOString();
     
     const newKittyDto = {
@@ -51,7 +52,7 @@ exports.createKitty = async (user, kittyDto) => {
     
 }
 
-const addUserToPLayerGroup = async (user) => {
+const addUserToPlayerGroup = async (user) => {
     const u = await User.findById(user.id);
     const email = u.email;
     const name = `${u.firstName} ${u.lastName}`;
@@ -79,8 +80,37 @@ exports.findKittyById = async (id) => {
 
     const kitty = await Kitty.findById(id)
         .select('-__v')
-        .populate({ path: 'playerGroup', select: '-_id -__v -user',
-                    populate: { path: 'players', select : '-_id' } });
+        .populate({ 
+                    path: 'playerGroup', 
+                    select: '-_id -__v -user',
+                    populate: [
+                        { path: 'players', select : '-_id -__v' }, 
+                        { 
+                            path: 'playersTwo', 
+                            populate: { path: 'player', select : '-_id -__v' }
+                        }
+                    ] 
+                 });
+
+    return kitty;
+}
+
+exports.findKittyByInviteId = async (inviteId) => {
+
+    const kitty = await Kitty.findOne({inviteId})
+        .select('-__v')
+        .populate({ 
+                    path: 'playerGroup', 
+                    select: '-_id -__v -user',
+                    populate: [
+                        { path: 'players', select : '-_id -__v' }, 
+                        { 
+                            path: 'playersTwo', 
+                            populate: { path: 'player', select : '-_id -__v' }
+                        }
+                    ] 
+                 })
+        .populate({path: 'user', select: '-_id firstName lastName'});
 
     return kitty;
 }
@@ -127,7 +157,7 @@ exports.deleteKittyById = async (kittyId) => {
     return 'DELETED ' + kittyId;
 }
 
-exports.getPlayerIds = async (playerList) => {
+const getPlayerIds = async (playerList) => {
 
         playersDto = await Promise.all( 
             playerList.map(async p => {
@@ -146,6 +176,8 @@ exports.getPlayerIds = async (playerList) => {
 
     return playersDto;
 }
+exports.getPlayerIds = getPlayerIds;
+
 
 exports.getPlayerGroupById = async(id) => {
     const playerGroup = await PlayerGroup.findById(id)
@@ -156,17 +188,37 @@ exports.getPlayerGroupById = async(id) => {
 }
 
 exports.createPlayerGroup = async (playerIds, userId, groupName) => {
+
+    const playerDtos = playerIds.map(id => {
+        return ({
+            player: id,
+            isInvited: true,
+            isConfirmedIn: false,
+            hasPaid: false
+        })
+    })
+
     const newPlayerGroupDto = {
         name: groupName,
         players: playerIds,
+        playersTwo: playerDtos,
         user: userId
     }
 
+    console.log('\n \n')
+    console.log('IN createPlayerGroup')
     // create an new instance of playerGroup model
     const newPlayerGroup = new PlayerGroup(newPlayerGroupDto);
 
+    console.log('newPlayerGroup')
+    console.log(newPlayerGroup)
+
     // Save the playerGroup 
     const doc = await newPlayerGroup.save();
+
+    console.log('NOW DOC')
+    console.log(doc)
+
 
     return doc;
 }
@@ -176,6 +228,10 @@ exports.linkPLayerGroupToKitty = async (kittyId, playerGroupId) => {
     const kitty = await Kitty.findById(kittyId);
     kitty.playerGroup = playerGroupId;
 
+    console.log('\n\n')
+    console.log('linkPLayerGroupToKitty')
+    console.log(kitty)
+    
     const doc = await kitty.save();
     const populatQuery = { 
         path: 'playerGroup', 
@@ -192,3 +248,62 @@ exports.linkPLayerGroupToKitty = async (kittyId, playerGroupId) => {
 
     return updatedKitty;
 }
+
+exports.confirmPlayersForKitty = async (kittyId, playerEmails) => {
+
+    const kitty = await Kitty.findById(kittyId).populate();
+    // console.log(kitty)
+
+
+    const playerGroup = await PlayerGroup.findById(kitty.playerGroup).populate('playersTwo');
+    console.log('HERE playerGroup')
+    console.log(playerGroup)
+
+    // let playerIds = [];
+    // console.log('playerEmails: ')
+    // console.log(playerEmails)
+    const playerIds = await getPlayerIds(playerEmails);
+    
+    // console.log('playerIds')
+    // console.log(playerIds)
+
+    playerIds.forEach(id => {
+        // console.log('ID: ', id)
+
+        const playerExistisInPLaterGroup = playerGroup.playersTwo.find(p => `${p.player}` == `${id}`)
+
+        // console.log('playerExistisInPLaterGroup')
+        // console.log(playerExistisInPLaterGroup)
+
+        if (playerExistisInPLaterGroup) {
+            console.log('PLAYER EXISTS ALREADY')
+
+            playerGroup.playersTwo.map(p => {
+                p.isConfirmedIn = p.isConfirmedIn == true || `${p.player}` == `${id}`;        
+                return p;
+            })
+
+        } else {
+            console.log('PLAYER DOES NOT EXIST')
+            playerGroup.playersTwo.push({
+                player: id,
+                isInvited: true,
+                isConfirmedIn: true,
+                hasPaid: false
+            })
+        }
+    })
+
+    console.log('\n \n UPDATED playerGroup')
+    console.log(playerGroup.playersTwo)
+    console.log('LENGTH: ', playerGroup.playersTwo.length)
+
+    const doc = await playerGroup.save();
+    console.log('SAVED GROUP: ', doc)
+    
+
+    return 'RETURN'
+    
+}
+
+// exports.confirmPlayersForKitty()

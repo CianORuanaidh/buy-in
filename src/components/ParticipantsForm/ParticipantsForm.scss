@@ -8,6 +8,12 @@
     .add-participant {
         margin-bottom: $space-two;
     }
+    
+    .player-confirmed {
+        // border: 1px solid red !important; 
+        padding: $space-two;
+        color: $color-summer-salmon;
+    }
 }
         
 .participant-box {
@@ -17,5 +23,12 @@
     .input:not(:last-of-type) {
         margin-right: $space-two;
     }
+
+    .form-input:disabled {
+        border: 1px red solid;
+        border: none;
+        background-color: white;
+    }
+
 
 }

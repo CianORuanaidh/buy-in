@@ -57,6 +57,15 @@ export function kittyInvitePlayers(kittyId, playerDto){
     return axiosReq.post(url, playerDto);
 }
 
+export function getKittyFromInviteId(inviteId){
+    const url = `kitty/invite/${inviteId}`;
+    return axiosReq.get(url);
+}
+
+export function kittyInvitePlayerConfirm(kittyId, playerDto){
+    const url = `kitty/${kittyId}/playerconfirm`;
+    return axiosReq.post(url, playerDto);
+}
 //
 // Custom Hooks
 //

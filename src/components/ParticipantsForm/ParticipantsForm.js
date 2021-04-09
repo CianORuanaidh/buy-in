@@ -51,8 +51,8 @@ function ParticipantsForm({
     return (
         <div className="block block-2">
             <fieldset className="form-fieldset participants">
-                <legend className="form-label">invite with email</legend>
-                {participants.map((participant, i) => {
+                <legend className="form-label">Players</legend>
+                {participants && participants.map((participant, i) => {
                     return (
                     <div className="form-row participant-box" key={i}>
                         {/* <div className="input text-input">
@@ -63,22 +63,23 @@ function ParticipantsForm({
                         </div> */}
                         <div className="input text-input">
                             <label className="form-label visually-hidden" htmlFor="participent-email">Participant email</label>
-                            <input className="form-input" id="participent-email" type="text" value={participant.email} placeholder="email" 
+                            <input className="form-input" id="participent-email" type="text" value={participant.player.email} placeholder="email" 
                                 onChange={(e) => { handleParticipantEmailChange({e, i}) }}
-                                isvalid={isEmailValid(participant.email)}/>
+                                isvalid={isEmailValid(participant.player.email)} disabled={participant.isInvited}/>
                         </div>
                         <div>
-                            <button className="btn" type="button" title="Remove participant" onClick={() => { removeParticipant(i)}}>x</button>
+                            <button className="btn" type="button" title="Remove participant" disabled={participant.hasPaid} onClick={() => { removeParticipant(i)}}>x</button>
                         </div>              
+                        {participant.isConfirmedIn ? <span className="player-confirmed"> Confirmed in </span> : '' }
                     </div>
                     );
                 })}
                 <div className="form-row add-participant">
                     {/* <button className="btn btn-link" type="button" onClick={handleAddParticipant}>Add {participants.length ? 'another ' : ''} player</button> */}
-                    <button className="btn btn-link" type="button" onClick={handleAddParticipant}> + </button>
+                    <button className="btn btn-link" type="button" onClick={handleAddParticipant}> + add player</button>
                 </div>
                 <div>
-                    <button className="btn btn-secondary" type="button"onClick={invitePlayers}>Invite players</button>
+                    <button className="btn btn-secondary" type="button"onClick={invitePlayers}>Save players</button>
                 </div>
             </fieldset>
         </div>

@@ -13,6 +13,8 @@ const  KittyPage = () => {
     let { kittyId } = useParams();
         
     const [kitty, setKittyData] = GetModifiableKittyById(kittyId);
+    const [invitedPlayers, setInvitedPLayers] = useState(null);
+
     const [check, setCheck] = useState(false);
 
     const convertInviteIdToUrl = (inviteId) => {
@@ -23,11 +25,18 @@ const  KittyPage = () => {
         return({ name: '', email: '' });
     }
 
+    const newParticipantTwo = () => {
+        return({ 
+            player: { name: '', email: '' }}
+            );
+    }
+
+
     if (kitty && !kitty.playerGroup) {
         
         // Todo fix this hack...figure out proper solution
         kitty['playerGroup'] = {}
-        kitty['playerGroup'].players = [newParticipant()];
+        // kitty['playerGroup'].players = [newParticipant()];
     }
     
     const handleUpdateClick = (e) => {
@@ -44,13 +53,19 @@ const  KittyPage = () => {
 
 
     const onHandleAddParticipant = (e) => {
+
+        if (!kitty.playerGroup.playersTwo ) {
+                    // Todo fix this hack...figure out proper solution
+            kitty['playerGroup'] = {}
+            kitty['playerGroup'].playersTwo = [];
+        }
+     
         const playerGroup = {
             ...kitty.playerGroup,
         }
 
-        playerGroup.players.push(newParticipant())
-
-
+        playerGroup.playersTwo.push(newParticipantTwo());
+        
         const updateKitty = { 
             ...kitty,
             playerGroup
@@ -59,11 +74,11 @@ const  KittyPage = () => {
     }
 
     const removeParticipant = (i) => {        
-        const players = kitty.playerGroup.players.filter((p, index) => index !== i);   
+        const players = kitty.playerGroup.playersTwo.filter((p, index) => index !== i);   
         const updateKitty = { 
             ...kitty,
         };        
-        updateKitty.playerGroup.players = players;
+        updateKitty.playerGroup.playersTwo = players;
         setKittyData(updateKitty);
     }
 
@@ -82,27 +97,51 @@ const  KittyPage = () => {
     }
 
     const handleParticipantEmailChange = ({value, i}) => {
+
+        // console.log("HERE")
+        // console.log(value)
+
         const editedPlayer = { 
-            ...kitty.playerGroup.players[i],
+            ...kitty.playerGroup.playersTwo[i],
             email: value
         };
-        const players = kitty.playerGroup.players.map((p, index) => { return index === i ? editedPlayer : p });        
+        editedPlayer.player.email = value;
+        // console.log(editedPlayer)
+        // const players = kitty.playerGroup.players.map((p, index) => { return index === i ? editedPlayer : p });        
+        const playersTwo = kitty.playerGroup.playersTwo.map((p, index) => { return index === i ? editedPlayer : p });        
+        // console.log(players)
         const updateKitty = { 
             ...kitty,
             // playerGroup
         };        
-        updateKitty.playerGroup.players = players;
+        // updateKitty.playerGroup.players = players;
+        updateKitty.playerGroup.playersTwo = playersTwo;
+        // console.log(updateKitty)
         setKittyData(updateKitty);
     }
 
     const onInvitePlayers = (event) => {
 
-        const inviteEmails = kitty.playerGroup.players.map(p => p.email);
-        console.log('inviteEmails')
-        console.log(inviteEmails)
+        // console.log('INVITE')
+        if (!kitty.playerGroup.playersTwo) {
+            return;
+        }
+        
+        console.log(kitty.playerGroup.playersTwo)
+        let inviteEmails = kitty.playerGroup.playersTwo.map(p => p.player.email);
+        // inviteEmails = inviteEmails.map(email => email);
+        // console.log('inviteEmails')
+        // console.log(inviteEmails)
 
+        let updatedInvite = kitty.playerGroup.playersTwo.map(p => { return ({ ...p, isInvited: true }) });
+        const updateKitty = { ...kitty };        
+        updateKitty.playerGroup.playersTwo = updatedInvite;
+        
         kittyInvitePlayers(kitty._id, inviteEmails)
-            .then(resp => console.log('RESP: ', resp))
+            .then(resp => { 
+                    console.log('RESP: ', resp)
+                    setKittyData(updateKitty);
+                })
             .catch(error => console.log('ERROR: ', error))
 
     }
@@ -137,8 +176,19 @@ const  KittyPage = () => {
 
                     <InviteLink inviteUrl={convertInviteIdToUrl(kitty.inviteId)}></InviteLink>
 
+                    
+                    {/* {kitty.playerGroup.playersTwo.map(p => { 
+                        return(
+                            <div className="form-row participant-box">
+                                <div className="input text-input invited">
+                                    <input className="form-input" id="participent-email" type="text" value={p.player.email} placeholder="email" />
+                                    <button className="btn">remove</button>
+                                </div>
+                            </div>)
+                    })} */}
+
                     <ParticipantsForm 
-                        participants={kitty.playerGroup.players} 
+                        participants={kitty.playerGroup.playersTwo} 
                         onHandleAddParticipant={(e) => onHandleAddParticipant(e)}
                         onRemoveParticipant={(e) => removeParticipant(e)}
                         onHandleParticipantEmailChange={(e) => handleParticipantEmailChange(e)}

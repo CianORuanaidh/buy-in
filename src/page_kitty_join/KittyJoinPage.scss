@@ -1,0 +1,17 @@
+@import '../App.scss';
+
+.singup-block {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.signup-inputs {
+    // border: 1px solid red;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    .btn-signup {
+        margin-left: $space-two;
+    }
+}
